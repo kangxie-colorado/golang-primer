@@ -1,0 +1,66 @@
+{"level":"info","msg":"Client Connected:  127.0.0.1:65310","time":"2021-12-07T15:59:30-07:00"}
+{"level":"debug","msg":"Read size and got 12 bytes","time":"2021-12-07T15:59:30-07:00"}
+{"level":"debug","msg":"szBytes are [48 48 48 48 48 48 48 48 48 48 48 49]","time":"2021-12-07T15:59:30-07:00"}
+{"level":"debug","msg":"Written bytes: 13","time":"2021-12-07T15:59:30-07:00"}
+{"level":"debug","msg":"Read size and got 12 bytes","time":"2021-12-07T15:59:30-07:00"}
+{"level":"debug","msg":"szBytes are [48 48 48 48 48 48 48 48 48 48 49 48]","time":"2021-12-07T15:59:30-07:00"}
+{"level":"debug","msg":"Written bytes: 22","time":"2021-12-07T15:59:30-07:00"}
+{"level":"debug","msg":"Read size and got 12 bytes","time":"2021-12-07T15:59:30-07:00"}
+{"level":"debug","msg":"szBytes are [48 48 48 48 48 48 48 48 48 49 48 48]","time":"2021-12-07T15:59:30-07:00"}
+{"level":"debug","msg":"Written bytes: 112","time":"2021-12-07T15:59:30-07:00"}
+{"level":"debug","msg":"Read size and got 12 bytes","time":"2021-12-07T15:59:30-07:00"}
+{"level":"debug","msg":"szBytes are [48 48 48 48 48 48 48 48 49 48 48 48]","time":"2021-12-07T15:59:30-07:00"}
+{"level":"debug","msg":"Written bytes: 1012","time":"2021-12-07T15:59:30-07:00"}
+{"level":"debug","msg":"Read size and got 12 bytes","time":"2021-12-07T15:59:30-07:00"}
+{"level":"debug","msg":"szBytes are [48 48 48 48 48 48 48 49 48 48 48 48]","time":"2021-12-07T15:59:30-07:00"}
+{"level":"debug","msg":"Written bytes: 10012","time":"2021-12-07T15:59:30-07:00"}
+{"level":"debug","msg":"Read size and got 12 bytes","time":"2021-12-07T15:59:30-07:00"}
+{"level":"debug","msg":"szBytes are [48 48 48 48 48 48 49 48 48 48 48 48]","time":"2021-12-07T15:59:30-07:00"}
+{"level":"debug","msg":"Written bytes: 100012","time":"2021-12-07T15:59:30-07:00"}
+{"level":"debug","msg":"Read size and got 12 bytes","time":"2021-12-07T15:59:30-07:00"}
+{"level":"debug","msg":"szBytes are [48 48 48 48 48 49 48 48 48 48 48 48]","time":"2021-12-07T15:59:30-07:00"}
+{"level":"debug","msg":"Written bytes: 1000012","time":"2021-12-07T15:59:30-07:00"}
+{"level":"debug","msg":"Read size and got 12 bytes","time":"2021-12-07T15:59:30-07:00"}
+{"level":"debug","msg":"szBytes are [48 48 48 48 49 48 48 48 48 48 48 48]","time":"2021-12-07T15:59:30-07:00"}
+{"level":"debug","msg":"Written bytes: 10000012","time":"2021-12-07T15:59:30-07:00"}
+{"level":"debug","msg":"Read size and got 0 bytes","time":"2021-12-07T15:59:30-07:00"}
+{"level":"error","msg":"err is EOF","time":"2021-12-07T15:59:30-07:00"}
+{"level":"info","msg":"Staring KV server","time":"2021-12-07T16:00:50-07:00"}
+{"level":"info","msg":"Client Connected:  127.0.0.1:65338","time":"2021-12-07T16:00:52-07:00"}
+{"level":"debug","msg":"Read size and got 12 bytes","time":"2021-12-07T16:00:52-07:00"}
+{"level":"info","msg":"Key: foo","time":"2021-12-07T16:00:52-07:00"}
+{"level":"info","msg":"Calling GET key foo","time":"2021-12-07T16:00:52-07:00"}
+{"level":"debug","msg":"szBytes are [48 48 48 48 48 48 48 48 48 48 49 54]","time":"2021-12-07T16:00:52-07:00"}
+{"level":"debug","msg":"Written bytes: 28","time":"2021-12-07T16:00:52-07:00"}
+{"level":"debug","msg":"Read size and got 12 bytes","time":"2021-12-07T16:00:52-07:00"}
+{"level":"info","msg":"Key: foo Value: bar","time":"2021-12-07T16:00:52-07:00"}
+{"level":"info","msg":"Calling SET key: foo to value: bar","time":"2021-12-07T16:00:52-07:00"}
+{"level":"debug","msg":"szBytes are [48 48 48 48 48 48 48 48 48 48 48 50]","time":"2021-12-07T16:00:52-07:00"}
+{"level":"debug","msg":"Written bytes: 14","time":"2021-12-07T16:00:52-07:00"}
+{"level":"debug","msg":"Read size and got 12 bytes","time":"2021-12-07T16:00:52-07:00"}
+{"level":"info","msg":"Key: foo","time":"2021-12-07T16:00:52-07:00"}
+{"level":"info","msg":"Calling GET key foo","time":"2021-12-07T16:00:52-07:00"}
+{"level":"debug","msg":"szBytes are [48 48 48 48 48 48 48 48 48 48 48 51]","time":"2021-12-07T16:00:52-07:00"}
+{"level":"debug","msg":"Written bytes: 15","time":"2021-12-07T16:00:52-07:00"}
+{"level":"debug","msg":"Read size and got 0 bytes","time":"2021-12-07T16:00:52-07:00"}
+{"level":"error","msg":"err is EOF","time":"2021-12-07T16:00:52-07:00"}
+{"level":"error","msg":"Error when receiving messages EOF","time":"2021-12-07T16:00:52-07:00"}
+{"level":"info","msg":"Client Connected:  127.0.0.1:65343","time":"2021-12-07T16:00:55-07:00"}
+{"level":"debug","msg":"Read size and got 12 bytes","time":"2021-12-07T16:00:55-07:00"}
+{"level":"info","msg":"Key: foo","time":"2021-12-07T16:00:55-07:00"}
+{"level":"info","msg":"Calling GET key foo","time":"2021-12-07T16:00:55-07:00"}
+{"level":"debug","msg":"szBytes are [48 48 48 48 48 48 48 48 48 48 48 51]","time":"2021-12-07T16:00:55-07:00"}
+{"level":"debug","msg":"Written bytes: 15","time":"2021-12-07T16:00:55-07:00"}
+{"level":"debug","msg":"Read size and got 12 bytes","time":"2021-12-07T16:00:55-07:00"}
+{"level":"info","msg":"Key: foo Value: bar","time":"2021-12-07T16:00:55-07:00"}
+{"level":"info","msg":"Calling SET key: foo to value: bar","time":"2021-12-07T16:00:55-07:00"}
+{"level":"debug","msg":"szBytes are [48 48 48 48 48 48 48 48 48 48 48 50]","time":"2021-12-07T16:00:55-07:00"}
+{"level":"debug","msg":"Written bytes: 14","time":"2021-12-07T16:00:55-07:00"}
+{"level":"debug","msg":"Read size and got 12 bytes","time":"2021-12-07T16:00:55-07:00"}
+{"level":"info","msg":"Key: foo","time":"2021-12-07T16:00:55-07:00"}
+{"level":"info","msg":"Calling GET key foo","time":"2021-12-07T16:00:55-07:00"}
+{"level":"debug","msg":"szBytes are [48 48 48 48 48 48 48 48 48 48 48 51]","time":"2021-12-07T16:00:55-07:00"}
+{"level":"debug","msg":"Written bytes: 15","time":"2021-12-07T16:00:55-07:00"}
+{"level":"debug","msg":"Read size and got 0 bytes","time":"2021-12-07T16:00:55-07:00"}
+{"level":"error","msg":"err is EOF","time":"2021-12-07T16:00:55-07:00"}
+{"level":"error","msg":"Error when receiving messages EOF","time":"2021-12-07T16:00:55-07:00"}

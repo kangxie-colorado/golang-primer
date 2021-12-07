@@ -1,0 +1,15 @@
+{"level":"info","msg":"Connecting to tcplocalhost:15000","time":"2021-12-07T15:59:30-07:00"}
+{"level":"info","msg":"Testing 1","time":"2021-12-07T15:59:30-07:00"}
+{"level":"info","msg":"Testing 10","time":"2021-12-07T15:59:30-07:00"}
+{"level":"info","msg":"Testing 100","time":"2021-12-07T15:59:30-07:00"}
+{"level":"info","msg":"Testing 1000","time":"2021-12-07T15:59:30-07:00"}
+{"level":"info","msg":"Testing 10000","time":"2021-12-07T15:59:30-07:00"}
+{"level":"info","msg":"Testing 100000","time":"2021-12-07T15:59:30-07:00"}
+{"level":"info","msg":"Testing 1e+06","time":"2021-12-07T15:59:30-07:00"}
+{"level":"info","msg":"Testing 1e+07","time":"2021-12-07T15:59:30-07:00"}
+{"level":"info","msg":"Staring KV client","time":"2021-12-07T16:00:52-07:00"}
+{"level":"info","msg":"Connecting to tcplocalhost:15000","time":"2021-12-07T16:00:52-07:00"}
+{"level":"info","msg":"Connected:  127.0.0.1:15000 127.0.0.1:65338","time":"2021-12-07T16:00:52-07:00"}
+{"level":"info","msg":"Staring KV client","time":"2021-12-07T16:00:55-07:00"}
+{"level":"info","msg":"Connecting to tcplocalhost:15000","time":"2021-12-07T16:00:55-07:00"}
+{"level":"info","msg":"Connected:  127.0.0.1:15000 127.0.0.1:65343","time":"2021-12-07T16:00:55-07:00"}
