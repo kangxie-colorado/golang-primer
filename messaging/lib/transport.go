@@ -30,11 +30,11 @@ func GetSizeFrom12Bytes(sz []byte) int {
 	return intSz
 }
 
-func SendMessageStr(conn net.Conn, msg string) {
-	SendMessage(conn, []byte(msg))
+func SendMessageStr(conn net.Conn, msg string) error {
+	return SendMessage(conn, []byte(msg))
 }
 
-func SendMessage(conn net.Conn, msg []byte) {
+func SendMessage(conn net.Conn, msg []byte) error {
 	szBytes := SizeTo12Bytes(len(msg))
 	msg = append(szBytes, msg...)
 	log.Debugln("szBytes are", szBytes)
@@ -46,6 +46,8 @@ func SendMessage(conn net.Conn, msg []byte) {
 
 	log.Debugln("Written bytes:", writeBytes)
 	//fmt.Println("Sending:", msg)
+
+	return err
 }
 
 func RecvMessageStr(conn net.Conn) (string, error) {
