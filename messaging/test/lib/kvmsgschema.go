@@ -14,9 +14,7 @@ func parseKeyValue(msg string) (string, string) {
 	keyLen, _ := strconv.Atoi(keyLenStr)
 	key := msg[8 : 8+keyLen]
 
-	valLenStr := msg[8+keyLen : 13+keyLen]
-	valLen, _ := strconv.Atoi(valLenStr)
-	value := msg[13+valLen:]
+	value := msg[8+keyLen:]
 
 	log.Infoln("Key:", key, "Value:", value)
 
@@ -32,7 +30,7 @@ func parseKey(msg string) string {
 	return key
 }
 func encodeKeyValue(key, value string) string {
-	return fmt.Sprintf("%05d", len(key)) + key + fmt.Sprintf("%05d", len(value)) + value
+	return fmt.Sprintf("%05d", len(key)) + key + value
 }
 
 func encodeKey(key string) string {

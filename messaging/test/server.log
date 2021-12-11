@@ -226,3 +226,657 @@
 {"level":"debug","msg":"Read size and got 0 bytes","time":"2021-12-10T17:44:03-07:00"}
 {"level":"error","msg":"err is EOF","time":"2021-12-10T17:44:03-07:00"}
 {"level":"error","msg":"Error when receiving messages EOF","time":"2021-12-10T17:44:03-07:00"}
+{"level":"info","msg":"Client Connected:  127.0.0.1:55691","time":"2021-12-10T17:56:36-07:00"}
+{"level":"debug","msg":"Read size and got 12 bytes","time":"2021-12-10T17:56:36-07:00"}
+{"level":"info","msg":"Key: foo","time":"2021-12-10T17:56:36-07:00"}
+{"level":"info","msg":"Calling GET key foo","time":"2021-12-10T17:56:36-07:00"}
+{"level":"debug","msg":"szBytes are [48 48 48 48 48 48 48 48 48 48 48 51]","time":"2021-12-10T17:56:36-07:00"}
+{"level":"debug","msg":"Written bytes: 15","time":"2021-12-10T17:56:36-07:00"}
+{"level":"debug","msg":"Read size and got 12 bytes","time":"2021-12-10T17:56:36-07:00"}
+{"level":"info","msg":"Key: foo Value: bar","time":"2021-12-10T17:56:36-07:00"}
+{"level":"info","msg":"Calling SET key: foo to value: bar","time":"2021-12-10T17:56:36-07:00"}
+{"level":"info","msg":"Send SET foo:bar to raft\n","time":"2021-12-10T17:56:36-07:00"}
+{"level":"info","msg":"Raft has committed","time":"2021-12-10T17:56:36-07:00"}
+{"level":"debug","msg":"szBytes are [48 48 48 48 48 48 48 48 48 48 48 50]","time":"2021-12-10T17:56:36-07:00"}
+{"level":"debug","msg":"Written bytes: 14","time":"2021-12-10T17:56:36-07:00"}
+{"level":"debug","msg":"Read size and got 12 bytes","time":"2021-12-10T17:56:36-07:00"}
+{"level":"info","msg":"Key: foo","time":"2021-12-10T17:56:36-07:00"}
+{"level":"info","msg":"Calling GET key foo","time":"2021-12-10T17:56:36-07:00"}
+{"level":"debug","msg":"szBytes are [48 48 48 48 48 48 48 48 48 48 48 51]","time":"2021-12-10T17:56:36-07:00"}
+{"level":"debug","msg":"Written bytes: 15","time":"2021-12-10T17:56:36-07:00"}
+{"level":"debug","msg":"Read size and got 0 bytes","time":"2021-12-10T17:56:36-07:00"}
+{"level":"error","msg":"err is EOF","time":"2021-12-10T17:56:36-07:00"}
+{"level":"error","msg":"Error when receiving messages EOF","time":"2021-12-10T17:56:36-07:00"}
+{"level":"info","msg":"Client Connected:  127.0.0.1:55697","time":"2021-12-10T17:56:56-07:00"}
+{"level":"debug","msg":"Read size and got 12 bytes","time":"2021-12-10T17:56:56-07:00"}
+{"level":"info","msg":"Key: foo","time":"2021-12-10T17:56:56-07:00"}
+{"level":"info","msg":"Calling GET key foo","time":"2021-12-10T17:56:56-07:00"}
+{"level":"debug","msg":"szBytes are [48 48 48 48 48 48 48 48 48 48 48 51]","time":"2021-12-10T17:56:56-07:00"}
+{"level":"debug","msg":"Written bytes: 15","time":"2021-12-10T17:56:56-07:00"}
+{"level":"debug","msg":"Read size and got 12 bytes","time":"2021-12-10T17:56:56-07:00"}
+{"level":"info","msg":"Key: foo Value: ar2","time":"2021-12-10T17:56:56-07:00"}
+{"level":"info","msg":"Calling SET key: foo to value: ar2","time":"2021-12-10T17:56:56-07:00"}
+{"level":"info","msg":"Send SET foo:ar2 to raft\n","time":"2021-12-10T17:56:56-07:00"}
+{"level":"info","msg":"Raft has committed","time":"2021-12-10T17:56:56-07:00"}
+{"level":"debug","msg":"szBytes are [48 48 48 48 48 48 48 48 48 48 48 50]","time":"2021-12-10T17:56:56-07:00"}
+{"level":"debug","msg":"Written bytes: 14","time":"2021-12-10T17:56:56-07:00"}
+{"level":"debug","msg":"Read size and got 12 bytes","time":"2021-12-10T17:56:56-07:00"}
+{"level":"info","msg":"Key: foo2","time":"2021-12-10T17:56:56-07:00"}
+{"level":"info","msg":"Calling GET key foo2","time":"2021-12-10T17:56:56-07:00"}
+{"level":"debug","msg":"szBytes are [48 48 48 48 48 48 48 48 48 48 49 54]","time":"2021-12-10T17:56:56-07:00"}
+{"level":"debug","msg":"Written bytes: 28","time":"2021-12-10T17:56:56-07:00"}
+{"level":"debug","msg":"Read size and got 12 bytes","time":"2021-12-10T17:56:56-07:00"}
+{"level":"info","msg":"Key: foo2 Value: bar2","time":"2021-12-10T17:56:56-07:00"}
+{"level":"info","msg":"Calling SET key: foo2 to value: bar2","time":"2021-12-10T17:56:56-07:00"}
+{"level":"info","msg":"Send SET foo2:bar2 to raft\n","time":"2021-12-10T17:56:56-07:00"}
+{"level":"info","msg":"Raft has committed","time":"2021-12-10T17:56:56-07:00"}
+{"level":"debug","msg":"szBytes are [48 48 48 48 48 48 48 48 48 48 48 50]","time":"2021-12-10T17:56:56-07:00"}
+{"level":"debug","msg":"Written bytes: 14","time":"2021-12-10T17:56:56-07:00"}
+{"level":"debug","msg":"Read size and got 12 bytes","time":"2021-12-10T17:56:56-07:00"}
+{"level":"info","msg":"Key: foo2","time":"2021-12-10T17:56:56-07:00"}
+{"level":"info","msg":"Calling GET key foo2","time":"2021-12-10T17:56:56-07:00"}
+{"level":"debug","msg":"szBytes are [48 48 48 48 48 48 48 48 48 48 48 52]","time":"2021-12-10T17:56:56-07:00"}
+{"level":"debug","msg":"Written bytes: 16","time":"2021-12-10T17:56:56-07:00"}
+{"level":"debug","msg":"Read size and got 12 bytes","time":"2021-12-10T17:56:56-07:00"}
+{"level":"info","msg":"Key: foo","time":"2021-12-10T17:56:56-07:00"}
+{"level":"info","msg":"Calling DEL key foo","time":"2021-12-10T17:56:56-07:00"}
+{"level":"info","msg":"Send DEL foo to raft\n","time":"2021-12-10T17:56:56-07:00"}
+{"level":"debug","msg":"szBytes are [48 48 48 48 48 48 48 48 48 48 48 55]","time":"2021-12-10T17:56:56-07:00"}
+{"level":"debug","msg":"Written bytes: 19","time":"2021-12-10T17:56:56-07:00"}
+{"level":"debug","msg":"Read size and got 0 bytes","time":"2021-12-10T17:56:56-07:00"}
+{"level":"error","msg":"err is EOF","time":"2021-12-10T17:56:56-07:00"}
+{"level":"error","msg":"Error when receiving messages EOF","time":"2021-12-10T17:56:56-07:00"}
+{"level":"info","msg":"Client Connected:  127.0.0.1:55707","time":"2021-12-10T17:57:45-07:00"}
+{"level":"debug","msg":"Read size and got 12 bytes","time":"2021-12-10T17:57:45-07:00"}
+{"level":"info","msg":"Key: foo","time":"2021-12-10T17:57:45-07:00"}
+{"level":"info","msg":"Calling GET key foo","time":"2021-12-10T17:57:45-07:00"}
+{"level":"debug","msg":"szBytes are [48 48 48 48 48 48 48 48 48 48 49 54]","time":"2021-12-10T17:57:45-07:00"}
+{"level":"debug","msg":"Written bytes: 28","time":"2021-12-10T17:57:45-07:00"}
+{"level":"debug","msg":"Read size and got 12 bytes","time":"2021-12-10T17:57:45-07:00"}
+{"level":"info","msg":"Key: foo Value: bar","time":"2021-12-10T17:57:45-07:00"}
+{"level":"info","msg":"Calling SET key: foo to value: bar","time":"2021-12-10T17:57:45-07:00"}
+{"level":"info","msg":"Send SET foo:bar to raft\n","time":"2021-12-10T17:57:45-07:00"}
+{"level":"info","msg":"Raft has committed","time":"2021-12-10T17:57:45-07:00"}
+{"level":"debug","msg":"szBytes are [48 48 48 48 48 48 48 48 48 48 48 50]","time":"2021-12-10T17:57:45-07:00"}
+{"level":"debug","msg":"Written bytes: 14","time":"2021-12-10T17:57:45-07:00"}
+{"level":"info","msg":"Client Connected:  127.0.0.1:55712","time":"2021-12-10T17:57:46-07:00"}
+{"level":"debug","msg":"Read size and got 12 bytes","time":"2021-12-10T17:57:46-07:00"}
+{"level":"info","msg":"Key: foo","time":"2021-12-10T17:57:46-07:00"}
+{"level":"info","msg":"Calling GET key foo","time":"2021-12-10T17:57:46-07:00"}
+{"level":"debug","msg":"szBytes are [48 48 48 48 48 48 48 48 48 48 48 51]","time":"2021-12-10T17:57:46-07:00"}
+{"level":"debug","msg":"Written bytes: 15","time":"2021-12-10T17:57:46-07:00"}
+{"level":"debug","msg":"Read size and got 12 bytes","time":"2021-12-10T17:57:46-07:00"}
+{"level":"info","msg":"Key: foo Value: ar2","time":"2021-12-10T17:57:46-07:00"}
+{"level":"info","msg":"Calling SET key: foo to value: ar2","time":"2021-12-10T17:57:46-07:00"}
+{"level":"info","msg":"Send SET foo:ar2 to raft\n","time":"2021-12-10T17:57:46-07:00"}
+{"level":"info","msg":"Raft has committed","time":"2021-12-10T17:57:46-07:00"}
+{"level":"debug","msg":"szBytes are [48 48 48 48 48 48 48 48 48 48 48 50]","time":"2021-12-10T17:57:46-07:00"}
+{"level":"debug","msg":"Written bytes: 14","time":"2021-12-10T17:57:46-07:00"}
+{"level":"debug","msg":"Read size and got 12 bytes","time":"2021-12-10T17:57:46-07:00"}
+{"level":"info","msg":"Key: foo2","time":"2021-12-10T17:57:46-07:00"}
+{"level":"info","msg":"Calling GET key foo2","time":"2021-12-10T17:57:46-07:00"}
+{"level":"debug","msg":"szBytes are [48 48 48 48 48 48 48 48 48 48 48 52]","time":"2021-12-10T17:57:46-07:00"}
+{"level":"debug","msg":"Written bytes: 16","time":"2021-12-10T17:57:46-07:00"}
+{"level":"debug","msg":"Read size and got 12 bytes","time":"2021-12-10T17:57:46-07:00"}
+{"level":"info","msg":"Key: foo2 Value: bar2","time":"2021-12-10T17:57:46-07:00"}
+{"level":"info","msg":"Calling SET key: foo2 to value: bar2","time":"2021-12-10T17:57:46-07:00"}
+{"level":"info","msg":"Send SET foo2:bar2 to raft\n","time":"2021-12-10T17:57:46-07:00"}
+{"level":"info","msg":"Raft has committed","time":"2021-12-10T17:57:46-07:00"}
+{"level":"debug","msg":"szBytes are [48 48 48 48 48 48 48 48 48 48 48 50]","time":"2021-12-10T17:57:46-07:00"}
+{"level":"debug","msg":"Written bytes: 14","time":"2021-12-10T17:57:46-07:00"}
+{"level":"debug","msg":"Read size and got 12 bytes","time":"2021-12-10T17:57:46-07:00"}
+{"level":"info","msg":"Key: foo2","time":"2021-12-10T17:57:46-07:00"}
+{"level":"info","msg":"Calling GET key foo2","time":"2021-12-10T17:57:46-07:00"}
+{"level":"debug","msg":"szBytes are [48 48 48 48 48 48 48 48 48 48 48 52]","time":"2021-12-10T17:57:46-07:00"}
+{"level":"debug","msg":"Written bytes: 16","time":"2021-12-10T17:57:46-07:00"}
+{"level":"debug","msg":"Read size and got 12 bytes","time":"2021-12-10T17:57:46-07:00"}
+{"level":"info","msg":"Key: foo","time":"2021-12-10T17:57:46-07:00"}
+{"level":"info","msg":"Calling DEL key foo","time":"2021-12-10T17:57:46-07:00"}
+{"level":"info","msg":"Send DEL foo to raft\n","time":"2021-12-10T17:57:46-07:00"}
+{"level":"debug","msg":"szBytes are [48 48 48 48 48 48 48 48 48 48 48 55]","time":"2021-12-10T17:57:46-07:00"}
+{"level":"debug","msg":"Written bytes: 19","time":"2021-12-10T17:57:46-07:00"}
+{"level":"debug","msg":"Read size and got 0 bytes","time":"2021-12-10T17:57:46-07:00"}
+{"level":"error","msg":"err is EOF","time":"2021-12-10T17:57:46-07:00"}
+{"level":"error","msg":"Error when receiving messages EOF","time":"2021-12-10T17:57:46-07:00"}
+{"level":"info","msg":"Client Connected:  127.0.0.1:55715","time":"2021-12-10T17:57:47-07:00"}
+{"level":"debug","msg":"Read size and got 12 bytes","time":"2021-12-10T17:57:47-07:00"}
+{"level":"info","msg":"Key: foo","time":"2021-12-10T17:57:47-07:00"}
+{"level":"info","msg":"Calling GET key foo","time":"2021-12-10T17:57:47-07:00"}
+{"level":"debug","msg":"szBytes are [48 48 48 48 48 48 48 48 48 48 49 54]","time":"2021-12-10T17:57:47-07:00"}
+{"level":"debug","msg":"Written bytes: 28","time":"2021-12-10T17:57:47-07:00"}
+{"level":"debug","msg":"Read size and got 12 bytes","time":"2021-12-10T17:57:47-07:00"}
+{"level":"info","msg":"Key: foo Value: ar2","time":"2021-12-10T17:57:47-07:00"}
+{"level":"info","msg":"Calling SET key: foo to value: ar2","time":"2021-12-10T17:57:47-07:00"}
+{"level":"info","msg":"Send SET foo:ar2 to raft\n","time":"2021-12-10T17:57:47-07:00"}
+{"level":"info","msg":"Raft has committed","time":"2021-12-10T17:57:47-07:00"}
+{"level":"debug","msg":"szBytes are [48 48 48 48 48 48 48 48 48 48 48 50]","time":"2021-12-10T17:57:47-07:00"}
+{"level":"debug","msg":"Written bytes: 14","time":"2021-12-10T17:57:47-07:00"}
+{"level":"debug","msg":"Read size and got 12 bytes","time":"2021-12-10T17:57:47-07:00"}
+{"level":"info","msg":"Key: foo2","time":"2021-12-10T17:57:47-07:00"}
+{"level":"info","msg":"Calling GET key foo2","time":"2021-12-10T17:57:47-07:00"}
+{"level":"debug","msg":"szBytes are [48 48 48 48 48 48 48 48 48 48 48 52]","time":"2021-12-10T17:57:47-07:00"}
+{"level":"debug","msg":"Written bytes: 16","time":"2021-12-10T17:57:47-07:00"}
+{"level":"debug","msg":"Read size and got 12 bytes","time":"2021-12-10T17:57:47-07:00"}
+{"level":"info","msg":"Key: foo2 Value: bar2","time":"2021-12-10T17:57:47-07:00"}
+{"level":"info","msg":"Calling SET key: foo2 to value: bar2","time":"2021-12-10T17:57:47-07:00"}
+{"level":"info","msg":"Send SET foo2:bar2 to raft\n","time":"2021-12-10T17:57:47-07:00"}
+{"level":"info","msg":"Raft has committed","time":"2021-12-10T17:57:47-07:00"}
+{"level":"debug","msg":"szBytes are [48 48 48 48 48 48 48 48 48 48 48 50]","time":"2021-12-10T17:57:47-07:00"}
+{"level":"debug","msg":"Written bytes: 14","time":"2021-12-10T17:57:47-07:00"}
+{"level":"debug","msg":"Read size and got 12 bytes","time":"2021-12-10T17:57:47-07:00"}
+{"level":"info","msg":"Key: foo2","time":"2021-12-10T17:57:47-07:00"}
+{"level":"info","msg":"Calling GET key foo2","time":"2021-12-10T17:57:47-07:00"}
+{"level":"debug","msg":"szBytes are [48 48 48 48 48 48 48 48 48 48 48 52]","time":"2021-12-10T17:57:47-07:00"}
+{"level":"debug","msg":"Written bytes: 16","time":"2021-12-10T17:57:47-07:00"}
+{"level":"debug","msg":"Read size and got 12 bytes","time":"2021-12-10T17:57:47-07:00"}
+{"level":"info","msg":"Key: foo","time":"2021-12-10T17:57:47-07:00"}
+{"level":"info","msg":"Calling DEL key foo","time":"2021-12-10T17:57:47-07:00"}
+{"level":"info","msg":"Send DEL foo to raft\n","time":"2021-12-10T17:57:47-07:00"}
+{"level":"debug","msg":"szBytes are [48 48 48 48 48 48 48 48 48 48 48 55]","time":"2021-12-10T17:57:47-07:00"}
+{"level":"debug","msg":"Written bytes: 19","time":"2021-12-10T17:57:47-07:00"}
+{"level":"debug","msg":"Read size and got 0 bytes","time":"2021-12-10T17:57:47-07:00"}
+{"level":"error","msg":"err is EOF","time":"2021-12-10T17:57:47-07:00"}
+{"level":"error","msg":"Error when receiving messages EOF","time":"2021-12-10T17:57:47-07:00"}
+{"level":"debug","msg":"Read size and got 12 bytes","time":"2021-12-10T17:57:48-07:00"}
+{"level":"info","msg":"Key: foo","time":"2021-12-10T17:57:48-07:00"}
+{"level":"info","msg":"Calling GET key foo","time":"2021-12-10T17:57:48-07:00"}
+{"level":"debug","msg":"szBytes are [48 48 48 48 48 48 48 48 48 48 49 54]","time":"2021-12-10T17:57:48-07:00"}
+{"level":"debug","msg":"Written bytes: 28","time":"2021-12-10T17:57:48-07:00"}
+{"level":"debug","msg":"Read size and got 0 bytes","time":"2021-12-10T17:57:48-07:00"}
+{"level":"error","msg":"err is EOF","time":"2021-12-10T17:57:48-07:00"}
+{"level":"error","msg":"Error when receiving messages EOF","time":"2021-12-10T17:57:48-07:00"}
+{"level":"info","msg":"Client Connected:  127.0.0.1:55718","time":"2021-12-10T17:57:48-07:00"}
+{"level":"debug","msg":"Read size and got 12 bytes","time":"2021-12-10T17:57:48-07:00"}
+{"level":"info","msg":"Key: foo","time":"2021-12-10T17:57:48-07:00"}
+{"level":"info","msg":"Calling GET key foo","time":"2021-12-10T17:57:48-07:00"}
+{"level":"debug","msg":"szBytes are [48 48 48 48 48 48 48 48 48 48 49 54]","time":"2021-12-10T17:57:48-07:00"}
+{"level":"debug","msg":"Written bytes: 28","time":"2021-12-10T17:57:48-07:00"}
+{"level":"debug","msg":"Read size and got 12 bytes","time":"2021-12-10T17:57:48-07:00"}
+{"level":"info","msg":"Key: foo Value: ar2","time":"2021-12-10T17:57:48-07:00"}
+{"level":"info","msg":"Calling SET key: foo to value: ar2","time":"2021-12-10T17:57:48-07:00"}
+{"level":"info","msg":"Send SET foo:ar2 to raft\n","time":"2021-12-10T17:57:48-07:00"}
+{"level":"info","msg":"Raft has committed","time":"2021-12-10T17:57:48-07:00"}
+{"level":"debug","msg":"szBytes are [48 48 48 48 48 48 48 48 48 48 48 50]","time":"2021-12-10T17:57:48-07:00"}
+{"level":"debug","msg":"Written bytes: 14","time":"2021-12-10T17:57:48-07:00"}
+{"level":"debug","msg":"Read size and got 12 bytes","time":"2021-12-10T17:57:48-07:00"}
+{"level":"info","msg":"Key: foo2","time":"2021-12-10T17:57:48-07:00"}
+{"level":"info","msg":"Calling GET key foo2","time":"2021-12-10T17:57:48-07:00"}
+{"level":"debug","msg":"szBytes are [48 48 48 48 48 48 48 48 48 48 48 52]","time":"2021-12-10T17:57:48-07:00"}
+{"level":"debug","msg":"Written bytes: 16","time":"2021-12-10T17:57:48-07:00"}
+{"level":"debug","msg":"Read size and got 12 bytes","time":"2021-12-10T17:57:48-07:00"}
+{"level":"info","msg":"Key: foo2 Value: bar2","time":"2021-12-10T17:57:48-07:00"}
+{"level":"info","msg":"Calling SET key: foo2 to value: bar2","time":"2021-12-10T17:57:48-07:00"}
+{"level":"info","msg":"Send SET foo2:bar2 to raft\n","time":"2021-12-10T17:57:48-07:00"}
+{"level":"info","msg":"Raft has committed","time":"2021-12-10T17:57:48-07:00"}
+{"level":"debug","msg":"szBytes are [48 48 48 48 48 48 48 48 48 48 48 50]","time":"2021-12-10T17:57:48-07:00"}
+{"level":"debug","msg":"Written bytes: 14","time":"2021-12-10T17:57:48-07:00"}
+{"level":"debug","msg":"Read size and got 12 bytes","time":"2021-12-10T17:57:48-07:00"}
+{"level":"info","msg":"Key: foo2","time":"2021-12-10T17:57:48-07:00"}
+{"level":"info","msg":"Calling GET key foo2","time":"2021-12-10T17:57:48-07:00"}
+{"level":"debug","msg":"szBytes are [48 48 48 48 48 48 48 48 48 48 48 52]","time":"2021-12-10T17:57:48-07:00"}
+{"level":"debug","msg":"Written bytes: 16","time":"2021-12-10T17:57:48-07:00"}
+{"level":"debug","msg":"Read size and got 12 bytes","time":"2021-12-10T17:57:48-07:00"}
+{"level":"info","msg":"Key: foo","time":"2021-12-10T17:57:48-07:00"}
+{"level":"info","msg":"Calling DEL key foo","time":"2021-12-10T17:57:48-07:00"}
+{"level":"info","msg":"Send DEL foo to raft\n","time":"2021-12-10T17:57:48-07:00"}
+{"level":"debug","msg":"szBytes are [48 48 48 48 48 48 48 48 48 48 48 55]","time":"2021-12-10T17:57:48-07:00"}
+{"level":"debug","msg":"Written bytes: 19","time":"2021-12-10T17:57:48-07:00"}
+{"level":"debug","msg":"Read size and got 0 bytes","time":"2021-12-10T17:57:48-07:00"}
+{"level":"error","msg":"err is EOF","time":"2021-12-10T17:57:48-07:00"}
+{"level":"error","msg":"Error when receiving messages EOF","time":"2021-12-10T17:57:48-07:00"}
+{"level":"info","msg":"Client Connected:  127.0.0.1:55723","time":"2021-12-10T17:57:53-07:00"}
+{"level":"debug","msg":"Read size and got 12 bytes","time":"2021-12-10T17:57:53-07:00"}
+{"level":"info","msg":"Key: foo","time":"2021-12-10T17:57:53-07:00"}
+{"level":"info","msg":"Calling GET key foo","time":"2021-12-10T17:57:53-07:00"}
+{"level":"debug","msg":"szBytes are [48 48 48 48 48 48 48 48 48 48 49 54]","time":"2021-12-10T17:57:53-07:00"}
+{"level":"debug","msg":"Written bytes: 28","time":"2021-12-10T17:57:53-07:00"}
+{"level":"debug","msg":"Read size and got 12 bytes","time":"2021-12-10T17:57:53-07:00"}
+{"level":"info","msg":"Key: foo Value: bar","time":"2021-12-10T17:57:53-07:00"}
+{"level":"info","msg":"Calling SET key: foo to value: bar","time":"2021-12-10T17:57:53-07:00"}
+{"level":"info","msg":"Send SET foo:bar to raft\n","time":"2021-12-10T17:57:53-07:00"}
+{"level":"info","msg":"Raft has committed","time":"2021-12-10T17:57:53-07:00"}
+{"level":"debug","msg":"szBytes are [48 48 48 48 48 48 48 48 48 48 48 50]","time":"2021-12-10T17:57:53-07:00"}
+{"level":"debug","msg":"Written bytes: 14","time":"2021-12-10T17:57:53-07:00"}
+{"level":"debug","msg":"Read size and got 12 bytes","time":"2021-12-10T17:57:56-07:00"}
+{"level":"info","msg":"Key: foo","time":"2021-12-10T17:57:56-07:00"}
+{"level":"info","msg":"Calling GET key foo","time":"2021-12-10T17:57:56-07:00"}
+{"level":"debug","msg":"szBytes are [48 48 48 48 48 48 48 48 48 48 48 51]","time":"2021-12-10T17:57:56-07:00"}
+{"level":"debug","msg":"Written bytes: 15","time":"2021-12-10T17:57:56-07:00"}
+{"level":"debug","msg":"Read size and got 0 bytes","time":"2021-12-10T17:57:56-07:00"}
+{"level":"error","msg":"err is EOF","time":"2021-12-10T17:57:56-07:00"}
+{"level":"error","msg":"Error when receiving messages EOF","time":"2021-12-10T17:57:56-07:00"}
+{"level":"info","msg":"Client Connected:  127.0.0.1:55726","time":"2021-12-10T17:57:59-07:00"}
+{"level":"debug","msg":"Read size and got 12 bytes","time":"2021-12-10T17:57:59-07:00"}
+{"level":"info","msg":"Key: foo","time":"2021-12-10T17:57:59-07:00"}
+{"level":"info","msg":"Calling GET key foo","time":"2021-12-10T17:57:59-07:00"}
+{"level":"debug","msg":"szBytes are [48 48 48 48 48 48 48 48 48 48 48 51]","time":"2021-12-10T17:57:59-07:00"}
+{"level":"debug","msg":"Written bytes: 15","time":"2021-12-10T17:57:59-07:00"}
+{"level":"debug","msg":"Read size and got 12 bytes","time":"2021-12-10T17:57:59-07:00"}
+{"level":"info","msg":"Key: foo Value: bar","time":"2021-12-10T17:57:59-07:00"}
+{"level":"info","msg":"Calling SET key: foo to value: bar","time":"2021-12-10T17:57:59-07:00"}
+{"level":"info","msg":"Send SET foo:bar to raft\n","time":"2021-12-10T17:57:59-07:00"}
+{"level":"info","msg":"Raft has committed","time":"2021-12-10T17:57:59-07:00"}
+{"level":"debug","msg":"szBytes are [48 48 48 48 48 48 48 48 48 48 48 50]","time":"2021-12-10T17:57:59-07:00"}
+{"level":"debug","msg":"Written bytes: 14","time":"2021-12-10T17:57:59-07:00"}
+{"level":"debug","msg":"Read size and got 12 bytes","time":"2021-12-10T17:58:02-07:00"}
+{"level":"info","msg":"Key: foo","time":"2021-12-10T17:58:02-07:00"}
+{"level":"info","msg":"Calling GET key foo","time":"2021-12-10T17:58:02-07:00"}
+{"level":"debug","msg":"szBytes are [48 48 48 48 48 48 48 48 48 48 48 51]","time":"2021-12-10T17:58:02-07:00"}
+{"level":"debug","msg":"Written bytes: 15","time":"2021-12-10T17:58:02-07:00"}
+{"level":"debug","msg":"Read size and got 0 bytes","time":"2021-12-10T17:58:02-07:00"}
+{"level":"error","msg":"err is EOF","time":"2021-12-10T17:58:02-07:00"}
+{"level":"error","msg":"Error when receiving messages EOF","time":"2021-12-10T17:58:02-07:00"}
+{"level":"info","msg":"Client Connected:  127.0.0.1:55729","time":"2021-12-10T17:58:03-07:00"}
+{"level":"debug","msg":"Read size and got 12 bytes","time":"2021-12-10T17:58:03-07:00"}
+{"level":"info","msg":"Key: foo","time":"2021-12-10T17:58:03-07:00"}
+{"level":"info","msg":"Calling GET key foo","time":"2021-12-10T17:58:03-07:00"}
+{"level":"debug","msg":"szBytes are [48 48 48 48 48 48 48 48 48 48 48 51]","time":"2021-12-10T17:58:03-07:00"}
+{"level":"debug","msg":"Written bytes: 15","time":"2021-12-10T17:58:03-07:00"}
+{"level":"debug","msg":"Read size and got 12 bytes","time":"2021-12-10T17:58:03-07:00"}
+{"level":"info","msg":"Key: foo Value: bar","time":"2021-12-10T17:58:03-07:00"}
+{"level":"info","msg":"Calling SET key: foo to value: bar","time":"2021-12-10T17:58:03-07:00"}
+{"level":"info","msg":"Send SET foo:bar to raft\n","time":"2021-12-10T17:58:03-07:00"}
+{"level":"info","msg":"Raft has committed","time":"2021-12-10T17:58:03-07:00"}
+{"level":"debug","msg":"szBytes are [48 48 48 48 48 48 48 48 48 48 48 50]","time":"2021-12-10T17:58:03-07:00"}
+{"level":"debug","msg":"Written bytes: 14","time":"2021-12-10T17:58:03-07:00"}
+{"level":"info","msg":"Client Connected:  127.0.0.1:55732","time":"2021-12-10T17:58:05-07:00"}
+{"level":"debug","msg":"Read size and got 12 bytes","time":"2021-12-10T17:58:05-07:00"}
+{"level":"info","msg":"Key: foo","time":"2021-12-10T17:58:05-07:00"}
+{"level":"info","msg":"Calling GET key foo","time":"2021-12-10T17:58:05-07:00"}
+{"level":"debug","msg":"szBytes are [48 48 48 48 48 48 48 48 48 48 48 51]","time":"2021-12-10T17:58:05-07:00"}
+{"level":"debug","msg":"Written bytes: 15","time":"2021-12-10T17:58:05-07:00"}
+{"level":"debug","msg":"Read size and got 12 bytes","time":"2021-12-10T17:58:05-07:00"}
+{"level":"info","msg":"Key: foo Value: ar2","time":"2021-12-10T17:58:05-07:00"}
+{"level":"info","msg":"Calling SET key: foo to value: ar2","time":"2021-12-10T17:58:05-07:00"}
+{"level":"info","msg":"Send SET foo:ar2 to raft\n","time":"2021-12-10T17:58:05-07:00"}
+{"level":"info","msg":"Raft has committed","time":"2021-12-10T17:58:05-07:00"}
+{"level":"debug","msg":"szBytes are [48 48 48 48 48 48 48 48 48 48 48 50]","time":"2021-12-10T17:58:05-07:00"}
+{"level":"debug","msg":"Written bytes: 14","time":"2021-12-10T17:58:05-07:00"}
+{"level":"debug","msg":"Read size and got 12 bytes","time":"2021-12-10T17:58:05-07:00"}
+{"level":"info","msg":"Key: foo2","time":"2021-12-10T17:58:05-07:00"}
+{"level":"info","msg":"Calling GET key foo2","time":"2021-12-10T17:58:05-07:00"}
+{"level":"debug","msg":"szBytes are [48 48 48 48 48 48 48 48 48 48 48 52]","time":"2021-12-10T17:58:05-07:00"}
+{"level":"debug","msg":"Written bytes: 16","time":"2021-12-10T17:58:05-07:00"}
+{"level":"debug","msg":"Read size and got 12 bytes","time":"2021-12-10T17:58:05-07:00"}
+{"level":"info","msg":"Key: foo2 Value: bar2","time":"2021-12-10T17:58:05-07:00"}
+{"level":"info","msg":"Calling SET key: foo2 to value: bar2","time":"2021-12-10T17:58:05-07:00"}
+{"level":"info","msg":"Send SET foo2:bar2 to raft\n","time":"2021-12-10T17:58:05-07:00"}
+{"level":"info","msg":"Raft has committed","time":"2021-12-10T17:58:05-07:00"}
+{"level":"debug","msg":"szBytes are [48 48 48 48 48 48 48 48 48 48 48 50]","time":"2021-12-10T17:58:05-07:00"}
+{"level":"debug","msg":"Written bytes: 14","time":"2021-12-10T17:58:05-07:00"}
+{"level":"debug","msg":"Read size and got 12 bytes","time":"2021-12-10T17:58:05-07:00"}
+{"level":"info","msg":"Key: foo2","time":"2021-12-10T17:58:05-07:00"}
+{"level":"info","msg":"Calling GET key foo2","time":"2021-12-10T17:58:05-07:00"}
+{"level":"debug","msg":"szBytes are [48 48 48 48 48 48 48 48 48 48 48 52]","time":"2021-12-10T17:58:05-07:00"}
+{"level":"debug","msg":"Written bytes: 16","time":"2021-12-10T17:58:05-07:00"}
+{"level":"debug","msg":"Read size and got 12 bytes","time":"2021-12-10T17:58:05-07:00"}
+{"level":"info","msg":"Key: foo","time":"2021-12-10T17:58:05-07:00"}
+{"level":"info","msg":"Calling DEL key foo","time":"2021-12-10T17:58:05-07:00"}
+{"level":"info","msg":"Send DEL foo to raft\n","time":"2021-12-10T17:58:05-07:00"}
+{"level":"debug","msg":"szBytes are [48 48 48 48 48 48 48 48 48 48 48 55]","time":"2021-12-10T17:58:05-07:00"}
+{"level":"debug","msg":"Written bytes: 19","time":"2021-12-10T17:58:05-07:00"}
+{"level":"debug","msg":"Read size and got 0 bytes","time":"2021-12-10T17:58:05-07:00"}
+{"level":"error","msg":"err is EOF","time":"2021-12-10T17:58:05-07:00"}
+{"level":"error","msg":"Error when receiving messages EOF","time":"2021-12-10T17:58:05-07:00"}
+{"level":"debug","msg":"Read size and got 12 bytes","time":"2021-12-10T17:58:06-07:00"}
+{"level":"info","msg":"Key: foo","time":"2021-12-10T17:58:06-07:00"}
+{"level":"info","msg":"Calling GET key foo","time":"2021-12-10T17:58:06-07:00"}
+{"level":"debug","msg":"szBytes are [48 48 48 48 48 48 48 48 48 48 49 54]","time":"2021-12-10T17:58:06-07:00"}
+{"level":"debug","msg":"Written bytes: 28","time":"2021-12-10T17:58:06-07:00"}
+{"level":"debug","msg":"Read size and got 0 bytes","time":"2021-12-10T17:58:06-07:00"}
+{"level":"error","msg":"err is EOF","time":"2021-12-10T17:58:06-07:00"}
+{"level":"error","msg":"Error when receiving messages EOF","time":"2021-12-10T17:58:06-07:00"}
+{"level":"info","msg":"Client Connected:  127.0.0.1:55738","time":"2021-12-10T17:58:23-07:00"}
+{"level":"debug","msg":"Read size and got 12 bytes","time":"2021-12-10T17:58:23-07:00"}
+{"level":"info","msg":"Key: foo","time":"2021-12-10T17:58:23-07:00"}
+{"level":"info","msg":"Calling GET key foo","time":"2021-12-10T17:58:23-07:00"}
+{"level":"debug","msg":"szBytes are [48 48 48 48 48 48 48 48 48 48 49 54]","time":"2021-12-10T17:58:23-07:00"}
+{"level":"debug","msg":"Written bytes: 28","time":"2021-12-10T17:58:23-07:00"}
+{"level":"debug","msg":"Read size and got 12 bytes","time":"2021-12-10T17:58:23-07:00"}
+{"level":"info","msg":"Key: foo Value: ar2","time":"2021-12-10T17:58:23-07:00"}
+{"level":"info","msg":"Calling SET key: foo to value: ar2","time":"2021-12-10T17:58:23-07:00"}
+{"level":"info","msg":"Send SET foo:ar2 to raft\n","time":"2021-12-10T17:58:23-07:00"}
+{"level":"info","msg":"Raft has committed","time":"2021-12-10T17:58:23-07:00"}
+{"level":"debug","msg":"szBytes are [48 48 48 48 48 48 48 48 48 48 48 50]","time":"2021-12-10T17:58:23-07:00"}
+{"level":"debug","msg":"Written bytes: 14","time":"2021-12-10T17:58:23-07:00"}
+{"level":"debug","msg":"Read size and got 12 bytes","time":"2021-12-10T17:58:23-07:00"}
+{"level":"info","msg":"Key: foo2","time":"2021-12-10T17:58:23-07:00"}
+{"level":"info","msg":"Calling GET key foo2","time":"2021-12-10T17:58:23-07:00"}
+{"level":"debug","msg":"szBytes are [48 48 48 48 48 48 48 48 48 48 48 52]","time":"2021-12-10T17:58:23-07:00"}
+{"level":"debug","msg":"Written bytes: 16","time":"2021-12-10T17:58:23-07:00"}
+{"level":"debug","msg":"Read size and got 12 bytes","time":"2021-12-10T17:58:23-07:00"}
+{"level":"info","msg":"Key: foo2 Value: bar2","time":"2021-12-10T17:58:23-07:00"}
+{"level":"info","msg":"Calling SET key: foo2 to value: bar2","time":"2021-12-10T17:58:23-07:00"}
+{"level":"info","msg":"Send SET foo2:bar2 to raft\n","time":"2021-12-10T17:58:23-07:00"}
+{"level":"info","msg":"Raft has committed","time":"2021-12-10T17:58:23-07:00"}
+{"level":"debug","msg":"szBytes are [48 48 48 48 48 48 48 48 48 48 48 50]","time":"2021-12-10T17:58:23-07:00"}
+{"level":"debug","msg":"Written bytes: 14","time":"2021-12-10T17:58:23-07:00"}
+{"level":"debug","msg":"Read size and got 12 bytes","time":"2021-12-10T17:58:23-07:00"}
+{"level":"info","msg":"Key: foo","time":"2021-12-10T17:58:23-07:00"}
+{"level":"info","msg":"Calling GET key foo","time":"2021-12-10T17:58:23-07:00"}
+{"level":"debug","msg":"szBytes are [48 48 48 48 48 48 48 48 48 48 48 51]","time":"2021-12-10T17:58:23-07:00"}
+{"level":"debug","msg":"Written bytes: 15","time":"2021-12-10T17:58:23-07:00"}
+{"level":"debug","msg":"Read size and got 12 bytes","time":"2021-12-10T17:58:23-07:00"}
+{"level":"info","msg":"Key: foo","time":"2021-12-10T17:58:23-07:00"}
+{"level":"info","msg":"Calling DEL key foo","time":"2021-12-10T17:58:23-07:00"}
+{"level":"info","msg":"Send DEL foo to raft\n","time":"2021-12-10T17:58:23-07:00"}
+{"level":"debug","msg":"szBytes are [48 48 48 48 48 48 48 48 48 48 48 55]","time":"2021-12-10T17:58:23-07:00"}
+{"level":"debug","msg":"Written bytes: 19","time":"2021-12-10T17:58:23-07:00"}
+{"level":"debug","msg":"Read size and got 0 bytes","time":"2021-12-10T17:58:23-07:00"}
+{"level":"error","msg":"err is EOF","time":"2021-12-10T17:58:23-07:00"}
+{"level":"error","msg":"Error when receiving messages EOF","time":"2021-12-10T17:58:23-07:00"}
+{"level":"info","msg":"Client Connected:  127.0.0.1:55741","time":"2021-12-10T17:58:27-07:00"}
+{"level":"debug","msg":"Read size and got 12 bytes","time":"2021-12-10T17:58:27-07:00"}
+{"level":"info","msg":"Key: foo","time":"2021-12-10T17:58:27-07:00"}
+{"level":"info","msg":"Calling GET key foo","time":"2021-12-10T17:58:27-07:00"}
+{"level":"debug","msg":"szBytes are [48 48 48 48 48 48 48 48 48 48 49 54]","time":"2021-12-10T17:58:27-07:00"}
+{"level":"debug","msg":"Written bytes: 28","time":"2021-12-10T17:58:27-07:00"}
+{"level":"debug","msg":"Read size and got 12 bytes","time":"2021-12-10T17:58:27-07:00"}
+{"level":"info","msg":"Key: foo Value: ar2","time":"2021-12-10T17:58:27-07:00"}
+{"level":"info","msg":"Calling SET key: foo to value: ar2","time":"2021-12-10T17:58:27-07:00"}
+{"level":"info","msg":"Send SET foo:ar2 to raft\n","time":"2021-12-10T17:58:27-07:00"}
+{"level":"info","msg":"Raft has committed","time":"2021-12-10T17:58:27-07:00"}
+{"level":"debug","msg":"szBytes are [48 48 48 48 48 48 48 48 48 48 48 50]","time":"2021-12-10T17:58:27-07:00"}
+{"level":"debug","msg":"Written bytes: 14","time":"2021-12-10T17:58:27-07:00"}
+{"level":"debug","msg":"Read size and got 12 bytes","time":"2021-12-10T17:58:27-07:00"}
+{"level":"info","msg":"Key: foo2","time":"2021-12-10T17:58:27-07:00"}
+{"level":"info","msg":"Calling GET key foo2","time":"2021-12-10T17:58:27-07:00"}
+{"level":"debug","msg":"szBytes are [48 48 48 48 48 48 48 48 48 48 48 52]","time":"2021-12-10T17:58:27-07:00"}
+{"level":"debug","msg":"Written bytes: 16","time":"2021-12-10T17:58:27-07:00"}
+{"level":"debug","msg":"Read size and got 12 bytes","time":"2021-12-10T17:58:27-07:00"}
+{"level":"info","msg":"Key: foo2 Value: bar2","time":"2021-12-10T17:58:27-07:00"}
+{"level":"info","msg":"Calling SET key: foo2 to value: bar2","time":"2021-12-10T17:58:27-07:00"}
+{"level":"info","msg":"Send SET foo2:bar2 to raft\n","time":"2021-12-10T17:58:27-07:00"}
+{"level":"info","msg":"Raft has committed","time":"2021-12-10T17:58:27-07:00"}
+{"level":"debug","msg":"szBytes are [48 48 48 48 48 48 48 48 48 48 48 50]","time":"2021-12-10T17:58:27-07:00"}
+{"level":"debug","msg":"Written bytes: 14","time":"2021-12-10T17:58:27-07:00"}
+{"level":"debug","msg":"Read size and got 12 bytes","time":"2021-12-10T17:58:27-07:00"}
+{"level":"info","msg":"Key: foo","time":"2021-12-10T17:58:27-07:00"}
+{"level":"info","msg":"Calling GET key foo","time":"2021-12-10T17:58:27-07:00"}
+{"level":"debug","msg":"szBytes are [48 48 48 48 48 48 48 48 48 48 48 51]","time":"2021-12-10T17:58:27-07:00"}
+{"level":"debug","msg":"Written bytes: 15","time":"2021-12-10T17:58:27-07:00"}
+{"level":"debug","msg":"Read size and got 12 bytes","time":"2021-12-10T17:58:27-07:00"}
+{"level":"info","msg":"Key: foo","time":"2021-12-10T17:58:27-07:00"}
+{"level":"info","msg":"Calling DEL key foo","time":"2021-12-10T17:58:27-07:00"}
+{"level":"info","msg":"Send DEL foo to raft\n","time":"2021-12-10T17:58:27-07:00"}
+{"level":"debug","msg":"szBytes are [48 48 48 48 48 48 48 48 48 48 48 55]","time":"2021-12-10T17:58:27-07:00"}
+{"level":"debug","msg":"Written bytes: 19","time":"2021-12-10T17:58:27-07:00"}
+{"level":"debug","msg":"Read size and got 0 bytes","time":"2021-12-10T17:58:27-07:00"}
+{"level":"error","msg":"err is EOF","time":"2021-12-10T17:58:27-07:00"}
+{"level":"error","msg":"Error when receiving messages EOF","time":"2021-12-10T17:58:27-07:00"}
+{"level":"info","msg":"Staring KV server","time":"2021-12-10T17:59:28-07:00"}
+{"level":"info","msg":"Client Connected:  127.0.0.1:55757","time":"2021-12-10T17:59:30-07:00"}
+{"level":"info","msg":"Key: foo","time":"2021-12-10T17:59:30-07:00"}
+{"level":"info","msg":"Calling GET key foo","time":"2021-12-10T17:59:30-07:00"}
+{"level":"info","msg":"Key: foo Value: ar2","time":"2021-12-10T17:59:30-07:00"}
+{"level":"info","msg":"Calling SET key: foo to value: ar2","time":"2021-12-10T17:59:30-07:00"}
+{"level":"info","msg":"Send SET foo:ar2 to raft\n","time":"2021-12-10T17:59:30-07:00"}
+{"level":"info","msg":"Raft has committed","time":"2021-12-10T17:59:30-07:00"}
+{"level":"info","msg":"Key: foo2","time":"2021-12-10T17:59:30-07:00"}
+{"level":"info","msg":"Calling GET key foo2","time":"2021-12-10T17:59:30-07:00"}
+{"level":"info","msg":"Key: foo2 Value: bar2","time":"2021-12-10T17:59:30-07:00"}
+{"level":"info","msg":"Calling SET key: foo2 to value: bar2","time":"2021-12-10T17:59:30-07:00"}
+{"level":"info","msg":"Send SET foo2:bar2 to raft\n","time":"2021-12-10T17:59:30-07:00"}
+{"level":"info","msg":"Raft has committed","time":"2021-12-10T17:59:30-07:00"}
+{"level":"info","msg":"Key: foo","time":"2021-12-10T17:59:30-07:00"}
+{"level":"info","msg":"Calling GET key foo","time":"2021-12-10T17:59:30-07:00"}
+{"level":"info","msg":"Key: foo","time":"2021-12-10T17:59:30-07:00"}
+{"level":"info","msg":"Calling DEL key foo","time":"2021-12-10T17:59:30-07:00"}
+{"level":"info","msg":"Send DEL foo to raft\n","time":"2021-12-10T17:59:30-07:00"}
+{"level":"error","msg":"err is EOF","time":"2021-12-10T17:59:30-07:00"}
+{"level":"error","msg":"Error when receiving messages EOF","time":"2021-12-10T17:59:30-07:00"}
+{"level":"info","msg":"Client Connected:  127.0.0.1:55762","time":"2021-12-10T17:59:58-07:00"}
+{"level":"info","msg":"Key: foo","time":"2021-12-10T17:59:58-07:00"}
+{"level":"info","msg":"Calling GET key foo","time":"2021-12-10T17:59:58-07:00"}
+{"level":"info","msg":"Key: foo Value: ar2","time":"2021-12-10T17:59:58-07:00"}
+{"level":"info","msg":"Calling SET key: foo to value: ar2","time":"2021-12-10T17:59:58-07:00"}
+{"level":"info","msg":"Send SET foo:ar2 to raft\n","time":"2021-12-10T17:59:58-07:00"}
+{"level":"info","msg":"Raft has committed","time":"2021-12-10T17:59:58-07:00"}
+{"level":"info","msg":"Key: foo2","time":"2021-12-10T17:59:58-07:00"}
+{"level":"info","msg":"Calling GET key foo2","time":"2021-12-10T17:59:58-07:00"}
+{"level":"info","msg":"Key: foo2 Value: bar2","time":"2021-12-10T17:59:58-07:00"}
+{"level":"info","msg":"Calling SET key: foo2 to value: bar2","time":"2021-12-10T17:59:58-07:00"}
+{"level":"info","msg":"Send SET foo2:bar2 to raft\n","time":"2021-12-10T17:59:58-07:00"}
+{"level":"info","msg":"Raft has committed","time":"2021-12-10T17:59:58-07:00"}
+{"level":"info","msg":"Key: foo","time":"2021-12-10T17:59:58-07:00"}
+{"level":"info","msg":"Calling GET key foo","time":"2021-12-10T17:59:58-07:00"}
+{"level":"info","msg":"Key: foo","time":"2021-12-10T17:59:58-07:00"}
+{"level":"info","msg":"Calling DEL key foo","time":"2021-12-10T17:59:58-07:00"}
+{"level":"info","msg":"Send DEL foo to raft\n","time":"2021-12-10T17:59:58-07:00"}
+{"level":"error","msg":"err is EOF","time":"2021-12-10T17:59:58-07:00"}
+{"level":"error","msg":"Error when receiving messages EOF","time":"2021-12-10T17:59:58-07:00"}
+{"level":"info","msg":"Client Connected:  127.0.0.1:55765","time":"2021-12-10T18:00:13-07:00"}
+{"level":"info","msg":"Key: foo","time":"2021-12-10T18:00:13-07:00"}
+{"level":"info","msg":"Calling GET key foo","time":"2021-12-10T18:00:13-07:00"}
+{"level":"info","msg":"Key: foo Value: ar2","time":"2021-12-10T18:00:13-07:00"}
+{"level":"info","msg":"Calling SET key: foo to value: ar2","time":"2021-12-10T18:00:13-07:00"}
+{"level":"info","msg":"Send SET foo:ar2 to raft\n","time":"2021-12-10T18:00:13-07:00"}
+{"level":"info","msg":"Raft has committed","time":"2021-12-10T18:00:13-07:00"}
+{"level":"info","msg":"Key: foo2","time":"2021-12-10T18:00:13-07:00"}
+{"level":"info","msg":"Calling GET key foo2","time":"2021-12-10T18:00:13-07:00"}
+{"level":"info","msg":"Key: foo2 Value: bar2","time":"2021-12-10T18:00:13-07:00"}
+{"level":"info","msg":"Calling SET key: foo2 to value: bar2","time":"2021-12-10T18:00:13-07:00"}
+{"level":"info","msg":"Send SET foo2:bar2 to raft\n","time":"2021-12-10T18:00:13-07:00"}
+{"level":"info","msg":"Raft has committed","time":"2021-12-10T18:00:13-07:00"}
+{"level":"info","msg":"Key: foo","time":"2021-12-10T18:00:13-07:00"}
+{"level":"info","msg":"Calling GET key foo","time":"2021-12-10T18:00:13-07:00"}
+{"level":"info","msg":"Key: foo","time":"2021-12-10T18:00:13-07:00"}
+{"level":"info","msg":"Calling DEL key foo","time":"2021-12-10T18:00:13-07:00"}
+{"level":"info","msg":"Send DEL foo to raft\n","time":"2021-12-10T18:00:13-07:00"}
+{"level":"error","msg":"err is EOF","time":"2021-12-10T18:00:13-07:00"}
+{"level":"error","msg":"Error when receiving messages EOF","time":"2021-12-10T18:00:13-07:00"}
+{"level":"info","msg":"Client Connected:  127.0.0.1:55768","time":"2021-12-10T18:00:16-07:00"}
+{"level":"info","msg":"Key: foo","time":"2021-12-10T18:00:16-07:00"}
+{"level":"info","msg":"Calling GET key foo","time":"2021-12-10T18:00:16-07:00"}
+{"level":"info","msg":"Key: foo Value: bar","time":"2021-12-10T18:00:16-07:00"}
+{"level":"info","msg":"Calling SET key: foo to value: bar","time":"2021-12-10T18:00:16-07:00"}
+{"level":"info","msg":"Send SET foo:bar to raft\n","time":"2021-12-10T18:00:16-07:00"}
+{"level":"info","msg":"Raft has committed","time":"2021-12-10T18:00:16-07:00"}
+{"level":"info","msg":"Key: foo","time":"2021-12-10T18:00:19-07:00"}
+{"level":"info","msg":"Calling GET key foo","time":"2021-12-10T18:00:19-07:00"}
+{"level":"error","msg":"err is EOF","time":"2021-12-10T18:00:19-07:00"}
+{"level":"error","msg":"Error when receiving messages EOF","time":"2021-12-10T18:00:19-07:00"}
+{"level":"info","msg":"Client Connected:  127.0.0.1:55778","time":"2021-12-10T18:01:24-07:00"}
+{"level":"info","msg":"Key: foo","time":"2021-12-10T18:01:24-07:00"}
+{"level":"info","msg":"Calling GET key foo","time":"2021-12-10T18:01:24-07:00"}
+{"level":"info","msg":"Key: foo Value: ar2","time":"2021-12-10T18:01:24-07:00"}
+{"level":"info","msg":"Calling SET key: foo to value: ar2","time":"2021-12-10T18:01:24-07:00"}
+{"level":"info","msg":"Send SET foo:ar2 to raft\n","time":"2021-12-10T18:01:24-07:00"}
+{"level":"info","msg":"Raft has committed","time":"2021-12-10T18:01:24-07:00"}
+{"level":"info","msg":"Key: foo2","time":"2021-12-10T18:01:24-07:00"}
+{"level":"info","msg":"Calling GET key foo2","time":"2021-12-10T18:01:24-07:00"}
+{"level":"info","msg":"Key: foo2 Value: bar2","time":"2021-12-10T18:01:24-07:00"}
+{"level":"info","msg":"Calling SET key: foo2 to value: bar2","time":"2021-12-10T18:01:24-07:00"}
+{"level":"info","msg":"Send SET foo2:bar2 to raft\n","time":"2021-12-10T18:01:24-07:00"}
+{"level":"info","msg":"Raft has committed","time":"2021-12-10T18:01:24-07:00"}
+{"level":"info","msg":"Key: foo","time":"2021-12-10T18:01:24-07:00"}
+{"level":"info","msg":"Calling GET key foo","time":"2021-12-10T18:01:24-07:00"}
+{"level":"info","msg":"Key: foo","time":"2021-12-10T18:01:24-07:00"}
+{"level":"info","msg":"Calling DEL key foo","time":"2021-12-10T18:01:24-07:00"}
+{"level":"info","msg":"Send DEL foo to raft\n","time":"2021-12-10T18:01:24-07:00"}
+{"level":"error","msg":"err is EOF","time":"2021-12-10T18:01:24-07:00"}
+{"level":"error","msg":"Error when receiving messages EOF","time":"2021-12-10T18:01:24-07:00"}
+{"level":"info","msg":"Client Connected:  127.0.0.1:55876","time":"2021-12-10T18:09:40-07:00"}
+{"level":"info","msg":"Key: foo","time":"2021-12-10T18:09:40-07:00"}
+{"level":"info","msg":"Calling GET key foo","time":"2021-12-10T18:09:40-07:00"}
+{"level":"info","msg":"Key: foo Value: r24","time":"2021-12-10T18:09:40-07:00"}
+{"level":"info","msg":"Calling SET key: foo to value: r24","time":"2021-12-10T18:09:40-07:00"}
+{"level":"info","msg":"Send SET foo:r24 to raft\n","time":"2021-12-10T18:09:40-07:00"}
+{"level":"info","msg":"Raft has committed","time":"2021-12-10T18:09:40-07:00"}
+{"level":"info","msg":"Key: foo2","time":"2021-12-10T18:09:40-07:00"}
+{"level":"info","msg":"Calling GET key foo2","time":"2021-12-10T18:09:40-07:00"}
+{"level":"info","msg":"Key: foo2 Value: bar2","time":"2021-12-10T18:09:40-07:00"}
+{"level":"info","msg":"Calling SET key: foo2 to value: bar2","time":"2021-12-10T18:09:40-07:00"}
+{"level":"info","msg":"Send SET foo2:bar2 to raft\n","time":"2021-12-10T18:09:40-07:00"}
+{"level":"info","msg":"Raft has committed","time":"2021-12-10T18:09:40-07:00"}
+{"level":"info","msg":"Key: foo","time":"2021-12-10T18:09:40-07:00"}
+{"level":"info","msg":"Calling GET key foo","time":"2021-12-10T18:09:40-07:00"}
+{"level":"info","msg":"Key: foo","time":"2021-12-10T18:09:40-07:00"}
+{"level":"info","msg":"Calling DEL key foo","time":"2021-12-10T18:09:40-07:00"}
+{"level":"info","msg":"Send DEL foo to raft\n","time":"2021-12-10T18:09:40-07:00"}
+{"level":"error","msg":"err is EOF","time":"2021-12-10T18:09:40-07:00"}
+{"level":"error","msg":"Error when receiving messages EOF","time":"2021-12-10T18:09:40-07:00"}
+{"level":"info","msg":"Client Connected:  127.0.0.1:55884","time":"2021-12-10T18:10:18-07:00"}
+{"level":"info","msg":"Key: foo","time":"2021-12-10T18:10:18-07:00"}
+{"level":"info","msg":"Calling GET key foo","time":"2021-12-10T18:10:18-07:00"}
+{"level":"info","msg":"Key: foo Value: r24","time":"2021-12-10T18:10:18-07:00"}
+{"level":"info","msg":"Calling SET key: foo to value: r24","time":"2021-12-10T18:10:18-07:00"}
+{"level":"info","msg":"Send SET foo:r24 to raft\n","time":"2021-12-10T18:10:18-07:00"}
+{"level":"info","msg":"Raft has committed","time":"2021-12-10T18:10:18-07:00"}
+{"level":"info","msg":"Key: foo2","time":"2021-12-10T18:10:18-07:00"}
+{"level":"info","msg":"Calling GET key foo2","time":"2021-12-10T18:10:18-07:00"}
+{"level":"info","msg":"Key: foo2 Value: r245","time":"2021-12-10T18:10:18-07:00"}
+{"level":"info","msg":"Calling SET key: foo2 to value: r245","time":"2021-12-10T18:10:18-07:00"}
+{"level":"info","msg":"Send SET foo2:r245 to raft\n","time":"2021-12-10T18:10:18-07:00"}
+{"level":"info","msg":"Raft has committed","time":"2021-12-10T18:10:18-07:00"}
+{"level":"info","msg":"Key: foo","time":"2021-12-10T18:10:18-07:00"}
+{"level":"info","msg":"Calling GET key foo","time":"2021-12-10T18:10:18-07:00"}
+{"level":"info","msg":"Key: foo","time":"2021-12-10T18:10:18-07:00"}
+{"level":"info","msg":"Calling DEL key foo","time":"2021-12-10T18:10:18-07:00"}
+{"level":"info","msg":"Send DEL foo to raft\n","time":"2021-12-10T18:10:18-07:00"}
+{"level":"error","msg":"err is EOF","time":"2021-12-10T18:10:18-07:00"}
+{"level":"error","msg":"Error when receiving messages EOF","time":"2021-12-10T18:10:18-07:00"}
+{"level":"info","msg":"Client Connected:  127.0.0.1:55891","time":"2021-12-10T18:10:35-07:00"}
+{"level":"info","msg":"Key: foo","time":"2021-12-10T18:10:35-07:00"}
+{"level":"info","msg":"Calling GET key foo","time":"2021-12-10T18:10:35-07:00"}
+{"level":"info","msg":"Key: foo Value: r24","time":"2021-12-10T18:10:35-07:00"}
+{"level":"info","msg":"Calling SET key: foo to value: r24","time":"2021-12-10T18:10:35-07:00"}
+{"level":"info","msg":"Send SET foo:r24 to raft\n","time":"2021-12-10T18:10:35-07:00"}
+{"level":"info","msg":"Raft has committed","time":"2021-12-10T18:10:35-07:00"}
+{"level":"info","msg":"Key: foo2","time":"2021-12-10T18:10:35-07:00"}
+{"level":"info","msg":"Calling GET key foo2","time":"2021-12-10T18:10:35-07:00"}
+{"level":"info","msg":"Key: foo2 Value: r245","time":"2021-12-10T18:10:35-07:00"}
+{"level":"info","msg":"Calling SET key: foo2 to value: r245","time":"2021-12-10T18:10:35-07:00"}
+{"level":"info","msg":"Send SET foo2:r245 to raft\n","time":"2021-12-10T18:10:35-07:00"}
+{"level":"info","msg":"Raft has committed","time":"2021-12-10T18:10:35-07:00"}
+{"level":"info","msg":"Key: foo","time":"2021-12-10T18:10:35-07:00"}
+{"level":"info","msg":"Calling GET key foo","time":"2021-12-10T18:10:35-07:00"}
+{"level":"info","msg":"Key: foo","time":"2021-12-10T18:10:35-07:00"}
+{"level":"info","msg":"Calling DEL key foo","time":"2021-12-10T18:10:35-07:00"}
+{"level":"info","msg":"Send DEL foo to raft\n","time":"2021-12-10T18:10:35-07:00"}
+{"level":"error","msg":"err is EOF","time":"2021-12-10T18:10:35-07:00"}
+{"level":"error","msg":"Error when receiving messages EOF","time":"2021-12-10T18:10:35-07:00"}
+{"level":"info","msg":"Client Connected:  127.0.0.1:56036","time":"2021-12-10T18:27:15-07:00"}
+{"level":"info","msg":"Key: foo","time":"2021-12-10T18:27:15-07:00"}
+{"level":"info","msg":"Calling GET key foo","time":"2021-12-10T18:27:15-07:00"}
+{"level":"info","msg":"Key: foo Value: r24","time":"2021-12-10T18:27:15-07:00"}
+{"level":"info","msg":"Calling SET key: foo to value: r24","time":"2021-12-10T18:27:15-07:00"}
+{"level":"info","msg":"Send SET foo:r24 to raft\n","time":"2021-12-10T18:27:15-07:00"}
+{"level":"info","msg":"Raft has committed","time":"2021-12-10T18:27:15-07:00"}
+{"level":"info","msg":"Key: foo2","time":"2021-12-10T18:27:15-07:00"}
+{"level":"info","msg":"Calling GET key foo2","time":"2021-12-10T18:27:15-07:00"}
+{"level":"info","msg":"Key: foo2 Value: ar245","time":"2021-12-10T18:27:15-07:00"}
+{"level":"info","msg":"Calling SET key: foo2 to value: ar245","time":"2021-12-10T18:27:15-07:00"}
+{"level":"info","msg":"Send SET foo2:ar245 to raft\n","time":"2021-12-10T18:27:15-07:00"}
+{"level":"info","msg":"Raft has committed","time":"2021-12-10T18:27:15-07:00"}
+{"level":"info","msg":"Key: foo","time":"2021-12-10T18:27:15-07:00"}
+{"level":"info","msg":"Calling GET key foo","time":"2021-12-10T18:27:15-07:00"}
+{"level":"info","msg":"Key: foo","time":"2021-12-10T18:27:15-07:00"}
+{"level":"info","msg":"Calling DEL key foo","time":"2021-12-10T18:27:15-07:00"}
+{"level":"info","msg":"Send DEL foo to raft\n","time":"2021-12-10T18:27:15-07:00"}
+{"level":"error","msg":"err is EOF","time":"2021-12-10T18:27:15-07:00"}
+{"level":"error","msg":"Error when receiving messages EOF","time":"2021-12-10T18:27:15-07:00"}
+{"level":"info","msg":"Staring KV server","time":"2021-12-10T18:27:29-07:00"}
+{"level":"info","msg":"Client Connected:  127.0.0.1:56044","time":"2021-12-10T18:27:50-07:00"}
+{"level":"info","msg":"Key: foo","time":"2021-12-10T18:27:50-07:00"}
+{"level":"info","msg":"Calling GET key foo","time":"2021-12-10T18:27:50-07:00"}
+{"level":"info","msg":"Key: foo Value: bar24","time":"2021-12-10T18:27:50-07:00"}
+{"level":"info","msg":"Calling SET key: foo to value: bar24","time":"2021-12-10T18:27:50-07:00"}
+{"level":"info","msg":"Send SET foo:bar24 to raft\n","time":"2021-12-10T18:27:50-07:00"}
+{"level":"info","msg":"Raft has committed","time":"2021-12-10T18:27:50-07:00"}
+{"level":"info","msg":"Key: foo2","time":"2021-12-10T18:27:50-07:00"}
+{"level":"info","msg":"Calling GET key foo2","time":"2021-12-10T18:27:50-07:00"}
+{"level":"info","msg":"Key: foo2 Value: bar245","time":"2021-12-10T18:27:50-07:00"}
+{"level":"info","msg":"Calling SET key: foo2 to value: bar245","time":"2021-12-10T18:27:50-07:00"}
+{"level":"info","msg":"Send SET foo2:bar245 to raft\n","time":"2021-12-10T18:27:50-07:00"}
+{"level":"info","msg":"Raft has committed","time":"2021-12-10T18:27:50-07:00"}
+{"level":"info","msg":"Key: foo","time":"2021-12-10T18:27:50-07:00"}
+{"level":"info","msg":"Calling GET key foo","time":"2021-12-10T18:27:50-07:00"}
+{"level":"info","msg":"Key: foo","time":"2021-12-10T18:27:50-07:00"}
+{"level":"info","msg":"Calling DEL key foo","time":"2021-12-10T18:27:50-07:00"}
+{"level":"info","msg":"Send DEL foo to raft\n","time":"2021-12-10T18:27:50-07:00"}
+{"level":"error","msg":"err is EOF","time":"2021-12-10T18:27:50-07:00"}
+{"level":"error","msg":"Error when receiving messages EOF","time":"2021-12-10T18:27:50-07:00"}
+{"level":"info","msg":"Client Connected:  127.0.0.1:56050","time":"2021-12-10T18:27:54-07:00"}
+{"level":"info","msg":"Key: foo","time":"2021-12-10T18:27:54-07:00"}
+{"level":"info","msg":"Calling GET key foo","time":"2021-12-10T18:27:54-07:00"}
+{"level":"info","msg":"Key: foo Value: bar24","time":"2021-12-10T18:27:54-07:00"}
+{"level":"info","msg":"Calling SET key: foo to value: bar24","time":"2021-12-10T18:27:54-07:00"}
+{"level":"info","msg":"Send SET foo:bar24 to raft\n","time":"2021-12-10T18:27:54-07:00"}
+{"level":"info","msg":"Raft has committed","time":"2021-12-10T18:27:54-07:00"}
+{"level":"info","msg":"Key: foo2","time":"2021-12-10T18:27:54-07:00"}
+{"level":"info","msg":"Calling GET key foo2","time":"2021-12-10T18:27:54-07:00"}
+{"level":"info","msg":"Key: foo2 Value: bar245","time":"2021-12-10T18:27:54-07:00"}
+{"level":"info","msg":"Calling SET key: foo2 to value: bar245","time":"2021-12-10T18:27:54-07:00"}
+{"level":"info","msg":"Send SET foo2:bar245 to raft\n","time":"2021-12-10T18:27:54-07:00"}
+{"level":"info","msg":"Raft has committed","time":"2021-12-10T18:27:54-07:00"}
+{"level":"info","msg":"Key: foo","time":"2021-12-10T18:27:54-07:00"}
+{"level":"info","msg":"Calling GET key foo","time":"2021-12-10T18:27:54-07:00"}
+{"level":"info","msg":"Key: foo","time":"2021-12-10T18:27:54-07:00"}
+{"level":"info","msg":"Calling DEL key foo","time":"2021-12-10T18:27:54-07:00"}
+{"level":"info","msg":"Send DEL foo to raft\n","time":"2021-12-10T18:27:54-07:00"}
+{"level":"error","msg":"err is EOF","time":"2021-12-10T18:27:54-07:00"}
+{"level":"error","msg":"Error when receiving messages EOF","time":"2021-12-10T18:27:54-07:00"}
+{"level":"info","msg":"Staring KV server","time":"2021-12-10T18:28:20-07:00"}
+{"level":"info","msg":"Client Connected:  127.0.0.1:56056","time":"2021-12-10T18:28:22-07:00"}
+{"level":"info","msg":"Key: foo","time":"2021-12-10T18:28:22-07:00"}
+{"level":"info","msg":"Calling GET key foo","time":"2021-12-10T18:28:22-07:00"}
+{"level":"info","msg":"Key: foo Value: bar24","time":"2021-12-10T18:28:22-07:00"}
+{"level":"info","msg":"Calling SET key: foo to value: bar24","time":"2021-12-10T18:28:22-07:00"}
+{"level":"info","msg":"Send SET foo:bar24 to raft\n","time":"2021-12-10T18:28:22-07:00"}
+{"level":"info","msg":"Raft has committed","time":"2021-12-10T18:28:22-07:00"}
+{"level":"info","msg":"Key: foo2","time":"2021-12-10T18:28:22-07:00"}
+{"level":"info","msg":"Calling GET key foo2","time":"2021-12-10T18:28:22-07:00"}
+{"level":"info","msg":"Key: foo2 Value: bar245","time":"2021-12-10T18:28:22-07:00"}
+{"level":"info","msg":"Calling SET key: foo2 to value: bar245","time":"2021-12-10T18:28:22-07:00"}
+{"level":"info","msg":"Send SET foo2:bar245 to raft\n","time":"2021-12-10T18:28:22-07:00"}
+{"level":"info","msg":"Raft has committed","time":"2021-12-10T18:28:22-07:00"}
+{"level":"info","msg":"Key: foo","time":"2021-12-10T18:28:22-07:00"}
+{"level":"info","msg":"Calling GET key foo","time":"2021-12-10T18:28:22-07:00"}
+{"level":"info","msg":"Key: foo","time":"2021-12-10T18:28:22-07:00"}
+{"level":"info","msg":"Calling DEL key foo","time":"2021-12-10T18:28:22-07:00"}
+{"level":"info","msg":"Send DEL foo to raft\n","time":"2021-12-10T18:28:22-07:00"}
+{"level":"error","msg":"err is EOF","time":"2021-12-10T18:28:22-07:00"}
+{"level":"error","msg":"Error when receiving messages EOF","time":"2021-12-10T18:28:22-07:00"}
+{"level":"info","msg":"Client Connected:  127.0.0.1:56059","time":"2021-12-10T18:28:24-07:00"}
+{"level":"info","msg":"Key: foo","time":"2021-12-10T18:28:24-07:00"}
+{"level":"info","msg":"Calling GET key foo","time":"2021-12-10T18:28:24-07:00"}
+{"level":"info","msg":"Key: foo Value: bar","time":"2021-12-10T18:28:24-07:00"}
+{"level":"info","msg":"Calling SET key: foo to value: bar","time":"2021-12-10T18:28:24-07:00"}
+{"level":"info","msg":"Send SET foo:bar to raft\n","time":"2021-12-10T18:28:24-07:00"}
+{"level":"info","msg":"Raft has committed","time":"2021-12-10T18:28:24-07:00"}
+{"level":"info","msg":"Key: foo","time":"2021-12-10T18:28:27-07:00"}
+{"level":"info","msg":"Calling GET key foo","time":"2021-12-10T18:28:27-07:00"}
+{"level":"error","msg":"err is EOF","time":"2021-12-10T18:28:27-07:00"}
+{"level":"error","msg":"Error when receiving messages EOF","time":"2021-12-10T18:28:27-07:00"}
+{"level":"info","msg":"Client Connected:  127.0.0.1:56063","time":"2021-12-10T18:28:28-07:00"}
+{"level":"info","msg":"Key: foo","time":"2021-12-10T18:28:28-07:00"}
+{"level":"info","msg":"Calling GET key foo","time":"2021-12-10T18:28:28-07:00"}
+{"level":"info","msg":"Key: foo Value: bar","time":"2021-12-10T18:28:28-07:00"}
+{"level":"info","msg":"Calling SET key: foo to value: bar","time":"2021-12-10T18:28:28-07:00"}
+{"level":"info","msg":"Send SET foo:bar to raft\n","time":"2021-12-10T18:28:28-07:00"}
+{"level":"info","msg":"Raft has committed","time":"2021-12-10T18:28:28-07:00"}
+{"level":"info","msg":"Client Connected:  127.0.0.1:56067","time":"2021-12-10T18:28:30-07:00"}
+{"level":"info","msg":"Key: foo","time":"2021-12-10T18:28:30-07:00"}
+{"level":"info","msg":"Calling GET key foo","time":"2021-12-10T18:28:30-07:00"}
+{"level":"info","msg":"Key: foo Value: bar24","time":"2021-12-10T18:28:30-07:00"}
+{"level":"info","msg":"Calling SET key: foo to value: bar24","time":"2021-12-10T18:28:30-07:00"}
+{"level":"info","msg":"Send SET foo:bar24 to raft\n","time":"2021-12-10T18:28:30-07:00"}
+{"level":"info","msg":"Raft has committed","time":"2021-12-10T18:28:30-07:00"}
+{"level":"info","msg":"Key: foo2","time":"2021-12-10T18:28:30-07:00"}
+{"level":"info","msg":"Calling GET key foo2","time":"2021-12-10T18:28:30-07:00"}
+{"level":"info","msg":"Key: foo2 Value: bar245","time":"2021-12-10T18:28:30-07:00"}
+{"level":"info","msg":"Calling SET key: foo2 to value: bar245","time":"2021-12-10T18:28:30-07:00"}
+{"level":"info","msg":"Send SET foo2:bar245 to raft\n","time":"2021-12-10T18:28:30-07:00"}
+{"level":"info","msg":"Raft has committed","time":"2021-12-10T18:28:30-07:00"}
+{"level":"info","msg":"Key: foo","time":"2021-12-10T18:28:30-07:00"}
+{"level":"info","msg":"Calling GET key foo","time":"2021-12-10T18:28:30-07:00"}
+{"level":"info","msg":"Key: foo","time":"2021-12-10T18:28:30-07:00"}
+{"level":"info","msg":"Calling DEL key foo","time":"2021-12-10T18:28:30-07:00"}
+{"level":"info","msg":"Send DEL foo to raft\n","time":"2021-12-10T18:28:30-07:00"}
+{"level":"error","msg":"err is EOF","time":"2021-12-10T18:28:30-07:00"}
+{"level":"error","msg":"Error when receiving messages EOF","time":"2021-12-10T18:28:30-07:00"}
+{"level":"info","msg":"Key: foo","time":"2021-12-10T18:28:31-07:00"}
+{"level":"info","msg":"Calling GET key foo","time":"2021-12-10T18:28:31-07:00"}
+{"level":"error","msg":"err is EOF","time":"2021-12-10T18:28:31-07:00"}
+{"level":"error","msg":"Error when receiving messages EOF","time":"2021-12-10T18:28:31-07:00"}

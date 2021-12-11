@@ -3,6 +3,8 @@ package main
 import (
 	"fmt"
 	"os"
+	"strconv"
+	"time"
 
 	lib_test "github.com/kangxie-colorado/golang-primer/messaging/test/lib"
 	log "github.com/sirupsen/logrus"
@@ -167,6 +169,7 @@ func main() {
 **/
 
 func main() {
+
 	prog := "server"
 
 	if len(os.Args) > 1 {
@@ -174,18 +177,35 @@ func main() {
 	}
 
 	if prog == "server" {
-		initLog("server.log", log.DebugLevel)
+		initLog("server.log", log.InfoLevel)
 		log.Debugln("********************************************************************************************")
 		lib_test.KVServer(transport.SocketDescriptor{"tcp", "localhost", "15000"})
 	} else if prog == "client" {
-		initLog("client.log", log.DebugLevel)
+		clientID := 1
+		if len(os.Args) > 2 {
+			clientID, _ = strconv.Atoi(os.Args[2])
+		}
+
+		initLog("client"+strconv.Itoa(clientID)+".log", log.InfoLevel)
 		log.Debugln("********************************************************************************************")
 
 		kvclient := lib_test.CreateKVClient(transport.SocketDescriptor{"tcp", "localhost", "15000"})
-		kvclient.Get("foo")
+		if clientID == 1 {
+			kvclient.Get("foo")
 
-		kvclient.Set("foo", "bar")
-		kvclient.Get("foo")
+			kvclient.Set("foo", "bar")
+			time.Sleep(3 * time.Second)
+			kvclient.Get("foo")
+		} else {
+			kvclient.Get("foo")
+
+			kvclient.Set("foo", "bar24")
+			kvclient.Get("foo2")
+			kvclient.Set("foo2", "bar245")
+			kvclient.Get("foo")
+			kvclient.Del("foo")
+
+		}
 
 	} else {
 		fmt.Println("Wrong program type!")

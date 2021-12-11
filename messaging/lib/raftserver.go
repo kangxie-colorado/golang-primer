@@ -91,6 +91,8 @@ func (raftserver *RaftServer) LeaderAppendEntries(index, prevTerm int, entries [
 }
 
 func (raftserver *RaftServer) Start() {
-	//raftserver.raftnet.Start()
+	raftserver.raftnet.Start()
 
+	// start the net as above ^
+	// maybe start some book keeping?
 }

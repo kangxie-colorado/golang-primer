@@ -15,6 +15,7 @@ func Test_parseKeyValue(t *testing.T) {
 		// TODO: Add test cases.
 		{"", args{"SET00003FOO00003BAR"}, "FOO", "BAR"},
 		{"", args{"SET00005AFOOD00005ABARK"}, "AFOOD", "ABARK"},
+		{"foo:bar2", args{"SET00003foo00004bar2"}, "foo", "bar2"},
 	}
 
 	for _, tt := range tests {
