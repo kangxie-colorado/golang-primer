@@ -3,32 +3,68 @@ package lib
 import (
 	"net"
 	"os"
+	"sync"
 	"time"
 
 	"github.com/kangxie-colorado/golang-primer/messaging/lib"
 	log "github.com/sirupsen/logrus"
 )
 
+var mu = sync.Mutex{}
 var kvstore = make(map[string]string)
 
-func Set(key, value string) {
-	kvstore[key] = value
+var raftserver *lib.RaftServer
+
+func appendEntry(raft *lib.RaftServer, msg string, commited chan bool) {
+	raft.AppendNewEntry(msg, commited)
 }
 
-func Get(key string) string {
+func Set(msg string, cl net.Conn) {
+	key, value := parseKeyValue(msg)
+	log.Infoln("Calling SET key:", key, "to value:", value)
+
+	log.Infof("Send SET %v:%v to raft\n", key, value)
+	commited := make(chan bool)
+	go appendEntry(raftserver, msg, commited)
+	<-commited
+	log.Infoln("Raft has committed")
+
+	// this will need some lock to protect against race conditions
+	mu.Lock()
+	defer mu.Unlock()
+	kvstore[key] = value
+	lib.SendMessageStr(cl, "OK")
+}
+
+func Get(msg string, cl net.Conn) {
+	key := parseKey(msg)
+	log.Infoln("Calling GET key", key)
+
+	mu.Lock()
+	defer mu.Unlock()
 	if val, ok := kvstore[key]; ok {
-		return val
+		lib.SendMessageStr(cl, val)
 	} else {
-		return "Key not exsitent"
+		lib.SendMessageStr(cl, "Key not exsitent")
 	}
 }
 
-func Del(key string) string {
+func Del(msg string, cl net.Conn) {
+	key := parseKey(msg)
+	log.Infoln("Calling DEL key", key)
+
+	log.Infof("Send DEL %v to raft\n", key)
+	commited := make(chan bool)
+	go appendEntry(raftserver, msg, commited)
+	<-commited
+
+	mu.Lock()
+	defer mu.Unlock()
 	if _, ok := kvstore[key]; ok {
 		delete(kvstore, key)
-		return "Deleted"
+		lib.SendMessageStr(cl, "Deleted")
 	} else {
-		return "Key not exsitent"
+		lib.SendMessageStr(cl, "Key not exsitent")
 	}
 }
 
@@ -52,22 +88,15 @@ func HandleKVClient(cl net.Conn) {
 		msg := string(msgBytes)
 		switch msg[:3] {
 		case "SET":
-			key, value := parseKeyValue(msg)
-			log.Infoln("Calling SET key:", key, "to value:", value)
-			Set(key, value)
-			lib.SendMessageStr(cl, "OK")
+			Set(msg, cl)
 
 		case "GET":
-			key := parseKey(msg)
-			log.Infoln("Calling GET key", key)
 
-			lib.SendMessageStr(cl, Get(key))
+			Get(msg, cl)
 
 		case "DEL":
-			key := parseKey(msg)
-			log.Infoln("Calling DEL key", key)
 
-			lib.SendMessageStr(cl, Del(key))
+			Del(msg, cl)
 
 		default:
 			log.Errorln("Methond Unknown!")
@@ -76,6 +105,10 @@ func HandleKVClient(cl net.Conn) {
 }
 
 func KVServer(sock lib.SocketDescriptor) {
+	// this part hooks up with raft
+	raftserver = lib.CreateARaftServer(0)
+
+	// below was without raft
 	log.Infoln("Staring KV server")
 	ln, err := net.Listen(sock.ConnType, sock.ConnHost+":"+sock.ConnPort)
 	if err != nil {

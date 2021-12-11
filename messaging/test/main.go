@@ -3,10 +3,11 @@ package main
 import (
 	"fmt"
 	"os"
-	"time"
 
-	"github.com/kangxie-colorado/golang-primer/messaging/lib"
+	lib_test "github.com/kangxie-colorado/golang-primer/messaging/test/lib"
 	log "github.com/sirupsen/logrus"
+
+	transport "github.com/kangxie-colorado/golang-primer/messaging/lib"
 )
 
 func initLog(filename string, logLevel log.Level) {
@@ -122,6 +123,8 @@ func main() {
 }
 **/
 
+/**
+// test with disable/enable network links
 func main() {
 	log.SetOutput(os.Stderr)
 	log.SetLevel(log.DebugLevel)
@@ -151,11 +154,40 @@ func main() {
 	}
 
 	raftnets[0].Enable(2)
+	raftnets[2].Enable(0)
+
 	time.Sleep(3 * time.Second)
 
 	for i := 0; i < 5; i++ {
 		for time := 0; time < 5; time++ {
 			fmt.Println(raftnets[i].Receive())
 		}
+	}
+}
+**/
+
+func main() {
+	prog := "server"
+
+	if len(os.Args) > 1 {
+		prog = os.Args[1]
+	}
+
+	if prog == "server" {
+		initLog("server.log", log.DebugLevel)
+		log.Debugln("********************************************************************************************")
+		lib_test.KVServer(transport.SocketDescriptor{"tcp", "localhost", "15000"})
+	} else if prog == "client" {
+		initLog("client.log", log.DebugLevel)
+		log.Debugln("********************************************************************************************")
+
+		kvclient := lib_test.CreateKVClient(transport.SocketDescriptor{"tcp", "localhost", "15000"})
+		kvclient.Get("foo")
+
+		kvclient.Set("foo", "bar")
+		kvclient.Get("foo")
+
+	} else {
+		fmt.Println("Wrong program type!")
 	}
 }

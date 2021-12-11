@@ -191,7 +191,7 @@ func (raftnet *RaftNet) Send(toID int, msg string) {
 }
 
 func (raftnet *RaftNet) Receive() (string, error) {
-	msg, err := raftnet.inbox.Dequeue()
+	msg, err := raftnet.inbox.DequeueOrWaitForNextElement()
 	if err != nil {
 		log.Errorln("Error dequeue inbox", err.Error())
 	}

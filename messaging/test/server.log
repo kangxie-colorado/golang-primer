@@ -64,3 +64,165 @@
 {"level":"debug","msg":"Read size and got 0 bytes","time":"2021-12-07T16:00:55-07:00"}
 {"level":"error","msg":"err is EOF","time":"2021-12-07T16:00:55-07:00"}
 {"level":"error","msg":"Error when receiving messages EOF","time":"2021-12-07T16:00:55-07:00"}
+{"level":"info","msg":"Staring KV server","time":"2021-12-10T17:24:31-07:00"}
+{"level":"info","msg":"Client Connected:  127.0.0.1:55294","time":"2021-12-10T17:24:43-07:00"}
+{"level":"debug","msg":"Read size and got 12 bytes","time":"2021-12-10T17:24:43-07:00"}
+{"level":"info","msg":"Key: foo","time":"2021-12-10T17:24:43-07:00"}
+{"level":"info","msg":"Calling GET key foo","time":"2021-12-10T17:24:43-07:00"}
+{"level":"debug","msg":"szBytes are [48 48 48 48 48 48 48 48 48 48 49 54]","time":"2021-12-10T17:24:43-07:00"}
+{"level":"debug","msg":"Written bytes: 28","time":"2021-12-10T17:24:43-07:00"}
+{"level":"debug","msg":"Read size and got 12 bytes","time":"2021-12-10T17:24:43-07:00"}
+{"level":"info","msg":"Key: foo Value: bar","time":"2021-12-10T17:24:43-07:00"}
+{"level":"info","msg":"Calling SET key: foo to value: bar","time":"2021-12-10T17:24:43-07:00"}
+{"level":"info","msg":"Send SET foo:bar to raft\n","time":"2021-12-10T17:24:43-07:00"}
+{"level":"info","msg":"Client Connected:  127.0.0.1:55309","time":"2021-12-10T17:26:07-07:00"}
+{"level":"debug","msg":"Read size and got 12 bytes","time":"2021-12-10T17:26:07-07:00"}
+{"level":"info","msg":"Key: foo","time":"2021-12-10T17:26:07-07:00"}
+{"level":"info","msg":"Calling GET key foo","time":"2021-12-10T17:26:07-07:00"}
+{"level":"debug","msg":"szBytes are [48 48 48 48 48 48 48 48 48 48 49 54]","time":"2021-12-10T17:26:07-07:00"}
+{"level":"debug","msg":"Written bytes: 28","time":"2021-12-10T17:26:07-07:00"}
+{"level":"debug","msg":"Read size and got 12 bytes","time":"2021-12-10T17:26:07-07:00"}
+{"level":"info","msg":"Key: foo Value: bar","time":"2021-12-10T17:26:07-07:00"}
+{"level":"info","msg":"Calling SET key: foo to value: bar","time":"2021-12-10T17:26:07-07:00"}
+{"level":"info","msg":"Send SET foo:bar to raft\n","time":"2021-12-10T17:26:07-07:00"}
+{"level":"info","msg":"Client Connected:  127.0.0.1:55328","time":"2021-12-10T17:27:41-07:00"}
+{"level":"debug","msg":"Read size and got 12 bytes","time":"2021-12-10T17:27:41-07:00"}
+{"level":"info","msg":"Key: foo","time":"2021-12-10T17:27:41-07:00"}
+{"level":"info","msg":"Calling GET key foo","time":"2021-12-10T17:27:41-07:00"}
+{"level":"debug","msg":"szBytes are [48 48 48 48 48 48 48 48 48 48 49 54]","time":"2021-12-10T17:27:41-07:00"}
+{"level":"debug","msg":"Written bytes: 28","time":"2021-12-10T17:27:41-07:00"}
+{"level":"debug","msg":"Read size and got 12 bytes","time":"2021-12-10T17:27:41-07:00"}
+{"level":"info","msg":"Key: foo Value: bar","time":"2021-12-10T17:27:41-07:00"}
+{"level":"info","msg":"Calling SET key: foo to value: bar","time":"2021-12-10T17:27:41-07:00"}
+{"level":"info","msg":"Send SET foo:bar to raft\n","time":"2021-12-10T17:27:41-07:00"}
+{"level":"info","msg":"Client Connected:  127.0.0.1:55338","time":"2021-12-10T17:28:24-07:00"}
+{"level":"debug","msg":"Read size and got 12 bytes","time":"2021-12-10T17:28:24-07:00"}
+{"level":"info","msg":"Key: foo","time":"2021-12-10T17:28:24-07:00"}
+{"level":"info","msg":"Calling GET key foo","time":"2021-12-10T17:28:24-07:00"}
+{"level":"debug","msg":"szBytes are [48 48 48 48 48 48 48 48 48 48 49 54]","time":"2021-12-10T17:28:24-07:00"}
+{"level":"debug","msg":"Written bytes: 28","time":"2021-12-10T17:28:24-07:00"}
+{"level":"debug","msg":"Read size and got 12 bytes","time":"2021-12-10T17:28:24-07:00"}
+{"level":"info","msg":"Key: foo Value: bar","time":"2021-12-10T17:28:24-07:00"}
+{"level":"info","msg":"Calling SET key: foo to value: bar","time":"2021-12-10T17:28:24-07:00"}
+{"level":"info","msg":"Send SET foo:bar to raft\n","time":"2021-12-10T17:28:24-07:00"}
+{"level":"debug","msg":"********************************************************************************************","time":"2021-12-10T17:28:42-07:00"}
+{"level":"info","msg":"Staring KV server","time":"2021-12-10T17:28:42-07:00"}
+{"level":"info","msg":"Client Connected:  127.0.0.1:55345","time":"2021-12-10T17:28:43-07:00"}
+{"level":"debug","msg":"Read size and got 12 bytes","time":"2021-12-10T17:28:43-07:00"}
+{"level":"info","msg":"Key: foo","time":"2021-12-10T17:28:43-07:00"}
+{"level":"info","msg":"Calling GET key foo","time":"2021-12-10T17:28:43-07:00"}
+{"level":"debug","msg":"szBytes are [48 48 48 48 48 48 48 48 48 48 49 54]","time":"2021-12-10T17:28:43-07:00"}
+{"level":"debug","msg":"Written bytes: 28","time":"2021-12-10T17:28:43-07:00"}
+{"level":"debug","msg":"Read size and got 12 bytes","time":"2021-12-10T17:28:43-07:00"}
+{"level":"info","msg":"Key: foo Value: bar","time":"2021-12-10T17:28:43-07:00"}
+{"level":"info","msg":"Calling SET key: foo to value: bar","time":"2021-12-10T17:28:43-07:00"}
+{"level":"info","msg":"Send SET foo:bar to raft\n","time":"2021-12-10T17:28:43-07:00"}
+{"level":"debug","msg":"********************************************************************************************","time":"2021-12-10T17:30:38-07:00"}
+{"level":"info","msg":"Staring KV server","time":"2021-12-10T17:30:38-07:00"}
+{"level":"info","msg":"Client Connected:  127.0.0.1:55369","time":"2021-12-10T17:30:40-07:00"}
+{"level":"debug","msg":"Read size and got 12 bytes","time":"2021-12-10T17:30:40-07:00"}
+{"level":"info","msg":"Key: foo","time":"2021-12-10T17:30:40-07:00"}
+{"level":"info","msg":"Calling GET key foo","time":"2021-12-10T17:30:40-07:00"}
+{"level":"debug","msg":"szBytes are [48 48 48 48 48 48 48 48 48 48 49 54]","time":"2021-12-10T17:30:40-07:00"}
+{"level":"debug","msg":"Written bytes: 28","time":"2021-12-10T17:30:40-07:00"}
+{"level":"debug","msg":"Read size and got 12 bytes","time":"2021-12-10T17:30:40-07:00"}
+{"level":"info","msg":"Key: foo Value: bar","time":"2021-12-10T17:30:40-07:00"}
+{"level":"info","msg":"Calling SET key: foo to value: bar","time":"2021-12-10T17:30:40-07:00"}
+{"level":"info","msg":"Send SET foo:bar to raft\n","time":"2021-12-10T17:30:40-07:00"}
+{"level":"debug","msg":"********************************************************************************************","time":"2021-12-10T17:35:47-07:00"}
+{"level":"info","msg":"Staring KV server","time":"2021-12-10T17:35:47-07:00"}
+{"level":"info","msg":"Client Connected:  127.0.0.1:55465","time":"2021-12-10T17:35:49-07:00"}
+{"level":"debug","msg":"Read size and got 12 bytes","time":"2021-12-10T17:35:49-07:00"}
+{"level":"info","msg":"Key: foo","time":"2021-12-10T17:35:49-07:00"}
+{"level":"info","msg":"Calling GET key foo","time":"2021-12-10T17:35:49-07:00"}
+{"level":"debug","msg":"szBytes are [48 48 48 48 48 48 48 48 48 48 49 54]","time":"2021-12-10T17:35:49-07:00"}
+{"level":"debug","msg":"Written bytes: 28","time":"2021-12-10T17:35:49-07:00"}
+{"level":"debug","msg":"Read size and got 12 bytes","time":"2021-12-10T17:35:49-07:00"}
+{"level":"info","msg":"Key: foo Value: bar","time":"2021-12-10T17:35:49-07:00"}
+{"level":"info","msg":"Calling SET key: foo to value: bar","time":"2021-12-10T17:35:49-07:00"}
+{"level":"info","msg":"Send SET foo:bar to raft\n","time":"2021-12-10T17:35:49-07:00"}
+{"level":"debug","msg":"********************************************************************************************","time":"2021-12-10T17:37:18-07:00"}
+{"level":"info","msg":"Staring KV server","time":"2021-12-10T17:37:18-07:00"}
+{"level":"debug","msg":"********************************************************************************************","time":"2021-12-10T17:37:37-07:00"}
+{"level":"info","msg":"Staring KV server","time":"2021-12-10T17:37:37-07:00"}
+{"level":"debug","msg":"********************************************************************************************","time":"2021-12-10T17:38:44-07:00"}
+{"level":"info","msg":"Staring KV server","time":"2021-12-10T17:38:44-07:00"}
+{"level":"debug","msg":"********************************************************************************************","time":"2021-12-10T17:39:33-07:00"}
+{"level":"info","msg":"Staring KV server","time":"2021-12-10T17:39:33-07:00"}
+{"level":"debug","msg":"********************************************************************************************","time":"2021-12-10T17:40:10-07:00"}
+{"level":"info","msg":"Staring KV server","time":"2021-12-10T17:40:38-07:00"}
+{"level":"info","msg":"Client Connected:  127.0.0.1:55556","time":"2021-12-10T17:40:52-07:00"}
+{"level":"debug","msg":"Read size and got 12 bytes","time":"2021-12-10T17:40:52-07:00"}
+{"level":"info","msg":"Key: foo","time":"2021-12-10T17:40:52-07:00"}
+{"level":"info","msg":"Calling GET key foo","time":"2021-12-10T17:40:52-07:00"}
+{"level":"debug","msg":"szBytes are [48 48 48 48 48 48 48 48 48 48 49 54]","time":"2021-12-10T17:40:52-07:00"}
+{"level":"debug","msg":"Written bytes: 28","time":"2021-12-10T17:40:52-07:00"}
+{"level":"debug","msg":"Read size and got 12 bytes","time":"2021-12-10T17:40:52-07:00"}
+{"level":"info","msg":"Key: foo Value: bar","time":"2021-12-10T17:40:52-07:00"}
+{"level":"info","msg":"Calling SET key: foo to value: bar","time":"2021-12-10T17:40:52-07:00"}
+{"level":"info","msg":"Send SET foo:bar to raft\n","time":"2021-12-10T17:40:52-07:00"}
+{"level":"debug","msg":"********************************************************************************************","time":"2021-12-10T17:43:57-07:00"}
+{"level":"info","msg":"Staring KV server","time":"2021-12-10T17:43:57-07:00"}
+{"level":"info","msg":"Client Connected:  127.0.0.1:55584","time":"2021-12-10T17:43:59-07:00"}
+{"level":"debug","msg":"Read size and got 12 bytes","time":"2021-12-10T17:43:59-07:00"}
+{"level":"info","msg":"Key: foo","time":"2021-12-10T17:43:59-07:00"}
+{"level":"info","msg":"Calling GET key foo","time":"2021-12-10T17:43:59-07:00"}
+{"level":"debug","msg":"szBytes are [48 48 48 48 48 48 48 48 48 48 49 54]","time":"2021-12-10T17:43:59-07:00"}
+{"level":"debug","msg":"Written bytes: 28","time":"2021-12-10T17:43:59-07:00"}
+{"level":"debug","msg":"Read size and got 12 bytes","time":"2021-12-10T17:43:59-07:00"}
+{"level":"info","msg":"Key: foo Value: bar","time":"2021-12-10T17:43:59-07:00"}
+{"level":"info","msg":"Calling SET key: foo to value: bar","time":"2021-12-10T17:43:59-07:00"}
+{"level":"info","msg":"Send SET foo:bar to raft\n","time":"2021-12-10T17:43:59-07:00"}
+{"level":"info","msg":"Raft has committed","time":"2021-12-10T17:43:59-07:00"}
+{"level":"debug","msg":"szBytes are [48 48 48 48 48 48 48 48 48 48 48 50]","time":"2021-12-10T17:43:59-07:00"}
+{"level":"debug","msg":"Written bytes: 14","time":"2021-12-10T17:43:59-07:00"}
+{"level":"debug","msg":"Read size and got 12 bytes","time":"2021-12-10T17:43:59-07:00"}
+{"level":"info","msg":"Key: foo","time":"2021-12-10T17:43:59-07:00"}
+{"level":"info","msg":"Calling GET key foo","time":"2021-12-10T17:43:59-07:00"}
+{"level":"debug","msg":"szBytes are [48 48 48 48 48 48 48 48 48 48 48 51]","time":"2021-12-10T17:43:59-07:00"}
+{"level":"debug","msg":"Written bytes: 15","time":"2021-12-10T17:43:59-07:00"}
+{"level":"debug","msg":"Read size and got 0 bytes","time":"2021-12-10T17:43:59-07:00"}
+{"level":"error","msg":"err is EOF","time":"2021-12-10T17:43:59-07:00"}
+{"level":"error","msg":"Error when receiving messages EOF","time":"2021-12-10T17:43:59-07:00"}
+{"level":"info","msg":"Client Connected:  127.0.0.1:55588","time":"2021-12-10T17:44:01-07:00"}
+{"level":"debug","msg":"Read size and got 12 bytes","time":"2021-12-10T17:44:01-07:00"}
+{"level":"info","msg":"Key: foo","time":"2021-12-10T17:44:01-07:00"}
+{"level":"info","msg":"Calling GET key foo","time":"2021-12-10T17:44:01-07:00"}
+{"level":"debug","msg":"szBytes are [48 48 48 48 48 48 48 48 48 48 48 51]","time":"2021-12-10T17:44:01-07:00"}
+{"level":"debug","msg":"Written bytes: 15","time":"2021-12-10T17:44:01-07:00"}
+{"level":"debug","msg":"Read size and got 12 bytes","time":"2021-12-10T17:44:01-07:00"}
+{"level":"info","msg":"Key: foo Value: bar","time":"2021-12-10T17:44:01-07:00"}
+{"level":"info","msg":"Calling SET key: foo to value: bar","time":"2021-12-10T17:44:01-07:00"}
+{"level":"info","msg":"Send SET foo:bar to raft\n","time":"2021-12-10T17:44:01-07:00"}
+{"level":"info","msg":"Raft has committed","time":"2021-12-10T17:44:01-07:00"}
+{"level":"debug","msg":"szBytes are [48 48 48 48 48 48 48 48 48 48 48 50]","time":"2021-12-10T17:44:01-07:00"}
+{"level":"debug","msg":"Written bytes: 14","time":"2021-12-10T17:44:01-07:00"}
+{"level":"debug","msg":"Read size and got 12 bytes","time":"2021-12-10T17:44:01-07:00"}
+{"level":"info","msg":"Key: foo","time":"2021-12-10T17:44:01-07:00"}
+{"level":"info","msg":"Calling GET key foo","time":"2021-12-10T17:44:01-07:00"}
+{"level":"debug","msg":"szBytes are [48 48 48 48 48 48 48 48 48 48 48 51]","time":"2021-12-10T17:44:01-07:00"}
+{"level":"debug","msg":"Written bytes: 15","time":"2021-12-10T17:44:01-07:00"}
+{"level":"debug","msg":"Read size and got 0 bytes","time":"2021-12-10T17:44:01-07:00"}
+{"level":"error","msg":"err is EOF","time":"2021-12-10T17:44:01-07:00"}
+{"level":"error","msg":"Error when receiving messages EOF","time":"2021-12-10T17:44:01-07:00"}
+{"level":"info","msg":"Client Connected:  127.0.0.1:55591","time":"2021-12-10T17:44:03-07:00"}
+{"level":"debug","msg":"Read size and got 12 bytes","time":"2021-12-10T17:44:03-07:00"}
+{"level":"info","msg":"Key: foo","time":"2021-12-10T17:44:03-07:00"}
+{"level":"info","msg":"Calling GET key foo","time":"2021-12-10T17:44:03-07:00"}
+{"level":"debug","msg":"szBytes are [48 48 48 48 48 48 48 48 48 48 48 51]","time":"2021-12-10T17:44:03-07:00"}
+{"level":"debug","msg":"Written bytes: 15","time":"2021-12-10T17:44:03-07:00"}
+{"level":"debug","msg":"Read size and got 12 bytes","time":"2021-12-10T17:44:03-07:00"}
+{"level":"info","msg":"Key: foo Value: bar","time":"2021-12-10T17:44:03-07:00"}
+{"level":"info","msg":"Calling SET key: foo to value: bar","time":"2021-12-10T17:44:03-07:00"}
+{"level":"info","msg":"Send SET foo:bar to raft\n","time":"2021-12-10T17:44:03-07:00"}
+{"level":"info","msg":"Raft has committed","time":"2021-12-10T17:44:03-07:00"}
+{"level":"debug","msg":"szBytes are [48 48 48 48 48 48 48 48 48 48 48 50]","time":"2021-12-10T17:44:03-07:00"}
+{"level":"debug","msg":"Written bytes: 14","time":"2021-12-10T17:44:03-07:00"}
+{"level":"debug","msg":"Read size and got 12 bytes","time":"2021-12-10T17:44:03-07:00"}
+{"level":"info","msg":"Key: foo","time":"2021-12-10T17:44:03-07:00"}
+{"level":"info","msg":"Calling GET key foo","time":"2021-12-10T17:44:03-07:00"}
+{"level":"debug","msg":"szBytes are [48 48 48 48 48 48 48 48 48 48 48 51]","time":"2021-12-10T17:44:03-07:00"}
+{"level":"debug","msg":"Written bytes: 15","time":"2021-12-10T17:44:03-07:00"}
+{"level":"debug","msg":"Read size and got 0 bytes","time":"2021-12-10T17:44:03-07:00"}
+{"level":"error","msg":"err is EOF","time":"2021-12-10T17:44:03-07:00"}
+{"level":"error","msg":"Error when receiving messages EOF","time":"2021-12-10T17:44:03-07:00"}

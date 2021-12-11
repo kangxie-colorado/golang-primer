@@ -76,8 +76,8 @@ func TestRaftLog_AppendEntries(t *testing.T) {
 
 		{"append at index 5 - while having 5", fields{[]RaftLogEntry{RaftLogEntry{0, 1}, RaftLogEntry{0, 2}, RaftLogEntry{0, 3}, RaftLogEntry{0, 4}, RaftLogEntry{0, 5}}},
 			args{5, 0, []RaftLogEntry{RaftLogEntry{0, 6}}}, true},
-		{"append ok? at index 5 - while having 5", fields{[]RaftLogEntry{RaftLogEntry{0, 1}, RaftLogEntry{0, 2}, RaftLogEntry{0, 3}, RaftLogEntry{0, 4}, RaftLogEntry{0, 5}}},
-			args{5, 0, []RaftLogEntry{}}, true},
+		{"empty test - append ok? at index 5 - while having 5", fields{[]RaftLogEntry{RaftLogEntry{0, 1}, RaftLogEntry{0, 2}, RaftLogEntry{0, 3}, RaftLogEntry{0, 4}, RaftLogEntry{0, 5}}},
+			args{5, 0, emptyEntries}, true},
 
 		{"idempotent test - append at index 4 - while having 5", fields{[]RaftLogEntry{RaftLogEntry{0, 1}, RaftLogEntry{0, 2}, RaftLogEntry{0, 3}, RaftLogEntry{0, 4}, RaftLogEntry{0, 5}}},
 			args{4, 0, []RaftLogEntry{RaftLogEntry{0, 5}}}, true},
@@ -90,6 +90,9 @@ func TestRaftLog_AppendEntries(t *testing.T) {
 
 		{"non-matching pre-term - append at index 5 - while having 5", fields{[]RaftLogEntry{RaftLogEntry{0, 1}, RaftLogEntry{0, 2}, RaftLogEntry{0, 3}, RaftLogEntry{0, 4}, RaftLogEntry{0, 5}}},
 			args{5, 1, []RaftLogEntry{RaftLogEntry{0, 6}}}, false},
+
+		{"empty test - append ok? at index 3 - while having 5", fields{[]RaftLogEntry{RaftLogEntry{0, 1}, RaftLogEntry{0, 2}, RaftLogEntry{0, 3}, RaftLogEntry{0, 4}, RaftLogEntry{0, 5}}},
+			args{3, 0, emptyEntries}, true},
 
 		{"fig7-a", fields{fig7Scenarios[0]}, args{fig7ToAppendIndex, fig7ToAppendPrevTerm, []RaftLogEntry{fig7ToAppendEntry}}, false},
 		{"fig7-b", fields{fig7Scenarios[1]}, args{fig7ToAppendIndex, fig7ToAppendPrevTerm, []RaftLogEntry{fig7ToAppendEntry}}, false},
@@ -110,8 +113,7 @@ func TestRaftLog_AppendEntries(t *testing.T) {
 	}
 }
 
-func TestRaftLog_AfterAppendEntries(t *testing.T) {
-
+func TestRaftLog__afterAppendEntries(t *testing.T) {
 	type fields struct {
 		items []RaftLogEntry
 	}
@@ -136,7 +138,7 @@ func TestRaftLog_AfterAppendEntries(t *testing.T) {
 		{"append at index 5 - while having 5", fields{[]RaftLogEntry{RaftLogEntry{0, 1}, RaftLogEntry{0, 2}, RaftLogEntry{0, 3}, RaftLogEntry{0, 4}, RaftLogEntry{0, 5}}},
 			args{5, 0, []RaftLogEntry{RaftLogEntry{0, 6}}}, []RaftLogEntry{RaftLogEntry{0, 1}, RaftLogEntry{0, 2}, RaftLogEntry{0, 3}, RaftLogEntry{0, 4}, RaftLogEntry{0, 5}, RaftLogEntry{0, 6}}},
 
-		{"append ok? at index 5 - while having 5", fields{[]RaftLogEntry{RaftLogEntry{0, 1}, RaftLogEntry{0, 2}, RaftLogEntry{0, 3}, RaftLogEntry{0, 4}, RaftLogEntry{0, 5}}},
+		{"empty test - append ok? at index 5 - while having 5", fields{[]RaftLogEntry{RaftLogEntry{0, 1}, RaftLogEntry{0, 2}, RaftLogEntry{0, 3}, RaftLogEntry{0, 4}, RaftLogEntry{0, 5}}},
 			args{5, 0, []RaftLogEntry{}}, []RaftLogEntry{RaftLogEntry{0, 1}, RaftLogEntry{0, 2}, RaftLogEntry{0, 3}, RaftLogEntry{0, 4}, RaftLogEntry{0, 5}}},
 
 		{"idempotent test - append at index 4 - while having 5", fields{[]RaftLogEntry{RaftLogEntry{0, 1}, RaftLogEntry{0, 2}, RaftLogEntry{0, 3}, RaftLogEntry{0, 4}, RaftLogEntry{0, 5}}},
@@ -151,6 +153,9 @@ func TestRaftLog_AfterAppendEntries(t *testing.T) {
 		{"hole test - append at index 9 - while only having 5", fields{[]RaftLogEntry{RaftLogEntry{0, 1}, RaftLogEntry{0, 2}, RaftLogEntry{0, 3}, RaftLogEntry{0, 4}, RaftLogEntry{0, 5}}},
 			args{9, 0, []RaftLogEntry{RaftLogEntry{0, 9}}}, []RaftLogEntry{RaftLogEntry{0, 1}, RaftLogEntry{0, 2}, RaftLogEntry{0, 3}, RaftLogEntry{0, 4}, RaftLogEntry{0, 5}}},
 
+		{"empty test - append ok? at index 3 - while having 5", fields{[]RaftLogEntry{RaftLogEntry{0, 1}, RaftLogEntry{0, 2}, RaftLogEntry{0, 3}, RaftLogEntry{0, 4}, RaftLogEntry{0, 5}}},
+			args{3, 0, emptyEntries}, []RaftLogEntry{RaftLogEntry{0, 1}, RaftLogEntry{0, 2}, RaftLogEntry{0, 3}, RaftLogEntry{0, 4}, RaftLogEntry{0, 5}}},
+
 		{"fig7-a", fields{fig7Scenarios[0]}, args{fig7ToAppendIndex, fig7ToAppendPrevTerm, []RaftLogEntry{fig7ToAppendEntry}}, fig7Scenarios[0]},
 		{"fig7-b", fields{fig7Scenarios[1]}, args{fig7ToAppendIndex, fig7ToAppendPrevTerm, []RaftLogEntry{fig7ToAppendEntry}}, fig7Scenarios[1]},
 		{"fig7-c", fields{fig7Scenarios[2]}, args{fig7ToAppendIndex, fig7ToAppendPrevTerm, []RaftLogEntry{fig7ToAppendEntry}}, fig7ItemToBecome},
@@ -163,8 +168,8 @@ func TestRaftLog_AfterAppendEntries(t *testing.T) {
 			raftlog := &RaftLog{
 				items: tt.fields.items,
 			}
-			if got := raftlog.AfterAppendEntries(tt.args.index, tt.args.prevTerm, tt.args.entries); !DeepEqual(got, tt.want) {
-				t.Errorf("RaftLog.AfterAppendEntries() = %v, want %v", got, tt.want)
+			if got := raftlog._afterAppendEntries(tt.args.index, tt.args.prevTerm, tt.args.entries); !DeepEqual(got, tt.want) {
+				t.Errorf("RaftLog._afterAppendEntries() = %v, want %v", got, tt.want)
 			}
 		})
 	}
