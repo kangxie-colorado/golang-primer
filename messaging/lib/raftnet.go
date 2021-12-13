@@ -82,9 +82,9 @@ func (raftnet *RaftNet) BeginSending() {
 }
 
 func (raftnet *RaftNet) bgSender(toID int) {
+	<-raftnet.activated[toID]
 
 	for {
-		<-raftnet.activated[toID]
 
 		for !raftnet.enabled[toID] {
 			// wait until the enable flag is set
@@ -159,10 +159,10 @@ func (raftnet *RaftNet) Start() {
 
 	// start listening as the server
 	sock := RaftNetConfig[raftnet.Id]
-	log.Infoln("Starting listening on", sock.ConnHost+":"+sock.ConnPort)
+	log.Infoln("Raft starts listening on", sock.ConnHost+":"+sock.ConnPort)
 	ln, err := net.Listen(sock.ConnType, sock.ConnHost+":"+sock.ConnPort)
 	if err != nil {
-		log.Errorf("Cannot listen on %+v\n", sock)
+		log.Errorf("Raft cannot listen on %+v\n", sock)
 		os.Exit(1)
 	}
 

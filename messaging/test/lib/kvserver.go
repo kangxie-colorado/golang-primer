@@ -104,9 +104,16 @@ func HandleKVClient(cl net.Conn) {
 	}
 }
 
-func KVServer(sock lib.SocketDescriptor) {
+func KVServer(sock lib.SocketDescriptor, raftserverID int) {
 	// this part hooks up with raft
-	raftserver = lib.CreateARaftServer(0)
+	// arbitrarily appoint raftserver 0 as the leader
+	// how do I do that? actually at this point, there is no leader, every raftnode just append to itself and then sending to others
+	// but only one server got the input, so purpose is served
+	raftserver = lib.CreateARaftServer(raftserverID)
+	log.Infoln("Starting Raft Server")
+	raftserver.Start()
+	// don't forgot this gating method
+	raftserver.Net().BeginSending()
 
 	// below was without raft
 	log.Infoln("Staring KV server")

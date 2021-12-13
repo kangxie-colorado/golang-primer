@@ -1,12 +1,17 @@
 package lib
 
 type RaftLogEntry struct {
-	term int
-	item interface{}
+	Term int
+	Item interface{}
 }
 
 type RaftLog struct {
 	items []RaftLogEntry
+}
+
+// a helper to create RaftLogEntry
+func CreateRaftLogEntry(term int, item interface{}) RaftLogEntry {
+	return RaftLogEntry{term, item}
 }
 
 // a helper function to test the AppendEntries, test the entries after appending
@@ -44,7 +49,7 @@ func (raftlog *RaftLog) AppendEntries(index, prevTerm int, entries []RaftLogEntr
 		// leaving holes is not allowed
 		return false
 	} else {
-		if index > 0 && prevTerm != raftlog.items[index-1].term {
+		if index > 0 && prevTerm != raftlog.items[index-1].Term {
 			// log continuity must be maintained
 			return false
 		}

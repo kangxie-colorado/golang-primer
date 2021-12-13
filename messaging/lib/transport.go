@@ -37,7 +37,6 @@ func SendMessageStr(conn net.Conn, msg string) error {
 func SendMessage(conn net.Conn, msg []byte) error {
 	szBytes := SizeTo12Bytes(len(msg))
 	msg = append(szBytes, msg...)
-	log.Debugln("szBytes are", szBytes)
 
 	writeBytes, err := conn.Write(msg)
 	if err != nil {
@@ -59,7 +58,6 @@ func RecvMessage(conn net.Conn) ([]byte, error) {
 	// conn.read can read either upto EOF or when buffer is filled
 	szBuf := make([]byte, 12)
 	readBytes, err := conn.Read(szBuf)
-	log.Debugln("Read size and got", readBytes, "bytes")
 	if err != nil {
 		log.Errorln("err is", err.Error())
 		return []byte{}, err
