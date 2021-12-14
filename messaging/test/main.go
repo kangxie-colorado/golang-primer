@@ -20,7 +20,7 @@ func initLog(filename string, logLevel log.Level) {
 	log.SetFormatter(&log.JSONFormatter{})
 	log.SetOutput(file)
 	log.SetLevel(logLevel)
-	log.SetReportCaller(true)
+	//log.SetReportCaller(true)
 }
 
 /**
@@ -253,6 +253,10 @@ func main() {
 
 	prog := "server"
 
+	// default values to open up a routine to debug
+	// I don't know how to play with the configuration json yet
+	// so leave the no argument version for debugging
+	// which means go run *go server 0
 	if len(os.Args) > 1 {
 		prog = os.Args[1]
 	}
@@ -266,6 +270,10 @@ func main() {
 		log.Debugln("********************************************************************************************")
 
 		port := 25000 + raftID
+		if raftID > 2 {
+			// slower follower... to simulate the appendentris failure
+			time.Sleep(5 * time.Second)
+		}
 		lib_test.KVServer(lib.SocketDescriptor{"tcp", "localhost", strconv.Itoa(port)}, raftID)
 
 	} else if prog == "client" {
@@ -277,14 +285,17 @@ func main() {
 		initLog("client"+strconv.Itoa(clientID)+".log", log.InfoLevel)
 		log.Debugln("********************************************************************************************")
 
-		kvclient := lib_test.CreateKVClient(lib.SocketDescriptor{"tcp", "localhost", "25000"})
 		if clientID == 1 {
+			kvclient := lib_test.CreateKVClient(lib.SocketDescriptor{"tcp", "localhost", "25000"})
+
 			kvclient.Get("foo")
 
 			kvclient.Set("foo", "bar")
 			time.Sleep(3 * time.Second)
 			kvclient.Get("foo")
-		} else {
+		} else if clientID == 2 {
+			kvclient := lib_test.CreateKVClient(lib.SocketDescriptor{"tcp", "localhost", "25000"})
+
 			kvclient.Get("foo")
 
 			kvclient.Set("foo", "bar24")
@@ -293,6 +304,12 @@ func main() {
 			kvclient.Get("foo")
 			kvclient.Del("foo")
 
+		} else if clientID == 3 {
+			// a client just to read off a follower
+			kvclient := lib_test.CreateKVClient(lib.SocketDescriptor{"tcp", "localhost", "25001"})
+			kvclient.Get("foo")
+			kvclient.Get("foo2")
+			kvclient.Get("foo")
 		}
 
 	} else {

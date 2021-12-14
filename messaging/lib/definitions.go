@@ -31,3 +31,7 @@ type RaftNet struct {
 	linkEnabled [NetWorkSize]chan bool
 	activated   [NetWorkSize]chan bool
 }
+
+const MSGTYPEFIELDLEN int = 11
+const APPENDENTRYMSG string = "APPENDENTRY"
+const APPENDENTRYRSP string = "APPENDRESPS"
