@@ -102,7 +102,7 @@ func (raftnet *RaftNet) bgSender(toID int) {
 		if err != nil {
 			log.Errorln("Error dequeue outbox", toID, err.Error())
 		} else {
-			raftnet.sendWithLongConn(toID, fmt.Sprintf("%v", msg))
+			raftnet.sendWithNewConnEachTime(toID, fmt.Sprintf("%v", msg))
 		}
 	}
 }
