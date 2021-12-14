@@ -23,50 +23,45 @@ func initLog(filename string, logLevel log.Level) {
 	//log.SetReportCaller(true)
 }
 
-/**
 // quick test a simple server , clien->conn
-func main() {
+func testSimpleServer() {
 	prog := os.Args[1]
 
 	if prog == "server" {
-		SimpleServer(transport.SocketDescriptor{"tcp", "localhost", "15000"})
+		lib_test.SimpleServer(lib.SocketDescriptor{"tcp", "localhost", "15000"})
 	} else if prog == "client" {
 		sz, _ := strconv.Atoi(os.Args[2])
-		SimpleClient(transport.SocketDescriptor{"tcp", "localhost", "15000"}, sz)
+		lib_test.SimpleClient(lib.SocketDescriptor{"tcp", "localhost", "15000"}, sz)
 	} else {
 		fmt.Println("Wrong program type!")
 	}
 }
-**/
 
-/**
 // echo server test
-func main() {
+func testEchoServer() {
 	prog := os.Args[1]
 
 	if prog == "server" {
 		initLog("server.log", log.DebugLevel)
-		lib_test.EchoServer(transport.SocketDescriptor{"tcp", "localhost", "15000"})
+		lib_test.EchoServer(lib.SocketDescriptor{"tcp", "localhost", "15000"})
 	} else if prog == "client" {
 		initLog("client.log", log.InfoLevel)
-		lib_test.EchoClient(transport.SocketDescriptor{"tcp", "localhost", "15000"})
+		lib_test.EchoClient(lib.SocketDescriptor{"tcp", "localhost", "15000"})
 	} else {
 		fmt.Println("Wrong program type!")
 	}
 }
-**/
 
-/**
-// kv server test
-func main() {
+// kv server test - KVServer is already hooked up with raft, this won't work anymore
+func testKVServer_NotWorking() {
 	prog := os.Args[1]
 
 	if prog == "server" {
 		initLog("server.log", log.DebugLevel)
-		lib_test.KVServer(transport.SocketDescriptor{"tcp", "localhost", "15000"})
+		lib_test.KVServer(lib.SocketDescriptor{"tcp", "localhost", "15000"}, 0)
 	} else if prog == "client" {
 		initLog("client.log", log.InfoLevel)
-		kvclient := lib_test.CreateKVClient(transport.SocketDescriptor{"tcp", "localhost", "15000"})
+		kvclient := lib_test.CreateKVClient(lib.SocketDescriptor{"tcp", "localhost", "15000"})
 		kvclient.Get("foo")
 
 		kvclient.Set("foo", "bar")
@@ -76,10 +71,8 @@ func main() {
 		fmt.Println("Wrong program type!")
 	}
 }
-**/
 
-/***
-func main() {
+func testRaftNet() {
 	log.SetOutput(os.Stderr)
 	log.SetLevel(log.DebugLevel)
 
@@ -113,20 +106,9 @@ func main() {
 		}
 	}
 }
-***/
 
-/**
-// start net per process
-func main() {
-	id, _ := strconv.Atoi(os.Args[1])
-	lib.CreateARaftNet(id).Start()
-
-}
-**/
-
-/**
 // test with disable/enable network links
-func main() {
+func testRaftNetWithDisableEnable() {
 	log.SetOutput(os.Stderr)
 	log.SetLevel(log.DebugLevel)
 
@@ -165,57 +147,9 @@ func main() {
 		}
 	}
 }
-**/
 
 /***
-// test with multi-clients
-func main() {
-
-	prog := "server"
-
-	if len(os.Args) > 1 {
-		prog = os.Args[1]
-	}
-
-	if prog == "server" {
-		initLog("server.log", log.InfoLevel)
-		log.Debugln("********************************************************************************************")
-		lib_test.KVServer(transport.SocketDescriptor{"tcp", "localhost", "15000"})
-	} else if prog == "client" {
-		clientID := 1
-		if len(os.Args) > 2 {
-			clientID, _ = strconv.Atoi(os.Args[2])
-		}
-
-		initLog("client"+strconv.Itoa(clientID)+".log", log.InfoLevel)
-		log.Debugln("********************************************************************************************")
-
-		kvclient := lib_test.CreateKVClient(transport.SocketDescriptor{"tcp", "localhost", "15000"})
-		if clientID == 1 {
-			kvclient.Get("foo")
-
-			kvclient.Set("foo", "bar")
-			time.Sleep(3 * time.Second)
-			kvclient.Get("foo")
-		} else {
-			kvclient.Get("foo")
-
-			kvclient.Set("foo", "bar24")
-			kvclient.Get("foo2")
-			kvclient.Set("foo2", "bar245")
-			kvclient.Get("foo")
-			kvclient.Del("foo")
-
-		}
-
-	} else {
-		fmt.Println("Wrong program type!")
-	}
-}
-**/
-
-/***
-// gobtest
+// gobtest - code deleted - just keep the tests here
 
 ****************************************************************************************
 // [tw-mbp-kxie test (master)]$ go run *go server
@@ -226,7 +160,7 @@ func main() {
 // {1 0 [{2 SET FOO BAR3} {3 SET FOO2 BAR23} {4 DEL FOO}]}
 ****************************************************************************************
 
-func main() {
+func testGOb() {
 	gob.Register(lib.AppendEntriesMsg{})
 
 	m := lib.CreateAppendEntriesMsg(0, 0, []lib.RaftLogEntry{lib.CreateRaftLogEntry(0, "SET FOO BAR"), lib.CreateRaftLogEntry(1, "SET FOO BAR2")})
@@ -249,7 +183,7 @@ func main() {
 }
 ***/
 
-func main() {
+func testMultilServerMultiClient() {
 
 	prog := "server"
 
@@ -315,4 +249,8 @@ func main() {
 	} else {
 		fmt.Println("Wrong program type!")
 	}
+}
+
+func main() {
+	testMultilServerMultiClient()
 }
