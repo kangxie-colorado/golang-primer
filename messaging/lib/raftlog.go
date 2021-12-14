@@ -26,31 +26,14 @@ func (raftlog *RaftLog) AppendEntries(index, prevTerm int, entries []RaftLogEntr
 		return false
 	}
 
-	/**
-	if index == 0 {
-		// append at index 0 should always succeed, even it means to truncate everything
-		if len(entries) != 0 {
-			// but I shall not truncate to empty if there is already some entries, special special case
-			raftlog.items = append(raftlog.items[:0], entries...)
-		}
-
-		return true
-	} else {
-		if index > len(raftlog.items) {
-			// leaving holes is not allowed
-			return false
-		} else {
-			raftlog.items = append(raftlog.items[:index], entries...)
-			return true
-		}
-	}
-	**/
 	if index > len(raftlog.items) {
 		// leaving holes is not allowed
 		return false
 	} else {
 		if index > 0 && prevTerm != raftlog.items[index-1].Term {
 			// log continuity must be maintained
+			// log continuity is a recursive concept
+			// prevTerm and the one prior forms a chain
 			return false
 		}
 
