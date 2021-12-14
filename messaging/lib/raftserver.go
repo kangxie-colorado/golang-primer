@@ -41,6 +41,12 @@ func CreateARaftServer(id int) *RaftServer {
 		if k != id {
 			followerIDs = append(followerIDs, k)
 		}
+
+	}
+
+	raftserver.commitIdx = -1
+	raftserver.replicatedIdx = [NetWorkSize]int{
+		-1, -1, -1, -1, -1,
 	}
 
 	raftserver.followerIDs = followerIDs
@@ -83,9 +89,10 @@ func (raftserver *RaftServer) watiForCommit(writtenIdx int, commited chan bool) 
 		//raftserver.RLock()
 		//defer raftserver.RUnlock()
 		//raftserver.cond.Wait()
-		log.Infof("commitIdx now %v, and wirttenIdx: %v", raftserver.commitIdx, writtenIdx)
+		//log.Debugf("commitIdx now %v, and wirttenIdx: %v", raftserver.commitIdx, writtenIdx)
 
 		if raftserver.commitIdx >= writtenIdx {
+			log.Debugf("commitIdx now %v, and wirttenIdx: %v", raftserver.commitIdx, writtenIdx)
 			commited <- true
 			return
 		}
@@ -228,6 +235,8 @@ func (raftserver *RaftServer) DetermineCommitIdx() int {
 	cpy := make([]int, NetWorkSize)
 	copy(cpy, raftserver.replicatedIdx[:])
 	sort.Ints(cpy)
+
+	log.Debugf("the replication indexes are %v\n", cpy)
 
 	return cpy[NetWorkSize/2]
 }

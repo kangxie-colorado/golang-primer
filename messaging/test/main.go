@@ -290,7 +290,7 @@ func main() {
 
 			kvclient.Get("foo")
 
-			kvclient.Set("foo", "bar")
+			kvclient.Set("foo", "bar-client1")
 			time.Sleep(3 * time.Second)
 			kvclient.Get("foo")
 		} else if clientID == 2 {
@@ -298,9 +298,9 @@ func main() {
 
 			kvclient.Get("foo")
 
-			kvclient.Set("foo", "bar24")
+			kvclient.Set("foo", "bar-client2")
 			kvclient.Get("foo2")
-			kvclient.Set("foo2", "bar245")
+			kvclient.Set("foo2", "bar-client2")
 			kvclient.Get("foo")
 			kvclient.Del("foo")
 
