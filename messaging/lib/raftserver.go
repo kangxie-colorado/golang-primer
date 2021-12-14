@@ -165,12 +165,12 @@ func (raftserver *RaftServer) Receive() {
 		case APPENDENTRYMSG:
 			msg := AppendEntriesMsg{}
 			msg.Decoding(msgB64Encoding[MSGTYPEFIELDLEN:])
-			log.Infof("AppendEntriesMsg received %v\n", msg)
+			log.Infof("AppendEntriesMsg received: %v\n", msg.Repr())
 			raftserver.FollowerAppendEntries(&msg)
 		case APPENDENTRYRSP:
 			msg := AppendEntriesResp{}
 			msg.Decoding(msgB64Encoding[MSGTYPEFIELDLEN:])
-			log.Infof("AppendEntriesResp received %v\n", msg)
+			log.Infof("AppendEntriesResp received: %v\n", msg.Repr())
 			raftserver.ProcessAppendEntriesResp(&msg)
 		default:
 			log.Errorln("Unknown Message Type!")
@@ -188,7 +188,7 @@ func (raftserver *RaftServer) FollowerAppendEntries(msg *AppendEntriesMsg) {
 
 func (raftserver *RaftServer) ProcessAppendEntriesResp(msg *AppendEntriesResp) {
 	if msg.Success {
-		log.Debugf("Follower %v able to append to its own %v\n", msg.SenderId, msg)
+		log.Debugf("Follower %v able to append to its own %v\n", msg.SenderId, msg.Repr())
 		// establish the consensus here
 		raftserver.replicatedIdx[msg.SenderId] = msg.Index + msg.NumOfEntries - 1
 
@@ -220,7 +220,7 @@ func (raftserver *RaftServer) ProcessAppendEntriesResp(msg *AppendEntriesResp) {
 		// using heartbeat message can be an option
 
 	} else {
-		log.Errorf("Follower %v not able to append to its own %v, back tracking\n", msg.SenderId, msg)
+		log.Errorf("Follower %v not able to append to its own %v, back tracking\n", msg.SenderId, msg.Repr())
 		prevTerm := 0
 		newIndex := msg.Index - 1
 		if newIndex > 0 {

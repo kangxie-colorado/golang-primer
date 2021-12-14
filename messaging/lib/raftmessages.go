@@ -4,6 +4,7 @@ import (
 	"bytes"
 	"encoding/base64"
 	"encoding/gob"
+	"fmt"
 
 	log "github.com/sirupsen/logrus"
 )
@@ -11,6 +12,7 @@ import (
 type RaftMessage interface {
 	Encoding() string
 	Decoding(string)
+	Repr() string
 }
 
 type AppendEntriesMsg struct {
@@ -18,6 +20,10 @@ type AppendEntriesMsg struct {
 	Index    int
 	PrevTerm int
 	Entries  []RaftLogEntry
+}
+
+func (m *AppendEntriesMsg) Repr() string {
+	return fmt.Sprintf("AppendEntriesMsg{SenderId=%v, Index=%v, PrevTerm=%v, Entries=[]RaftLogEntry{%v}}", m.SenderId, m.Index, m.PrevTerm, m.Entries)
 }
 
 type AppendEntriesResp struct {
@@ -28,6 +34,10 @@ type AppendEntriesResp struct {
 	Term         int
 }
 
+func (m *AppendEntriesResp) Repr() string {
+	return fmt.Sprintf("AppendEntriesResp{SenderId=%v, Success=%v, Index=%v, NumOfEntries=%v, Term=%v}", m.SenderId, m.Success, m.Index, m.NumOfEntries, m.Term)
+}
+
 func CreateAppendEntriesMsg(sender, index, prevTerm int, entries []RaftLogEntry) AppendEntriesMsg {
 	return AppendEntriesMsg{sender, index, prevTerm, entries}
 }
@@ -36,10 +46,10 @@ func CreateAppendEntriesMsg(sender, index, prevTerm int, entries []RaftLogEntry)
 // if using string here? that would really not so easy
 // learn or build?
 
-func (append *AppendEntriesMsg) Encoding() string {
+func (m *AppendEntriesMsg) Encoding() string {
 	b := bytes.Buffer{}
 	e := gob.NewEncoder(&b)
-	err := e.Encode(append)
+	err := e.Encode(m)
 	if err != nil {
 		log.Errorln("failed gob Encode", err)
 	}
@@ -52,7 +62,7 @@ func (append *AppendEntriesMsg) Encoding() string {
 	append = AppendEntriesMsg{}
 	append.Decoding(str[6:])
 **/
-func (append *AppendEntriesMsg) Decoding(str string) {
+func (m *AppendEntriesMsg) Decoding(str string) {
 	by, err := base64.StdEncoding.DecodeString(str)
 	if err != nil {
 		log.Errorln("failed base64 Decode", err)
@@ -60,7 +70,7 @@ func (append *AppendEntriesMsg) Decoding(str string) {
 	b := bytes.Buffer{}
 	b.Write(by)
 	d := gob.NewDecoder(&b)
-	err = d.Decode(&append)
+	err = d.Decode(&m)
 	if err != nil {
 		log.Errorln("failed gob Decode", err)
 	}
@@ -69,10 +79,10 @@ func (append *AppendEntriesMsg) Decoding(str string) {
 // what is the better way to do this code sharing
 // this polymorphism in golang?
 //
-func (append *AppendEntriesResp) Encoding() string {
+func (m *AppendEntriesResp) Encoding() string {
 	b := bytes.Buffer{}
 	e := gob.NewEncoder(&b)
-	err := e.Encode(append)
+	err := e.Encode(m)
 	if err != nil {
 		log.Errorln("failed gob Encode", err)
 	}
@@ -80,7 +90,7 @@ func (append *AppendEntriesResp) Encoding() string {
 }
 
 // caller allocates the memory
-func (append *AppendEntriesResp) Decoding(str string) {
+func (m *AppendEntriesResp) Decoding(str string) {
 	by, err := base64.StdEncoding.DecodeString(str)
 	if err != nil {
 		log.Errorln("failed base64 Decode", err)
@@ -88,7 +98,7 @@ func (append *AppendEntriesResp) Decoding(str string) {
 	b := bytes.Buffer{}
 	b.Write(by)
 	d := gob.NewDecoder(&b)
-	err = d.Decode(&append)
+	err = d.Decode(&m)
 	if err != nil {
 		log.Errorln("failed gob Decode", err)
 	}
