@@ -64,14 +64,19 @@ func (raftnet *RaftNet) sendWithLongConn(toID int, msg string) {
 
 	if raftnet.outlinks[toID] != nil {
 		err := SendMessageStr(raftnet.outlinks[toID], msg)
-		if err != nil {
+		retries := 5
+		for err != nil && retries > 0 {
 			// refresh the connection in case of remote closing by setting it to nil and
 			// next time when a message is to be sent, it will refresh
 			// no need to worry about the message, it can be lost
 			// the application layer will re-transmit
 			raftnet.outlinks[toID].Close()
 			raftnet.outlinks[toID] = nil
+			raftnet.outlinks[toID] = raftnet.connectTo(toID)
+			err = SendMessageStr(raftnet.outlinks[toID], msg)
 		}
+
+		log.Errorf("The link to raftnet%v is dead? retired 5 times already\n", toID)
 	}
 }
 
