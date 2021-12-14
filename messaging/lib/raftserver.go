@@ -3,7 +3,6 @@ package lib
 import (
 	"sort"
 	"sync"
-	"time"
 
 	log "github.com/sirupsen/logrus"
 )
@@ -24,7 +23,7 @@ type RaftServer struct {
 	// gurad around commitIdx read/write by
 	// this way, I can use raftserver.lock() like https://kaviraj.me/understanding-condition-variable-in-go/
 	// entering wait() will release the lock iirc
-	sync.RWMutex
+	lock sync.Mutex
 	cond *sync.Cond
 }
 
@@ -34,7 +33,8 @@ func CreateARaftServer(id int) *RaftServer {
 	raftserver.raftlog = &RaftLog{}
 	raftserver.raftnet = CreateARaftNet(id)
 
-	raftserver.cond = sync.NewCond(&raftserver)
+	raftserver.lock = sync.Mutex{}
+	raftserver.cond = sync.NewCond(&raftserver.lock)
 
 	var followerIDs = []int{}
 	for k := range RaftNetConfig {
@@ -85,20 +85,21 @@ func (raftserver *RaftServer) currentLeaderTerm() int {
 
 // prototype of watiForCommit()
 func (raftserver *RaftServer) watiForCommit(writtenIdx int, commited chan bool) {
-	for {
-		//raftserver.RLock()
-		//defer raftserver.RUnlock()
-		//raftserver.cond.Wait()
-		//log.Debugf("commitIdx now %v, and wirttenIdx: %v", raftserver.commitIdx, writtenIdx)
+	raftserver.lock.Lock()
+	log.Debugf("lock: %v is locked, waiting on cond var: %v", raftserver.lock, raftserver.cond)
 
-		if raftserver.commitIdx >= writtenIdx {
-			log.Debugf("commitIdx now %v, and wirttenIdx: %v", raftserver.commitIdx, writtenIdx)
-			commited <- true
-			return
-		}
+	//log.Debugf("commitIdx now %v, and wirttenIdx: %v", raftserver.commitIdx, writtenIdx)
 
-		time.Sleep(3 * time.Millisecond) // or just sleep waiting?
+	for raftserver.commitIdx < writtenIdx {
+		raftserver.cond.Wait()
 	}
+
+	log.Debugf("commitIdx now %v, and wirttenIdx: %v", raftserver.commitIdx, writtenIdx)
+	commited <- true
+
+	raftserver.lock.Unlock()
+	log.Debugf("lock: %v is unlocked", raftserver.lock)
+
 }
 
 func (raftserver *RaftServer) AppendNewEntry(msg string, commited chan bool) {
@@ -193,8 +194,14 @@ func (raftserver *RaftServer) ProcessAppendEntriesResp(msg *AppendEntriesResp) {
 
 		// determine the highest replicatedIDX which has 3 or more shows, including leader itself
 		// bookkeeping leader happens in LeaderAppendEntries()
-
+		raftserver.lock.Lock()
 		raftserver.commitIdx = raftserver.DetermineCommitIdx()
+		log.Debugf("lock: %v is locked, commitIdx is %v", raftserver.lock, raftserver.commitIdx)
+
+		raftserver.lock.Unlock()
+		log.Debugf("lock: %v is unlocked, commitIdx is %v", raftserver.lock, raftserver.commitIdx)
+
+		raftserver.cond.Broadcast()
 
 		// we should now signla checkForCommit channel
 		// any client/goroutine waiting for its entry to be committed can now move on
