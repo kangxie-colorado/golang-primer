@@ -200,8 +200,8 @@ func testMultilServerMultiClient() {
 		if len(os.Args) > 2 {
 			raftID, _ = strconv.Atoi(os.Args[2])
 		}
-		initLog("server"+strconv.Itoa(raftID)+".log", log.DebugLevel)
-		log.Debugln("********************************************************************************************")
+		initLog("server"+strconv.Itoa(raftID)+".log", log.InfoLevel)
+		log.Infoln("********************************************************************************************")
 
 		port := 25000 + raftID
 		if raftID > 2 {
@@ -217,7 +217,7 @@ func testMultilServerMultiClient() {
 		}
 
 		initLog("client"+strconv.Itoa(clientID)+".log", log.InfoLevel)
-		log.Debugln("********************************************************************************************")
+		log.Infoln("********************************************************************************************")
 
 		if clientID == 1 {
 			kvclient := lib_test.CreateKVClient(lib.SocketDescriptor{"tcp", "localhost", "25000"})

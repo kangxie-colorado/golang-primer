@@ -156,7 +156,7 @@ func (raftserver *RaftServer) Start() {
 
 func (raftserver *RaftServer) Receive() {
 	for {
-		log.Infoln("Waiting for a message")
+		log.Debugln("Waiting for a message")
 		msgB64Encoding, _ := raftserver.raftnet.Receive()
 
 		// route based on the message type

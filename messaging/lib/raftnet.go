@@ -26,10 +26,10 @@ func (raftnet *RaftNet) HandleIncomingConn(cl net.Conn) {
 }
 
 func (raftnet *RaftNet) connectTo(toID int) net.Conn {
-	log.Infoln("Raftnet", raftnet.Id, "as a client, connecting to RaftNet", toID)
+	log.Infoln("RaftNet", raftnet.Id, "as a client, connecting to RaftNet", toID)
 
 	sock := RaftNetConfig[toID]
-	log.Infoln("Connecting to " + sock.ConnType + sock.ConnHost + ":" + sock.ConnPort)
+	log.Debugln("Connecting to " + sock.ConnType + sock.ConnHost + ":" + sock.ConnPort)
 
 	conn, err := net.Dial(sock.ConnType, sock.ConnHost+":"+sock.ConnPort)
 	if err != nil {
@@ -37,7 +37,7 @@ func (raftnet *RaftNet) connectTo(toID int) net.Conn {
 		return nil
 	}
 
-	log.Infoln("Connected: ", conn.RemoteAddr(), conn.LocalAddr())
+	log.Debugln("Connected: ", conn.RemoteAddr(), conn.LocalAddr())
 	// the socket will not close but will block?
 	// if I maintain the links, yeah this could be necessary
 	// but if I connect everytime, this is not necessary?
@@ -164,7 +164,7 @@ func (raftnet *RaftNet) Start() {
 
 	// start listening as the server
 	sock := RaftNetConfig[raftnet.Id]
-	log.Infoln("Raft starts listening on", sock.ConnHost+":"+sock.ConnPort)
+	log.Debugln("Raft starts listening on", sock.ConnHost+":"+sock.ConnPort)
 	ln, err := net.Listen(sock.ConnType, sock.ConnHost+":"+sock.ConnPort)
 	if err != nil {
 		log.Errorf("Raft cannot listen on %+v\n", sock)
