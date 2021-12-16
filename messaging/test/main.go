@@ -223,7 +223,6 @@ func testMultilServerMultiClient() {
 			kvclient := lib_test.CreateKVClient(lib.SocketDescriptor{"tcp", "localhost", "25000"})
 
 			kvclient.Get("foo")
-
 			kvclient.Set("foo", "bar-client1")
 			time.Sleep(3 * time.Second)
 			kvclient.Get("foo")
@@ -231,16 +230,18 @@ func testMultilServerMultiClient() {
 			kvclient := lib_test.CreateKVClient(lib.SocketDescriptor{"tcp", "localhost", "25000"})
 
 			kvclient.Get("foo")
-
 			kvclient.Set("foo", "bar-client2")
 			kvclient.Get("foo2")
 			kvclient.Set("foo2", "bar-client2")
 			kvclient.Get("foo")
+			time.Sleep(3 * time.Second)
+
 			kvclient.Del("foo")
 
-		} else if clientID == 3 {
+		} else {
 			// a client just to read off a follower
-			kvclient := lib_test.CreateKVClient(lib.SocketDescriptor{"tcp", "localhost", "25001"})
+			// go run *go client 25002 (the port 25002 is connecting to server 2)
+			kvclient := lib_test.CreateKVClient(lib.SocketDescriptor{"tcp", "localhost", os.Args[2]})
 			kvclient.Get("foo")
 			kvclient.Get("foo2")
 			kvclient.Get("foo")
