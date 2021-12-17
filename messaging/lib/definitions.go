@@ -35,3 +35,4 @@ type RaftNet struct {
 const MSGTYPEFIELDLEN int = 11
 const APPENDENTRYMSG string = "APPENDENTRY"
 const APPENDENTRYRSP string = "APPENDRESPS"
+const COMMITUPDATE string = "COMMITUPDAT"

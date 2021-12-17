@@ -17,6 +17,8 @@ type RaftServer struct {
 	leaderTerm int
 
 	// book keeping
+
+	lastCommitIdx int
 	commitIdx     int
 	replicatedIdx [NetWorkSize]int
 
@@ -25,9 +27,12 @@ type RaftServer struct {
 	// entering wait() will release the lock iirc
 	lock sync.Mutex
 	cond *sync.Cond
+
+	// callback to application
+	raftcallback func([]RaftLogEntry)
 }
 
-func CreateARaftServer(id int) *RaftServer {
+func CreateARaftServer(id int, callback func([]RaftLogEntry)) *RaftServer {
 	var raftserver = RaftServer{}
 	raftserver.myID = id
 	raftserver.raftlog = &RaftLog{}
@@ -44,12 +49,17 @@ func CreateARaftServer(id int) *RaftServer {
 
 	}
 
+	// to save sending commitIdx more than one times, or actually yeah we can switch to heartbeat
+	// but that also seems uncessary, when there is no commit, why boterh sending commitIdx
+	raftserver.lastCommitIdx = -1
 	raftserver.commitIdx = -1
 	raftserver.replicatedIdx = [NetWorkSize]int{
 		-1, -1, -1, -1, -1,
 	}
 
 	raftserver.followerIDs = followerIDs
+
+	raftserver.raftcallback = callback
 
 	// maybe currentTerm should start with something, not 0
 	// but here, the server starts from beginning, as in the sense of the raftlog is empty...
@@ -172,6 +182,11 @@ func (raftserver *RaftServer) Receive() {
 			msg.Decoding(msgB64Encoding[MSGTYPEFIELDLEN:])
 			log.Infof("AppendEntriesResp received: %v\n", msg.Repr())
 			raftserver.ProcessAppendEntriesResp(&msg)
+		case COMMITUPDATE:
+			msg := CommitUpdate{}
+			msg.Decoding(msgB64Encoding[MSGTYPEFIELDLEN:])
+			log.Infof("CommitUpdate received: %v\n", msg.Repr())
+			raftserver.ProcessCommitUpdate(&msg)
 		default:
 			log.Errorln("Unknown Message Type!")
 		}
@@ -193,7 +208,7 @@ func (raftserver *RaftServer) ProcessAppendEntriesResp(msg *AppendEntriesResp) {
 		raftserver.replicatedIdx[msg.SenderId] = msg.Index + msg.NumOfEntries - 1
 
 		// determine the highest replicatedIDX which has 3 or more shows, including leader itself
-		// bookkeeping leader happens in LeaderAppendEntries()
+		// bookkeeping of leader itself happens in LeaderAppendEntries()
 		raftserver.lock.Lock()
 		raftserver.commitIdx = raftserver.DetermineCommitIdx()
 		log.Debugf("lock: %v is locked, commitIdx is %v", raftserver.lock, raftserver.commitIdx)
@@ -201,23 +216,21 @@ func (raftserver *RaftServer) ProcessAppendEntriesResp(msg *AppendEntriesResp) {
 		raftserver.lock.Unlock()
 		log.Debugf("lock: %v is unlocked, commitIdx is %v", raftserver.lock, raftserver.commitIdx)
 
-		raftserver.cond.Broadcast()
-
 		// we should now signla checkForCommit channel
 		// any client/goroutine waiting for its entry to be committed can now move on
-		// cannot use channel here - it will block this thread...
-		// raftserver.checkForCommit <- true
-		// the singal action must be non-blocking, which package does that
-		// wait group? nah... hmm.... then I don't know a proper way
-		// maybe conditional variable : https://kaviraj.me/understanding-condition-variable-in-go/
-		// yeah, potentially multiple clients are waiting
-		// CV is the way to broadcast progress has been made
-		// then I need to lock to gurad the sharded data?
-		// which is the commitIdx
-		// the lock goes before the commitIDX calculation, although the comments are here
-		//raftserver.cond.Broadcast()
+		raftserver.cond.Broadcast()
+
 		// we then should tell followers of this update
 		// using heartbeat message can be an option
+		// now just use a CommitUpdate msg, can incorporate with heartbeat if that is how paper describes
+		if raftserver.lastCommitIdx < raftserver.commitIdx {
+			commitUpdateMsg := CommitUpdate{raftserver.myID, raftserver.commitIdx}
+			for _, f := range raftserver.followerIDs {
+				raftserver.raftnet.Send(f, commitUpdateMsg.Encoding())
+			}
+
+			raftserver.lastCommitIdx = raftserver.commitIdx
+		}
 
 	} else {
 		log.Errorf("Follower %v not able to append to its own %v, back tracking\n", msg.SenderId, msg.Repr())
@@ -246,4 +259,16 @@ func (raftserver *RaftServer) DetermineCommitIdx() int {
 	log.Debugf("the replication indexes are %v\n", cpy)
 
 	return cpy[NetWorkSize/2]
+}
+
+func (raftserver *RaftServer) ProcessCommitUpdate(msg *CommitUpdate) {
+	// in case the replication has not caught up on the follower, just wait until next nudge
+	// it could be a heartbeat or next message
+	if len(raftserver.raftlog.items) > msg.CommitIdx {
+		// msg.commitIdx is already written in leader and should be written in follower, so should plus 1 to form the right bound
+		// raftserver.commitIdx, 1)starting with -1, 2)also should be written already: to avoid rewriting it, plus 1 generalize both
+		go raftserver.raftcallback(raftserver.raftlog.items[raftserver.commitIdx+1 : msg.CommitIdx+1])
+		raftserver.commitIdx = msg.CommitIdx
+	}
+
 }

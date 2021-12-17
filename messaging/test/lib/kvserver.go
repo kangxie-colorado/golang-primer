@@ -1,6 +1,7 @@
 package lib
 
 import (
+	"fmt"
 	"net"
 	"os"
 	"sync"
@@ -80,27 +81,71 @@ func HandleKVClient(cl net.Conn) {
 		// but net.Conn.Read() won't block so I don't know a better way yet
 		// actually, EOF might got ahead of this block: EOF will cause the err!=nil to fire
 		if msgBytes == nil {
-			log.Infoln("Received nothing sleep for 1s")
+			log.Infoln("Received nothing, sleep for 1s")
 			time.Sleep(1 * time.Second)
 			continue
 		}
 
 		msg := string(msgBytes)
-		switch msg[:3] {
-		case "SET":
-			Set(msg, cl)
+		handleKVMsg(msg, cl)
 
-		case "GET":
+	}
+}
 
-			Get(msg, cl)
+func handleKVMsg(msg string, cl net.Conn) {
+	switch msg[:3] {
+	case "SET":
+		Set(msg, cl)
 
-		case "DEL":
+	case "GET":
 
-			Del(msg, cl)
+		Get(msg, cl)
 
-		default:
-			log.Errorln("Methond Unknown!")
-		}
+	case "DEL":
+
+		Del(msg, cl)
+
+	default:
+		log.Errorln("Methond Unknown!")
+	}
+}
+
+func playLogSet(msg string) {
+	key, value := parseKeyValue(msg)
+	log.Infoln("Playing log, SET key:", key, "to value:", value)
+
+	kvstore[key] = value
+}
+
+func playLogDel(msg string) {
+	key := parseKey(msg)
+	log.Infoln("Playing log, DEL key", key)
+
+	if _, ok := kvstore[key]; ok {
+		delete(kvstore, key)
+	} else {
+		log.Infoln("Key not existent!")
+	}
+}
+
+func handleRaftLog(msg string) {
+	log.Debugf("Reading off raft log %v", msg)
+	switch msg[:3] {
+	case "SET":
+		playLogSet(msg)
+
+	case "DEL":
+		playLogDel(msg)
+
+	default:
+		log.Errorln("Methond Unknown!")
+	}
+}
+
+func RaftCallback(entires []lib.RaftLogEntry) {
+	for _, e := range entires {
+		msg := fmt.Sprintf("%v", e.Item)
+		handleRaftLog(msg)
 	}
 }
 
@@ -109,7 +154,7 @@ func KVServer(sock lib.SocketDescriptor, raftserverID int) {
 	// arbitrarily appoint raftserver 0 as the leader
 	// how do I do that? actually at this point, there is no leader, every raftnode just append to itself and then sending to others
 	// but only one server got the input, so purpose is served
-	raftserver = lib.CreateARaftServer(raftserverID)
+	raftserver = lib.CreateARaftServer(raftserverID, RaftCallback)
 	log.Infoln("Starting Raft Server")
 	raftserver.Start()
 	// don't forgot this gating method

@@ -149,7 +149,7 @@ func testRaftNetWithDisableEnable() {
 }
 
 /***
-// gobtest - code deleted - just keep the tests here
+// gobtest - library code deleted - just keep the tests here
 
 ****************************************************************************************
 // [tw-mbp-kxie test (master)]$ go run *go server
@@ -234,6 +234,8 @@ func testMultilServerMultiClient() {
 			kvclient.Get("foo2")
 			kvclient.Set("foo2", "bar-client2")
 			kvclient.Get("foo")
+			kvclient.Get("foo2")
+
 			time.Sleep(3 * time.Second)
 
 			kvclient.Del("foo")
@@ -244,7 +246,6 @@ func testMultilServerMultiClient() {
 			kvclient := lib_test.CreateKVClient(lib.SocketDescriptor{"tcp", "localhost", os.Args[2]})
 			kvclient.Get("foo")
 			kvclient.Get("foo2")
-			kvclient.Get("foo")
 		}
 
 	} else {

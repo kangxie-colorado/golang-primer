@@ -42,9 +42,15 @@ func CreateAppendEntriesMsg(sender, index, prevTerm int, entries []RaftLogEntry)
 	return AppendEntriesMsg{sender, index, prevTerm, entries}
 }
 
-// this needs some delicate serialize/deserialize scheme
-// if using string here? that would really not so easy
-// learn or build?
+type CommitUpdate struct {
+	SenderId  int
+	CommitIdx int
+}
+
+func (m *CommitUpdate) Repr() string {
+	return fmt.Sprintf("CommitUpdate{SenderId=%v, CommitIdx=%v}", m.SenderId, m.CommitIdx)
+
+}
 
 func (m *AppendEntriesMsg) Encoding() string {
 	b := bytes.Buffer{}
@@ -78,7 +84,7 @@ func (m *AppendEntriesMsg) Decoding(str string) {
 
 // what is the better way to do this code sharing
 // this polymorphism in golang?
-//
+// I haven't studied this yet - now, keep it duplicae and simple, but only in this file
 func (m *AppendEntriesResp) Encoding() string {
 	b := bytes.Buffer{}
 	e := gob.NewEncoder(&b)
@@ -91,6 +97,31 @@ func (m *AppendEntriesResp) Encoding() string {
 
 // caller allocates the memory
 func (m *AppendEntriesResp) Decoding(str string) {
+	by, err := base64.StdEncoding.DecodeString(str)
+	if err != nil {
+		log.Errorln("failed base64 Decode", err)
+	}
+	b := bytes.Buffer{}
+	b.Write(by)
+	d := gob.NewDecoder(&b)
+	err = d.Decode(&m)
+	if err != nil {
+		log.Errorln("failed gob Decode", err)
+	}
+}
+
+func (m *CommitUpdate) Encoding() string {
+	b := bytes.Buffer{}
+	e := gob.NewEncoder(&b)
+	err := e.Encode(m)
+	if err != nil {
+		log.Errorln("failed gob Encode", err)
+	}
+	return COMMITUPDATE + base64.StdEncoding.EncodeToString(b.Bytes())
+}
+
+// caller allocates the memory
+func (m *CommitUpdate) Decoding(str string) {
 	by, err := base64.StdEncoding.DecodeString(str)
 	if err != nil {
 		log.Errorln("failed base64 Decode", err)
