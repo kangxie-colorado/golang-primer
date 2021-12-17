@@ -52,13 +52,31 @@ func (m *CommitUpdate) Repr() string {
 
 }
 
-func (m *AppendEntriesMsg) Encoding() string {
+func encoding(m interface{}) bytes.Buffer {
 	b := bytes.Buffer{}
 	e := gob.NewEncoder(&b)
 	err := e.Encode(m)
 	if err != nil {
 		log.Errorln("failed gob Encode", err)
 	}
+
+	return b
+}
+
+func getDecoder(str string) *gob.Decoder {
+	by, err := base64.StdEncoding.DecodeString(str)
+	if err != nil {
+		log.Errorln("failed base64 Decode", err)
+	}
+	b := bytes.Buffer{}
+	b.Write(by)
+	d := gob.NewDecoder(&b)
+
+	return d
+}
+
+func (m *AppendEntriesMsg) Encoding() string {
+	b := encoding(m)
 	return APPENDENTRYMSG + base64.StdEncoding.EncodeToString(b.Bytes())
 }
 
@@ -69,14 +87,8 @@ func (m *AppendEntriesMsg) Encoding() string {
 	append.Decoding(str[6:])
 **/
 func (m *AppendEntriesMsg) Decoding(str string) {
-	by, err := base64.StdEncoding.DecodeString(str)
-	if err != nil {
-		log.Errorln("failed base64 Decode", err)
-	}
-	b := bytes.Buffer{}
-	b.Write(by)
-	d := gob.NewDecoder(&b)
-	err = d.Decode(&m)
+	d := getDecoder(str)
+	err := d.Decode(&m)
 	if err != nil {
 		log.Errorln("failed gob Decode", err)
 	}
@@ -86,50 +98,28 @@ func (m *AppendEntriesMsg) Decoding(str string) {
 // this polymorphism in golang?
 // I haven't studied this yet - now, keep it duplicae and simple, but only in this file
 func (m *AppendEntriesResp) Encoding() string {
-	b := bytes.Buffer{}
-	e := gob.NewEncoder(&b)
-	err := e.Encode(m)
-	if err != nil {
-		log.Errorln("failed gob Encode", err)
-	}
+	b := encoding(m)
 	return APPENDENTRYRSP + base64.StdEncoding.EncodeToString(b.Bytes())
 }
 
 // caller allocates the memory
 func (m *AppendEntriesResp) Decoding(str string) {
-	by, err := base64.StdEncoding.DecodeString(str)
-	if err != nil {
-		log.Errorln("failed base64 Decode", err)
-	}
-	b := bytes.Buffer{}
-	b.Write(by)
-	d := gob.NewDecoder(&b)
-	err = d.Decode(&m)
+	d := getDecoder(str)
+	err := d.Decode(&m)
 	if err != nil {
 		log.Errorln("failed gob Decode", err)
 	}
 }
 
 func (m *CommitUpdate) Encoding() string {
-	b := bytes.Buffer{}
-	e := gob.NewEncoder(&b)
-	err := e.Encode(m)
-	if err != nil {
-		log.Errorln("failed gob Encode", err)
-	}
+	b := encoding(m)
 	return COMMITUPDATE + base64.StdEncoding.EncodeToString(b.Bytes())
 }
 
 // caller allocates the memory
 func (m *CommitUpdate) Decoding(str string) {
-	by, err := base64.StdEncoding.DecodeString(str)
-	if err != nil {
-		log.Errorln("failed base64 Decode", err)
-	}
-	b := bytes.Buffer{}
-	b.Write(by)
-	d := gob.NewDecoder(&b)
-	err = d.Decode(&m)
+	d := getDecoder(str)
+	err := d.Decode(&m)
 	if err != nil {
 		log.Errorln("failed gob Decode", err)
 	}
