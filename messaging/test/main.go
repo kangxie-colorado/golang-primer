@@ -8,6 +8,7 @@ import (
 
 	"github.com/kangxie-colorado/golang-primer/messaging/lib"
 	lib_test "github.com/kangxie-colorado/golang-primer/messaging/test/lib"
+	trafficlight "github.com/kangxie-colorado/golang-primer/messaging/test/traffic_light"
 	log "github.com/sirupsen/logrus"
 )
 
@@ -253,6 +254,34 @@ func testMultilServerMultiClient() {
 	}
 }
 
+func testGoTalkToPythonSocket() {
+	lightConn := trafficlight.ConnectToLight(lib.SocketDescriptor{"udp", "localhost", "10000"})
+
+	lightConn.Write([]byte{'G'})
+	time.Sleep(500 * time.Millisecond)
+
+	lightConn.Write([]byte{'R'})
+	time.Sleep(500 * time.Millisecond)
+
+	lightConn.Write([]byte{'Y'})
+	time.Sleep(500 * time.Millisecond)
+
+	lightConn.Write([]byte{'G'})
+	time.Sleep(500 * time.Millisecond)
+
+}
+
+/**
+// code refactored away - just to keep a footprint of this test here
+func testPythonTalkToGOSocket() {
+	trafficlight.StartButtonListener(lib.SocketDescriptor{"udp", "localhost", "20000"})
+}
+**/
+
 func main() {
-	testMultilServerMultiClient()
+	tfl := trafficlight.CreateATrafficLight([2]int{30, 60},
+		[2]lib.SocketDescriptor{lib.SocketDescriptor{"udp", "localhost", "10000"}, lib.SocketDescriptor{"udp", "localhost", "10001"}},
+		lib.SocketDescriptor{"udp", "localhost", "20000"})
+
+	tfl.Start()
 }
