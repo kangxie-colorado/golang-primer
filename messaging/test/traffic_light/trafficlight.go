@@ -1,12 +1,16 @@
 package trafficlight
 
 import (
+	"fmt"
 	"strconv"
 	"time"
 
 	"github.com/enriquebris/goconcurrentqueue"
 	"github.com/kangxie-colorado/golang-primer/messaging/lib"
 	log "github.com/sirupsen/logrus"
+
+	"github.com/Workiva/go-datastructures/queue"
+	"github.com/Workiva/go-datastructures/set"
 )
 
 type TrafficLightColor int
@@ -53,7 +57,7 @@ func CreateATrafficLight(greenSecs [2]int, lightSocks [2]lib.SocketDescriptor, m
 
 func (tfl *TrafficLight) StartTimer() {
 	for {
-		time.Sleep(200 * time.Millisecond)
+		time.Sleep(1000 * time.Millisecond)
 		tfl.InputQueue.Enqueue("One Second Passed")
 	}
 }
@@ -155,6 +159,16 @@ func (tflsm *TFLStateMachine) initTFLSM(greenSecs [2]int) {
 	tflsm.greenSecs = greenSecs
 }
 
+func (tflsm *TFLStateMachine) asString() string {
+	return fmt.Sprintf("TFLStateMachine{whichIsGreen=%v, lightColors=%v, timer=%v, greenSecs=%v, buttonPressed=%v}",
+		tflsm.whichIsGreen,
+		tflsm.lightColors,
+		tflsm.timer,
+		tflsm.greenSecs,
+		tflsm.buttonPressed,
+	)
+}
+
 func (tflsm *TFLStateMachine) stateMachineRun(input TFLStateMachineInput) *TFLStateMachineOutput {
 	theOtherLightNo := 0
 	if tflsm.whichIsGreen == 0 {
@@ -164,8 +178,8 @@ func (tflsm *TFLStateMachine) stateMachineRun(input TFLStateMachineInput) *TFLSt
 	// little bug: this initialize colors to 0?
 	// every time press the button it falshes red?
 	output := &TFLStateMachineOutput{}
-
-	// with this, fix it... all actualy, return nil
+	// notice output when intialized, colors field is initialzied to all zero
+	// at least, copy the state machine colors in
 	output.colors = tflsm.lightColors
 
 	if input.buttonPressed {
@@ -178,7 +192,9 @@ func (tflsm *TFLStateMachine) stateMachineRun(input TFLStateMachineInput) *TFLSt
 				tflsm.timer = 0
 			} else {
 				tflsm.timer += 30
-				output = nil
+				currentCountDown := tflsm.greenSecs[tflsm.whichIsGreen] - tflsm.timer
+				output.countDowns[tflsm.whichIsGreen] = strconv.Itoa(currentCountDown)
+
 			}
 
 			tflsm.buttonPressed = true
@@ -256,7 +272,7 @@ func CreateTFLControl(greenSecs [2]int, lightSocks [2]lib.SocketDescriptor, mySo
 
 func (tflctl *TFLControl) startTimer() {
 	for {
-		time.Sleep(200 * time.Millisecond)
+		time.Sleep(1000 * time.Millisecond)
 		tflctl.inputQueue.Enqueue("One Second Passed")
 	}
 }
@@ -293,6 +309,57 @@ func (tflctl *TFLControl) Start() {
 			tflctl.controlTheLights(output)
 		}
 
+	}
+
+}
+
+func TestTFLStateMachine() {
+	sm := TFLStateMachine{}
+	sm.initTFLSM([2]int{30, 60})
+
+	toTestQueue := queue.New(100)
+	toTestQueue.Put(sm)
+	seen := set.New()
+
+	buttonPressed := [2]bool{false, true}
+	timerElapsed := [2]bool{false, true}
+
+	for !toTestQueue.Empty() {
+		item, err := toTestQueue.Get(1)
+		if err != nil {
+			log.Errorln("Error getting from toTestQueue", err.Error())
+		}
+
+		/**
+		// can convert interface to stuct back this way
+		var state TFLStateMachine
+		err = mapstructure.Decode(item[0], &state)
+		if err != nil {
+			log.Errorln("Error decode state", err.Error())
+
+		}
+		**/
+		// or this way
+		state := item[0].(TFLStateMachine)
+
+		if !seen.Exists(state.asString()) {
+			seen.Add(state.asString())
+
+			for _, bp := range buttonPressed {
+				for _, te := range timerElapsed {
+					stateCpy := state
+					stateCpy.stateMachineRun(TFLStateMachineInput{buttonPressed: bp, timerElapsed: te})
+					toTestQueue.Put(stateCpy)
+				}
+			}
+
+		}
+
+		log.Infof("%v states are tested by far", seen.Len())
+
+	}
+	for _, item := range seen.Flatten() {
+		log.Infof("%v\n", item)
 	}
 
 }
