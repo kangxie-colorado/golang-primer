@@ -58,14 +58,14 @@ func ConnectToLight(sock lib.SocketDescriptor) *net.UDPConn {
 	return conn
 }
 
-func StartButtonListener(tfl *TrafficLight) {
-	udpAddr, err := net.ResolveUDPAddr(tfl.MySock.ConnType, tfl.MySock.ConnHost+":"+tfl.MySock.ConnPort)
+func StartButtonListener_old(tflctl *TrafficLight) {
+	udpAddr, err := net.ResolveUDPAddr(tflctl.MySock.ConnType, tflctl.MySock.ConnHost+":"+tflctl.MySock.ConnPort)
 	if err != nil {
 		log.Errorln("Error Resolving:", err.Error())
 		os.Exit(1)
 	}
 
-	udpConn, err := net.ListenUDP(tfl.MySock.ConnType, udpAddr)
+	udpConn, err := net.ListenUDP(tflctl.MySock.ConnType, udpAddr)
 	if err != nil {
 		log.Errorln("Error Listenting:", err.Error())
 		os.Exit(1)
@@ -76,7 +76,30 @@ func StartButtonListener(tfl *TrafficLight) {
 		udpConn.Read(buf)
 
 		fmt.Println("Button Pressed")
-		tfl.InputQueue.Enqueue("Button Pressed")
+		tflctl.InputQueue.Enqueue("Button Pressed")
+
+	}
+}
+
+func StartButtonListener(tflctl *TFLControl) {
+	udpAddr, err := net.ResolveUDPAddr(tflctl.mySock.ConnType, tflctl.mySock.ConnHost+":"+tflctl.mySock.ConnPort)
+	if err != nil {
+		log.Errorln("Error Resolving:", err.Error())
+		os.Exit(1)
+	}
+
+	udpConn, err := net.ListenUDP(tflctl.mySock.ConnType, udpAddr)
+	if err != nil {
+		log.Errorln("Error Listenting:", err.Error())
+		os.Exit(1)
+	}
+
+	for {
+		buf := make([]byte, 1024)
+		udpConn.Read(buf)
+
+		fmt.Println("Button Pressed")
+		tflctl.inputQueue.Enqueue("Button Pressed")
 
 	}
 

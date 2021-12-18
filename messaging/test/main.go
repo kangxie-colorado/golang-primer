@@ -279,7 +279,7 @@ func testPythonTalkToGOSocket() {
 **/
 
 func main() {
-	tfl := trafficlight.CreateATrafficLight([2]int{30, 60},
+	tfl := trafficlight.CreateTFLControl([2]int{30, 60},
 		[2]lib.SocketDescriptor{lib.SocketDescriptor{"udp", "localhost", "10000"}, lib.SocketDescriptor{"udp", "localhost", "10001"}},
 		lib.SocketDescriptor{"udp", "localhost", "20000"})
 

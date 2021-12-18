@@ -45,7 +45,7 @@ func CreateATrafficLight(greenSecs [2]int, lightSocks [2]lib.SocketDescriptor, m
 	tfl.InputQueue = goconcurrentqueue.NewFIFO()
 	tfl.Controller = CreateLightControl(lightSocks)
 
-	tfl.ButtonListener = StartButtonListener
+	tfl.ButtonListener = StartButtonListener_old
 	tfl.MySock = mySock
 
 	return &tfl
@@ -92,13 +92,13 @@ func (tfl *TrafficLight) Start() {
 			tfl.Timer += 1
 
 			if tfl.lightColors[tfl.whichIsGreen] == Green && tfl.Timer > tfl.greenSecs[tfl.whichIsGreen] {
-				log.Infof("Lights are %v, turning light%v from Green to Yellow", tfl.lightColors, tfl.whichIsGreen)
+				log.Infof("Lights colors are %v, turning light%v from Green to Yellow", tfl.lightColors, tfl.whichIsGreen)
 				tfl.Controller.changeColor(tfl.whichIsGreen, Yellow, "5")
 				tfl.lightColors[tfl.whichIsGreen] = Yellow
 				tfl.Timer = 0
 			} else if tfl.lightColors[tfl.whichIsGreen] == Yellow && tfl.Timer > YellowTimer {
 
-				log.Infof("Lights are %v, turning light%v from Yellow to Red", tfl.lightColors, tfl.whichIsGreen)
+				log.Infof("Lights colors are %v, turning light%v from Yellow to Red", tfl.lightColors, tfl.whichIsGreen)
 				tfl.Controller.changeColor(tfl.whichIsGreen, Red, "")
 				tfl.lightColors[tfl.whichIsGreen] = Red
 
@@ -123,6 +123,175 @@ func (tfl *TrafficLight) Start() {
 		default:
 			log.Errorln("Unknown input events:", msg)
 		}
+	}
+
+}
+
+// refactoring: try to isolate the state machine out of the controller
+
+type TFLStateMachineInput struct {
+	timerElapsed  bool
+	buttonPressed bool
+}
+
+type TFLStateMachine struct {
+	whichIsGreen  int
+	lightColors   [2]TrafficLightColor
+	timer         int    // how much time has elapsed in this state(color is just state)
+	greenSecs     [2]int // how long to stay green
+	buttonPressed bool
+}
+
+type TFLStateMachineOutput struct {
+	colors     [2]TrafficLightColor
+	countDowns [2]string
+}
+
+// caller allocates the memory
+func (tflsm *TFLStateMachine) initTFLSM(greenSecs [2]int) {
+	tflsm.whichIsGreen = 0
+	tflsm.lightColors = [2]TrafficLightColor{Green, Red}
+	tflsm.timer = 0
+	tflsm.greenSecs = greenSecs
+}
+
+func (tflsm *TFLStateMachine) stateMachineRun(input TFLStateMachineInput) *TFLStateMachineOutput {
+	theOtherLightNo := 0
+	if tflsm.whichIsGreen == 0 {
+		theOtherLightNo = 1
+	}
+
+	// little bug: this initialize colors to 0?
+	// every time press the button it falshes red?
+	output := &TFLStateMachineOutput{}
+
+	// with this, fix it... all actualy, return nil
+	output.colors = tflsm.lightColors
+
+	if input.buttonPressed {
+		if tflsm.lightColors[tflsm.whichIsGreen] == Green && tflsm.greenSecs[tflsm.whichIsGreen] == 60 && !tflsm.buttonPressed {
+			if tflsm.timer > 30 {
+				output.colors[tflsm.whichIsGreen] = Yellow
+				output.countDowns[tflsm.whichIsGreen] = strconv.Itoa(YellowTimer)
+
+				tflsm.lightColors[tflsm.whichIsGreen] = Yellow
+				tflsm.timer = 0
+			} else {
+				tflsm.timer += 30
+				output = nil
+			}
+
+			tflsm.buttonPressed = true
+		}
+	}
+
+	if input.timerElapsed {
+		tflsm.timer += 1
+
+		if tflsm.lightColors[tflsm.whichIsGreen] == Green && tflsm.timer > tflsm.greenSecs[tflsm.whichIsGreen] {
+			log.Infof("Lights colors are %v, turning light%v from Green to Yellow", tflsm.lightColors, tflsm.whichIsGreen)
+			output.colors[tflsm.whichIsGreen] = Yellow
+			output.countDowns[tflsm.whichIsGreen] = strconv.Itoa(YellowTimer)
+
+			tflsm.lightColors[tflsm.whichIsGreen] = Yellow
+			tflsm.timer = 0
+		} else if tflsm.lightColors[tflsm.whichIsGreen] == Yellow && tflsm.timer > YellowTimer {
+
+			log.Infof("Lights colors are %v, turning light%v from Yellow to Red", tflsm.lightColors, tflsm.whichIsGreen)
+
+			output.colors[tflsm.whichIsGreen] = Red
+			tflsm.lightColors[tflsm.whichIsGreen] = Red
+
+			// this should change another light to green, how to do that...
+			// huh, actually there is not another state machine, one state machine controls two lights...
+			// yeah, and shit, I entered a dead place when thinking I need two timers for green/red light length
+			output.colors[theOtherLightNo] = Green
+			output.countDowns[theOtherLightNo] = strconv.Itoa(tflsm.greenSecs[theOtherLightNo])
+			tflsm.lightColors[theOtherLightNo] = Green
+
+			tflsm.whichIsGreen = theOtherLightNo
+
+			tflsm.timer = 0
+		} else {
+			if tflsm.lightColors[tflsm.whichIsGreen] == Green {
+				output.colors[tflsm.whichIsGreen] = Green
+				output.countDowns[tflsm.whichIsGreen] = strconv.Itoa(tflsm.greenSecs[tflsm.whichIsGreen] - tflsm.timer)
+			} else if tflsm.lightColors[tflsm.whichIsGreen] == Yellow {
+				output.colors[tflsm.whichIsGreen] = Yellow
+				output.countDowns[tflsm.whichIsGreen] = strconv.Itoa(YellowTimer - tflsm.timer)
+
+			}
+		}
+	}
+
+	return output
+}
+
+type TFLControl struct {
+	stateMachine *TFLStateMachine
+
+	inputQueue *goconcurrentqueue.FIFO
+	controller LightControl
+
+	mySock         lib.SocketDescriptor
+	buttonListener func(*TFLControl) // use a callback is good enough
+}
+
+func CreateTFLControl(greenSecs [2]int, lightSocks [2]lib.SocketDescriptor, mySock lib.SocketDescriptor) *TFLControl {
+	var tflctl = TFLControl{}
+
+	sm := TFLStateMachine{}
+	sm.initTFLSM(greenSecs)
+	tflctl.stateMachine = &sm
+
+	tflctl.inputQueue = goconcurrentqueue.NewFIFO()
+	tflctl.controller = CreateLightControl(lightSocks)
+
+	tflctl.buttonListener = StartButtonListener
+	tflctl.mySock = mySock
+
+	return &tflctl
+}
+
+func (tflctl *TFLControl) startTimer() {
+	for {
+		time.Sleep(200 * time.Millisecond)
+		tflctl.inputQueue.Enqueue("One Second Passed")
+	}
+}
+
+func (tflctl *TFLControl) controlTheLights(output *TFLStateMachineOutput) {
+	for i := 0; i < len(output.colors); i++ {
+		tflctl.controller.changeColor(i, output.colors[i], output.countDowns[i])
+	}
+}
+
+func (tflctl *TFLControl) Start() {
+	go tflctl.buttonListener(tflctl)
+	go tflctl.startTimer()
+
+	for {
+		msg, err := tflctl.inputQueue.DequeueOrWaitForNextElement()
+		if err != nil {
+			log.Errorln("Error dequeue inbox", err.Error())
+		}
+
+		buttonPressed := false
+		timerElapsed := false
+		switch msg {
+		case "Button Pressed":
+			buttonPressed = true
+		case "One Second Passed":
+			timerElapsed = true
+		default:
+			log.Errorln("Unknown input events:", msg)
+		}
+
+		output := tflctl.stateMachine.stateMachineRun(TFLStateMachineInput{timerElapsed: timerElapsed, buttonPressed: buttonPressed})
+		if output != nil {
+			tflctl.controlTheLights(output)
+		}
+
 	}
 
 }
