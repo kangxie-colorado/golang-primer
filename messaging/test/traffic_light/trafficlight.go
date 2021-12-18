@@ -212,6 +212,7 @@ func (tflsm *TFLStateMachine) stateMachineRun(input TFLStateMachineInput) *TFLSt
 			tflsm.whichIsGreen = theOtherLightNo
 
 			tflsm.timer = 0
+			tflsm.buttonPressed = false
 		} else {
 			if tflsm.lightColors[tflsm.whichIsGreen] == Green {
 				output.colors[tflsm.whichIsGreen] = Green
