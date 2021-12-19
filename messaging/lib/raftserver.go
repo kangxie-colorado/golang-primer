@@ -153,12 +153,29 @@ func (raftserver *RaftServer) LeaderAppendEntries(index, prevTerm int, entries [
 			m := CreateAppendEntriesMsg(raftserver.myID, raftserver.currentLeaderTerm(), raftserver.commitIdx, index, prevTerm, entries)
 			// simple fixed length type field for now, of course can wrap this with even one more layer.
 			// not the major focus
-			log.Debugf("Sending raftnode:%v", f)
+			log.Debugf("Sending raftnode:%v, msg: %v", f, m.Repr())
 			raftserver.raftnet.Send(f, m.Encoding())
 		}
 
 	}
 	return success
+}
+
+func (raftserver *RaftServer) LeaderNoop() {
+	// first thing in my term, write a "noop" to celebrate the election
+	// this should be in the winning election moment, between the state transition
+	// but at this moment, I just want to make sure I write a noop
+	// shall I also wait for this to be commited...
+	// to simplify things, I could
+	// then questio is Should This Block the main thread or run it in a separete goroutine
+	if raftserver.myRole == Leader {
+
+		raftserver.leaderTerm = raftserver.prevTermFromLog() + 1
+		commitWait := make(chan bool)
+		raftserver.AppendNewEntry("NOP", commitWait)
+
+		<-commitWait
+	}
 }
 
 func (raftserver *RaftServer) Start() {
@@ -182,6 +199,7 @@ func (raftserver *RaftServer) Start() {
 	// but now, it is time to think about timeout
 	// so need another event loop to append heartbeat, and reuse the appendEntries with empty entries
 	go raftserver.heartbeatGenerator()
+
 }
 
 func (raftserver *RaftServer) heartbeatGenerator() {

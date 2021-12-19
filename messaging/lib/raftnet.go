@@ -80,7 +80,6 @@ func (raftnet *RaftNet) sendWithLongConn(toID int, msg string) {
 		}
 		if retries == 0 {
 			log.Errorf("The link to raftnet%v is dead? retired 5 times already\n", toID)
-
 		}
 	}
 }
@@ -107,7 +106,7 @@ func (raftnet *RaftNet) bgSender(toID int) {
 		if err != nil {
 			log.Errorln("Error dequeue outbox", toID, err.Error())
 		} else {
-			raftnet.sendWithLongConn(toID, fmt.Sprintf("%v", msg))
+			raftnet.sendWithNewConnEachTime(toID, fmt.Sprintf("%v", msg))
 		}
 	}
 }

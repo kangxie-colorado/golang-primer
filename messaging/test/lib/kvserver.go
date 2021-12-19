@@ -137,6 +137,9 @@ func handleRaftLog(msg string) {
 	case "DEL":
 		playLogDel(msg)
 
+	case "NOP":
+		log.Infoln("A noop message!")
+
 	default:
 		log.Errorln("Methond Unknown!")
 	}
@@ -159,6 +162,11 @@ func KVServer(sock lib.SocketDescriptor, raftserverID int) {
 	raftserver.Start()
 	// don't forgot this gating method
 	raftserver.Net().BeginSending()
+
+	// leader do a noop first
+	// this should happen internally when leaders is elected
+	// this is only test purpose
+	raftserver.LeaderNoop()
 
 	// below was without raft
 	log.Infoln("Staring KV server")
