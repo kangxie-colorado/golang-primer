@@ -278,7 +278,7 @@ func testPythonTalkToGOSocket() {
 }
 **/
 
-func main() {
+func testTrafficLight() {
 	trafficlight.TestTFLStateMachine()
 
 	tfl := trafficlight.CreateTFLControl([2]int{30, 60},
@@ -286,4 +286,8 @@ func main() {
 		lib.SocketDescriptor{"udp", "localhost", "20000"})
 
 	tfl.Start()
+}
+
+func main() {
+	testMultilServerMultiClient()
 }

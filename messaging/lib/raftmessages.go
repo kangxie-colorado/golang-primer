@@ -16,14 +16,18 @@ type RaftMessage interface {
 }
 
 type AppendEntriesMsg struct {
-	SenderId int
+	SenderId        int
+	LeaderTerm      int
+	LeaderCommitIdx int
+
 	Index    int
 	PrevTerm int
 	Entries  []RaftLogEntry
 }
 
 func (m *AppendEntriesMsg) Repr() string {
-	return fmt.Sprintf("AppendEntriesMsg{SenderId=%v, Index=%v, PrevTerm=%v, Entries=[]RaftLogEntry{%v}}", m.SenderId, m.Index, m.PrevTerm, m.Entries)
+	return fmt.Sprintf("AppendEntriesMsg{SenderId=%v, LeaderTerm=%v, LeaderCommitIdx=%v, Index=%v, PrevTerm=%v, Entries=[]RaftLogEntry{%v}}",
+		m.SenderId, m.LeaderTerm, m.LeaderCommitIdx, m.Index, m.PrevTerm, m.Entries)
 }
 
 type AppendEntriesResp struct {
@@ -38,8 +42,9 @@ func (m *AppendEntriesResp) Repr() string {
 	return fmt.Sprintf("AppendEntriesResp{SenderId=%v, Success=%v, Index=%v, NumOfEntries=%v, Term=%v}", m.SenderId, m.Success, m.Index, m.NumOfEntries, m.Term)
 }
 
-func CreateAppendEntriesMsg(sender, index, prevTerm int, entries []RaftLogEntry) AppendEntriesMsg {
-	return AppendEntriesMsg{sender, index, prevTerm, entries}
+// for test convienience ony?
+func CreateAppendEntriesMsg(sender, leaderTerm, leaderCommitIdx, index, prevTerm int, entries []RaftLogEntry) AppendEntriesMsg {
+	return AppendEntriesMsg{sender, leaderTerm, leaderCommitIdx, index, prevTerm, entries}
 }
 
 type CommitUpdate struct {

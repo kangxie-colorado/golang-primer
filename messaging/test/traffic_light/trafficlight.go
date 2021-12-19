@@ -16,7 +16,7 @@ import (
 type TrafficLightColor int
 
 const (
-	Undefined = iota
+	Undefined TrafficLightColor = iota
 	Green
 	Yellow
 	Red
@@ -182,6 +182,8 @@ func (tflsm *TFLStateMachine) stateMachineRun(input TFLStateMachineInput) *TFLSt
 	// at least, copy the state machine colors in
 	output.colors = tflsm.lightColors
 
+	// only need to manipulate the green/yellow stuff, where yellow is transition state of green (identified by whichIsGreen until it turns red)
+	// but the point is not to worry about red, that is just derived from the green/yellow changes...
 	if input.buttonPressed {
 		if tflsm.lightColors[tflsm.whichIsGreen] == Green && tflsm.greenSecs[tflsm.whichIsGreen] == 60 && !tflsm.buttonPressed {
 			if tflsm.timer > 30 {

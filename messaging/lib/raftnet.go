@@ -70,13 +70,18 @@ func (raftnet *RaftNet) sendWithLongConn(toID int, msg string) {
 			// next time when a message is to be sent, it will refresh
 			// no need to worry about the message, it can be lost
 			// the application layer will re-transmit
-			raftnet.outlinks[toID].Close()
 			raftnet.outlinks[toID] = nil
 			raftnet.outlinks[toID] = raftnet.connectTo(toID)
-			err = SendMessageStr(raftnet.outlinks[toID], msg)
-		}
+			if raftnet.outlinks[toID] != nil {
+				err = SendMessageStr(raftnet.outlinks[toID], msg)
+			}
 
-		log.Errorf("The link to raftnet%v is dead? retired 5 times already\n", toID)
+			retries--
+		}
+		if retries == 0 {
+			log.Errorf("The link to raftnet%v is dead? retired 5 times already\n", toID)
+
+		}
 	}
 }
 
@@ -102,7 +107,7 @@ func (raftnet *RaftNet) bgSender(toID int) {
 		if err != nil {
 			log.Errorln("Error dequeue outbox", toID, err.Error())
 		} else {
-			raftnet.sendWithNewConnEachTime(toID, fmt.Sprintf("%v", msg))
+			raftnet.sendWithLongConn(toID, fmt.Sprintf("%v", msg))
 		}
 	}
 }
