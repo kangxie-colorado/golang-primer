@@ -9,6 +9,13 @@ import (
 	log "github.com/sirupsen/logrus"
 )
 
+const MSGTYPEFIELDLEN int = 11
+const APPENDENTRYMSG string = "APPENDENTRY"
+const APPENDENTRYRSP string = "APPENDRESPS"
+const COMMITUPDATE string = "COMMITUPDAT"
+const REQUESTVOTEMSG string = "REQUESTVOTE"
+const REQUESTVOTERESP string = "REQVOTERESP"
+
 type RaftMessage interface {
 	Encoding() string
 	Decoding(string)
@@ -123,6 +130,57 @@ func (m *CommitUpdate) Encoding() string {
 
 // caller allocates the memory
 func (m *CommitUpdate) Decoding(str string) {
+	d := getDecoder(str)
+	err := d.Decode(&m)
+	if err != nil {
+		log.Errorln("failed gob Decode", err)
+	}
+}
+
+type RequestVoteMsg struct {
+	SenderId    int // also this is candidate ID
+	Term        int
+	LastLogIdx  int
+	LastLogTerm int
+}
+
+func (m *RequestVoteMsg) Repr() string {
+	return fmt.Sprintf("RequestVoteMsg{SenderId=%v, Term=%v, LastLogIdx=%v, LastLogTerm=%v}",
+		m.SenderId, m.Term, m.LastLogIdx, m.LastLogTerm)
+}
+
+func (m *RequestVoteMsg) Encoding() string {
+	b := encoding(m)
+	return REQUESTVOTEMSG + base64.StdEncoding.EncodeToString(b.Bytes())
+}
+
+// caller allocates the memory
+func (m *RequestVoteMsg) Decoding(str string) {
+	d := getDecoder(str)
+	err := d.Decode(&m)
+	if err != nil {
+		log.Errorln("failed gob Decode", err)
+	}
+}
+
+type RequestVoteResp struct {
+	SenderId    int // also this is candidate ID
+	Term        int
+	VoteGranted bool
+}
+
+func (m *RequestVoteResp) Repr() string {
+	return fmt.Sprintf("RequestVoteResp{SenderId=%v, Term=%v, VoteGranted=%v}",
+		m.SenderId, m.Term, m.VoteGranted)
+}
+
+func (m *RequestVoteResp) Encoding() string {
+	b := encoding(m)
+	return REQUESTVOTERESP + base64.StdEncoding.EncodeToString(b.Bytes())
+}
+
+// caller allocates the memory
+func (m *RequestVoteResp) Decoding(str string) {
 	d := getDecoder(str)
 	err := d.Decode(&m)
 	if err != nil {

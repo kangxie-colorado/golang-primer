@@ -197,11 +197,11 @@ func testMultilServerMultiClient() {
 	}
 
 	if prog == "server" {
-		raftID := 0
+		raftID := 1
 		if len(os.Args) > 2 {
 			raftID, _ = strconv.Atoi(os.Args[2])
 		}
-		initLog("server"+strconv.Itoa(raftID)+".log", log.DebugLevel)
+		initLog("server"+strconv.Itoa(raftID)+".log", log.InfoLevel)
 		log.Infoln("********************************************************************************************")
 
 		port := 25000 + raftID

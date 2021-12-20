@@ -87,6 +87,7 @@ func HandleKVClient(cl net.Conn) {
 		}
 
 		msg := string(msgBytes)
+		log.Debugf("received msg, bytes: %v, string: %v", msgBytes, msg)
 		handleKVMsg(msg, cl)
 
 	}
@@ -166,7 +167,11 @@ func KVServer(sock lib.SocketDescriptor, raftserverID int) {
 	// leader do a noop first
 	// this should happen internally when leaders is elected
 	// this is only test purpose
-	raftserver.LeaderNoop()
+	//raftserver.LeaderNoop()
+
+	// let the first candiate start a vote
+	// hardcoded to be only id:0 starting a vote
+	raftserver.RequestForVote()
 
 	// below was without raft
 	log.Infoln("Staring KV server")
