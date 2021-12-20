@@ -81,7 +81,7 @@ func HandleKVClient(cl net.Conn) {
 		// but net.Conn.Read() won't block so I don't know a better way yet
 		// actually, EOF might got ahead of this block: EOF will cause the err!=nil to fire
 		if msgBytes == nil {
-			log.Infoln("Received nothing, sleep for 1s")
+			log.Debugln("Received nothing, sleep for 1s")
 			time.Sleep(1 * time.Second)
 			continue
 		}
@@ -171,7 +171,7 @@ func KVServer(sock lib.SocketDescriptor, raftserverID int) {
 
 	// let the first candiate start a vote
 	// hardcoded to be only id:0 starting a vote
-	raftserver.RequestForVote()
+	//raftserver.RequestForVote()
 
 	// below was without raft
 	log.Infoln("Staring KV server")

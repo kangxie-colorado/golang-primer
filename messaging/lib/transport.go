@@ -40,7 +40,7 @@ func SendMessage(conn net.Conn, msg []byte) error {
 
 	writeBytes, err := conn.Write(msg)
 	if err != nil {
-		log.Errorln("Error when writing", err.Error())
+		log.Debugln("Error when writing", err.Error())
 	}
 
 	log.Debugln("Written bytes:", writeBytes)
@@ -58,7 +58,7 @@ func RecvMessage(conn net.Conn) ([]byte, error) {
 	szBuf := make([]byte, 12)
 	_, err := conn.Read(szBuf)
 	if err != nil {
-		log.Errorln("Error when reading:", err.Error())
+		log.Debugln("Error when reading:", err.Error())
 		return []byte{}, err
 	}
 
@@ -79,7 +79,7 @@ func RecvMessage(conn net.Conn) ([]byte, error) {
 
 		readBytes, err := conn.Read(tmp)
 		if err != nil || readBytes == 0 {
-			log.Errorln("Error when reading", err.Error())
+			log.Debugln("Error when reading", err.Error())
 			break
 		}
 

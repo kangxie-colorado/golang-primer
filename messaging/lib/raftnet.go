@@ -16,7 +16,7 @@ func (raftnet *RaftNet) HandleIncomingConn(cl net.Conn) {
 		// just enqueue the message
 		msg, err := RecvMessageStr(cl)
 		if err != nil {
-			log.Errorln("Error when receiving messages", err.Error())
+			log.Debugln("Error when receiving messages", err.Error())
 			break
 		}
 
@@ -26,14 +26,14 @@ func (raftnet *RaftNet) HandleIncomingConn(cl net.Conn) {
 }
 
 func (raftnet *RaftNet) connectTo(toID int) net.Conn {
-	log.Infoln("RaftNet", raftnet.Id, "as a client, connecting to RaftNet", toID)
+	log.Debugln("RaftNet", raftnet.Id, "as a client, connecting to RaftNet", toID)
 
 	sock := RaftNetConfig[toID]
 	log.Debugln("Connecting to " + sock.ConnType + sock.ConnHost + ":" + sock.ConnPort)
 
 	conn, err := net.Dial(sock.ConnType, sock.ConnHost+":"+sock.ConnPort)
 	if err != nil {
-		log.Errorln("Error Conecting:", err.Error())
+		log.Debugln("Error Conecting:", err.Error())
 		return nil
 	}
 
@@ -183,7 +183,7 @@ func (raftnet *RaftNet) Start() {
 			log.Errorln("Error connecting:", err.Error())
 			return
 		}
-		log.Infoln("Client Connected: ", cl.RemoteAddr().String())
+		log.Debugln("Client Connected: ", cl.RemoteAddr().String())
 
 		go raftnet.HandleIncomingConn(cl)
 	}
