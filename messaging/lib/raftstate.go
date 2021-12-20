@@ -29,11 +29,11 @@ func (noderole nodeRole) asString() string {
 type RaftState struct {
 	raftlog *RaftLog // share the reference with raftserver
 
-	myId         int
-	myRole       nodeRole
-	currentTerm  int // maybe not the same as the term from log
-	votedFor     int
-	whoVoteForMe []int
+	myId        int
+	myRole      nodeRole
+	currentTerm int // maybe not the same as the term from log
+	votedFor    int
+	votes       [NetWorkSize]bool
 
 	// book keeping
 	commitIdx     int
@@ -51,14 +51,10 @@ func (raftstate *RaftState) initRaftState(id int) {
 	raftstate.myId = id
 
 	raftstate.myRole = Follower
-	// simple hack here to do some early test
-	if id == 0 {
-		raftstate.myRole = Candidate
-	}
 
 	raftstate.currentTerm = 0
 	raftstate.votedFor = -1
-	raftstate.whoVoteForMe = []int{}
+	raftstate.votes = [NetWorkSize]bool{false}
 
 	raftstate.raftlog = &RaftLog{}
 
@@ -74,8 +70,25 @@ func (raftstate *RaftState) initRaftState(id int) {
 
 }
 
-func (raftstate *RaftState) handleTimer() {
+func (raftstate *RaftState) LeaderAppendEntries(index, prevTerm int, entries []RaftLogEntry, raftserver *RaftServer) bool {
+	raftstate.votedFor = -1
+	success := raftstate.raftlog.AppendEntries(index, prevTerm, entries)
 
+	if success {
+		// book keeping leader itself
+		raftstate.replicatedIdx[raftserver.myID] = index
+
+		// send AppendEntries Msg to followers
+		for _, f := range raftserver.followerIDs {
+			m := CreateAppendEntriesMsg(raftstate.myId, raftstate.currentTerm, raftstate.commitIdx, index, prevTerm, entries)
+			// simple fixed length type field for now, of course can wrap this with even one more layer.
+			// not the major focus
+			log.Debugf("Sending raftnode:%v, msg: %v", f, m.Repr())
+			raftserver.raftnet.Send(f, m.Encoding())
+		}
+
+	}
+	return success
 }
 
 func (raftstate *RaftState) handleAppendEntriesMsg(msg *AppendEntriesMsg, raftserver *RaftServer) {
@@ -86,25 +99,41 @@ func (raftstate *RaftState) handleAppendEntriesMsg(msg *AppendEntriesMsg, raftse
 		if msg.LeaderTerm >= raftstate.currentTerm {
 			raftstate.currentTerm = msg.LeaderTerm
 			raftstate.FollowerAppendEntries(msg, raftserver)
+
+			raftserver.electionTimer = 0
+			raftstate.votedFor = -1
+
 		}
 
 	}
 
 	if raftstate.myRole == Candidate {
-		if msg.LeaderTerm > raftstate.currentTerm {
+		if msg.LeaderTerm >= raftstate.currentTerm {
+			log.Infoln("Becoming A Follower Because AppendEntriesMsg msgTerm is newer than my own!")
+
 			raftstate.myRole = Follower
 			raftstate.currentTerm = msg.LeaderTerm
 			raftstate.FollowerAppendEntries(msg, raftserver)
+
+			raftserver.electionTimer = 0
+			raftstate.votedFor = -1
+
 		}
 
 	}
 
 	if raftstate.myRole == Leader {
 		// network partition
-		if msg.LeaderTerm > raftstate.currentTerm {
+		if msg.LeaderTerm >= raftstate.currentTerm {
+			log.Infoln("Becoming A Follower Because AppendEntriesMsg msgTerm is newer than my own!")
+
 			raftstate.myRole = Follower
 			raftstate.currentTerm = msg.LeaderTerm
 			raftstate.FollowerAppendEntries(msg, raftserver)
+
+			raftserver.electionTimer = 0
+			raftstate.votedFor = -1
+
 		}
 
 	}
@@ -132,7 +161,7 @@ func (raftstate *RaftState) handleAppendEntriesResp(msg *AppendEntriesResp, raft
 }
 
 func (raftstate *RaftState) handleRequestVoteMsg(msg *RequestVoteMsg, raftserver *RaftServer) {
-	log.Debugf("Current I am %s, received %s", raftstate.Repr(), msg.Repr())
+	log.Infof("Current I am %s, received %s", raftstate.Repr(), msg.Repr())
 
 	// appears follower should deal with this message, for sure
 	// also appears candidate should deal with this message
@@ -140,17 +169,27 @@ func (raftstate *RaftState) handleRequestVoteMsg(msg *RequestVoteMsg, raftserver
 	// maybe all server should just deal with it... and candidate is special case
 	voteGranted := false
 	if msg.Term > raftstate.currentTerm {
+		log.Infoln("Becoming A Follower Because RequestVoteMsg msgTerm is newer than my own!")
+
 		raftstate.myRole = Follower
 		raftstate.votedFor = msg.SenderId
+		raftstate.votes[raftserver.myID] = false // once you vote for other, you cannot vote for yourself
 		voteGranted = true
 		raftstate.currentTerm = msg.Term
+
+		raftserver.electionTimer = 0
+
 	}
 
 	if msg.Term == raftstate.currentTerm && msg.LastLogTerm >= raftstate.prevTermFromLog() &&
 		msg.LastLogIdx >= len(raftstate.raftlog.items)-1 &&
 		(raftstate.votedFor == -1 || raftstate.votedFor == msg.SenderId) {
 		raftstate.votedFor = msg.SenderId
+		raftstate.votes[raftserver.myID] = false
+
 		voteGranted = true
+
+		raftserver.electionTimer = 0
 
 	}
 
@@ -160,19 +199,27 @@ func (raftstate *RaftState) handleRequestVoteMsg(msg *RequestVoteMsg, raftserver
 }
 
 func (raftstate *RaftState) handleRequestVoteResp(msg *RequestVoteResp, raftserver *RaftServer) {
-	log.Debugf("Current I am %s, received %s", raftstate.Repr(), msg.Repr())
+	log.Infof("Current I am %s, received %s", raftstate.Repr(), msg.Repr())
 
 	if msg.Term > raftstate.currentTerm {
+		log.Infoln("Becoming A Follower Because RequestVoteResp msgTerm is newer than my own!")
 		raftstate.myRole = Follower
 	}
+	raftstate.votes[msg.SenderId] = msg.VoteGranted
 
-	if msg.VoteGranted {
-		raftstate.whoVoteForMe = append(raftstate.whoVoteForMe, msg.SenderId)
-		// need to deal with myself vote
-		if len(raftstate.whoVoteForMe) >= 3 {
-			raftstate.myRole = Leader
-			go raftserver.LeaderNoop()
+	log.Infof("Votes Received %v", raftstate.votes)
+
+	howManyVoteForMe := 0
+	for _, v := range raftstate.votes {
+		if v {
+			howManyVoteForMe += 1
 		}
+	}
+
+	if howManyVoteForMe >= NetWorkSize/2+1 {
+		log.Infoln("Becoming The Leader!")
+		raftstate.myRole = Leader
+		go raftserver.LeaderNoop()
 	}
 
 }
@@ -251,22 +298,56 @@ func (raftstate *RaftState) ProcessAppendEntriesResp(msg *AppendEntriesResp, raf
 
 }
 
-func (raftstate *RaftState) LeaderAppendEntries(index, prevTerm int, entries []RaftLogEntry, raftserver *RaftServer) bool {
-	success := raftstate.raftlog.AppendEntries(index, prevTerm, entries)
+func (raftstate *RaftState) handleElectionTimout(raftserver *RaftServer) {
+	log.Infof("Current I am %s", raftstate.Repr())
 
-	if success {
-		// book keeping leader itself
-		raftstate.replicatedIdx[raftserver.myID] = index
-
-		// send AppendEntries Msg to followers
-		for _, f := range raftserver.followerIDs {
-			m := CreateAppendEntriesMsg(raftstate.myId, raftstate.currentTerm, raftstate.commitIdx, index, prevTerm, entries)
-			// simple fixed length type field for now, of course can wrap this with even one more layer.
-			// not the major focus
-			log.Debugf("Sending raftnode:%v, msg: %v", f, m.Repr())
-			raftserver.raftnet.Send(f, m.Encoding())
-		}
-
+	if raftstate.myRole == Leader {
+		panic("As a Leader, I received election timeout!!!")
 	}
-	return success
+
+	if raftstate.myRole == Follower {
+		log.Infoln("Becoming A Candidate!")
+		raftstate.myRole = Candidate
+
+		raftstate.currentTerm += 1
+		for i := range raftstate.votes {
+			// start new election, all previous votes should reset
+			// but who I voted for last time can stay,
+			// but here I vote for myself again
+			raftstate.votes[i] = false
+		}
+		raftstate.votedFor = raftstate.myId
+		raftstate.votes[raftstate.myId] = true
+		raftserver.electionTimer = 0
+
+		for _, f := range raftserver.followerIDs {
+			rfv := RequestVoteMsg{raftstate.myId, raftstate.currentTerm, len(raftstate.raftlog.items) - 1, raftstate.prevTermFromLog()}
+			log.Infof("Sending RequestVote %s", rfv.Repr())
+			raftserver.raftnet.Send(f, rfv.Encoding())
+		}
+	}
+
+	if raftstate.myRole == Candidate {
+		log.Infoln("Still Remaining A Candidate!")
+
+		raftstate.currentTerm += 1
+		for i := range raftstate.votes {
+			// start new election, all previous votes should reset
+			// but who I voted for last time can stay,
+			// but here I vote for myself again
+			raftstate.votes[i] = false
+		}
+		raftstate.votedFor = raftstate.myId
+		raftstate.votes[raftstate.myId] = true
+
+		raftserver.electionTimer = 0
+
+		for _, f := range raftserver.followerIDs {
+			rfv := RequestVoteMsg{raftstate.myId, raftstate.currentTerm, len(raftstate.raftlog.items) - 1, raftstate.prevTermFromLog()}
+			log.Infof("Sending RequestVote %s", rfv.Repr())
+
+			raftserver.raftnet.Send(f, rfv.Encoding())
+		}
+	}
+
 }

@@ -207,7 +207,7 @@ func testMultilServerMultiClient() {
 		port := 25000 + raftID
 		if raftID > 2 {
 			// slower follower... to simulate the appendentris failure
-			time.Sleep(5 * time.Second)
+			time.Sleep(3 * time.Second)
 		}
 		lib_test.KVServer(lib.SocketDescriptor{"tcp", "localhost", strconv.Itoa(port)}, raftID)
 

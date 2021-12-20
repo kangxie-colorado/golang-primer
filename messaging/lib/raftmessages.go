@@ -15,6 +15,7 @@ const APPENDENTRYRSP string = "APPENDRESPS"
 const COMMITUPDATE string = "COMMITUPDAT"
 const REQUESTVOTEMSG string = "REQUESTVOTE"
 const REQUESTVOTERESP string = "REQVOTERESP"
+const ELECTIMEOUT string = "ELECTIMEOUT"
 
 type RaftMessage interface {
 	Encoding() string

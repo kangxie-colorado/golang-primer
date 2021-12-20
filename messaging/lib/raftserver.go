@@ -1,6 +1,7 @@
 package lib
 
 import (
+	"math/rand"
 	"sort"
 	"sync"
 	"time"
@@ -10,12 +11,17 @@ import (
 
 type nodeRole uint
 
+const raftTimeUnit time.Duration = 10 * time.Millisecond
+
 type RaftServer struct {
 	raftnet   *RaftNet
 	raftstate *RaftState
 
 	myID        int
 	followerIDs []int
+
+	electionTimer   int
+	electionTimeOut int
 
 	// gurad around commitIdx read/write by
 	// this way, I can use raftserver.lock() like https://kaviraj.me/understanding-condition-variable-in-go/
@@ -43,18 +49,15 @@ func CreateARaftServer(id int, callback func([]RaftLogEntry)) *RaftServer {
 		}
 
 	}
-
 	raftserver.followerIDs = followerIDs
 
+	// used for playing logs for client e.g. kv server
 	raftserver.raftcallback = callback
 
-	// maybe currentTerm should start with something, not 0
-	// but here, the server starts from beginning, as in the sense of the raftlog is empty...
-	// so it being 0
-	// in other cases, if there is a already a raftlog, it maybe different
-	// keep it simple for now
-
-	// ^ applies to commitIdx as well
+	// election timer, random value between 80-100 time units
+	// should be much bigger than heartbeat, which currently used as 20 time units to not go so fraze
+	raftserver.electionTimeOut = rand.Intn(20) + 80
+	raftserver.electionTimer = 0
 
 	var raftstate = RaftState{}
 	raftstate.initRaftState(raftserver.myID)
@@ -126,40 +129,32 @@ func (raftserver *RaftServer) LeaderNoop() {
 	}
 }
 
-func (raftserver *RaftServer) RequestForVote() {
-	i := 10
-	if raftserver.raftstate.myRole == Candidate {
-		for raftserver.raftstate.myRole != Leader && i > 0 {
-			raftserver.raftstate.currentTerm++
-
-			for _, f := range raftserver.followerIDs {
-				raftserver.raftstate.votedFor = raftserver.myID
-				rfv := RequestVoteMsg{raftserver.myID, raftserver.raftstate.currentTerm, len(raftserver.raftstate.raftlog.items) - 1, raftserver.raftstate.prevTermFromLog()}
-				raftserver.raftnet.Send(f, rfv.Encoding())
-				time.Sleep(200 * time.Millisecond)
-			}
-
-			i--
-		}
-	}
-
-}
-
 func (raftserver *RaftServer) Start() {
 	go raftserver.stateMachineRun()
 	go raftserver.raftnet.Start()
 	go raftserver.heartbeatGenerator()
+	go raftserver.electionTimerRun()
+}
 
+func (raftserver *RaftServer) electionTimerRun() {
+	for {
+		time.Sleep(raftTimeUnit)
+		raftserver.electionTimer += 1
+		if raftserver.electionTimer == raftserver.electionTimeOut {
+			raftserver.raftnet.inbox.Enqueue("ELECTIMEOUT")
+		}
+	}
 }
 
 func (raftserver *RaftServer) heartbeatGenerator() {
 	for {
-		time.Sleep(500 * time.Millisecond)
+		time.Sleep(20 * raftTimeUnit) // 200ms
 		if raftserver.raftstate.myRole == Leader {
-			raftserver.lock.Lock()
+			// when heart beat is going on, no more election timeout for myself
+			raftserver.electionTimer = 0
+
 			hb := CreateAppendEntriesMsg(raftserver.myID, raftserver.currentLeaderTerm(), raftserver.raftstate.commitIdx,
 				len(raftserver.raftstate.raftlog.items), raftserver.raftstate.prevTermFromLog(), []RaftLogEntry{})
-			raftserver.lock.Unlock()
 			for _, f := range raftserver.followerIDs {
 				raftserver.raftnet.Send(f, hb.Encoding())
 			}
@@ -202,6 +197,10 @@ func (raftserver *RaftServer) stateMachineRun() {
 			log.Infof("RequestVoteResp received: %v\n", msg.Repr())
 
 			raftserver.raftstate.handleRequestVoteResp(&msg, raftserver)
+
+		case ELECTIMEOUT:
+			log.Infoln("Election Time Out Hppened for me, I am server", raftserver.myID)
+			raftserver.raftstate.handleElectionTimout(raftserver)
 
 		default:
 			log.Errorln("Unknown Message Type!")
