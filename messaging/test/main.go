@@ -247,6 +247,11 @@ func testMultilServerMultiClient() {
 			kvclient := lib_test.CreateKVClient(lib.SocketDescriptor{"tcp", "localhost", os.Args[2]})
 			kvclient.Get("foo")
 			kvclient.Get("foo2")
+
+			kvclient.Get("Kang")
+
+			kvclient.Set("Kang", "Great!")
+			kvclient.Get("Kang")
 		}
 
 	} else {

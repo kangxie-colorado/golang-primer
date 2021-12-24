@@ -106,14 +106,15 @@ func (raftstate *RaftState) LeaderAppendEntries(index, prevTerm int, entries []R
 func (raftstate *RaftState) handleAppendEntriesMsg(msg *AppendEntriesMsg, raftserver *RaftServer) {
 	// if msg.term > my term, convert to follower
 	// if I am candidation, unconditionally conver to follower
-	log.Infof("Current I am %s, received %s", raftstate.Repr(), msg.Repr())
+	log.Debugf("Current I am %s, received %s", raftstate.Repr(), msg.Repr())
 
 	if raftstate.myRole == Leader && msg.LeaderTerm == raftstate.currentTerm {
 		panic("Edge Case Really Happened! Two leaders of same term really happened!")
 		// may need to compare who logs are more up-to-date if this really happenes
 	}
 
-	//
+	// If AppendEntries RPC received from new leader: convert to follower
+	// this is unconitionally; this is separate of returning false or true
 	if raftstate.myRole == Candidate {
 		log.Infoln("Change from a candidate to a follower unconditionally!")
 		raftstate.myRole = Follower
@@ -121,29 +122,32 @@ func (raftstate *RaftState) handleAppendEntriesMsg(msg *AppendEntriesMsg, raftse
 	}
 	// it should always reset timer when receiving an AppendEntriesMsg
 	// because there is a leader in play
+	// If election timeout elapses without receiving AppendEntries RPC from current leader or granting vote to candidate: convert to candidate
+	// above means, it there is AppendEntriesRPC incoming, it should never become a candidate
 	raftserver.electionTimer = 0
 
 	if msg.LeaderTerm >= raftstate.currentTerm {
 		log.Debugln("Becoming/Staying A Follower")
-
+		// 		raftstate.myRole = Follower <--- this is implicitly true here
 		raftstate.currentTerm = msg.LeaderTerm
 		raftstate.whoIsLeader = msg.SenderId
-
-		// if the commitIdx is newer than myself, I might want to look into update my commit
-		// especially when it is a heartbeat message
-		if len(msg.Entries) == 0 {
-			raftserver.ProcessCommitUpdate(msg.LeaderCommitIdx)
-		}
 	}
 
 	success := raftstate.raftlog.AppendEntries(msg.Index, msg.PrevTerm, msg.Entries)
 	if success {
+		// corner case: when a rogue candidate/follower join the network
+		// it needs to be equalized to current leader term if the appendEntry was good
 		raftstate.currentTerm = msg.LeaderTerm
 	}
 
 	resp := AppendEntriesResp{raftstate.myId, success, msg.Index, len(msg.Entries), raftstate.prevTermFromLog()}
 	raftserver.raftnet.Send(msg.SenderId, resp.Encoding())
 
+	// if the commitIdx is newer than myself, I might want to look into update my commit
+	// especially when it is a heartbeat message
+	if len(msg.Entries) == 0 {
+		raftserver.ProcessCommitUpdate(msg.LeaderCommitIdx)
+	}
 }
 
 func (raftstate *RaftState) handleAppendEntriesResp(msg *AppendEntriesResp, raftserver *RaftServer) {
@@ -165,26 +169,21 @@ func (raftstate *RaftState) handleAppendEntriesResp(msg *AppendEntriesResp, raft
 
 func (raftstate *RaftState) handleRequestVoteMsg(msg *RequestVoteMsg, raftserver *RaftServer) {
 	log.Debugf("Current I am %s, received %s", raftstate.Repr(), msg.Repr())
-	raftstate.whoIsLeader = -1
+	raftstate.whoIsLeader = -1 // voting, I don't know a leder? yeah, logicll okay
 
-	// appears follower should deal with this message, for sure
-	// also appears candidate should deal with this message
-	// If votedFor is null or candidateId, and candidate’s log is at least as up-to-date as receiver’s log, grant vote (§5.2, §5.4)
-	// maybe all server should just deal with it... and candidate is special case
+	// 1. Reply false if term < currentTerm (§5.1)
 	voteGranted := false
+
+	// • If RPC request or response contains term T > currentTerm: set currentTerm = T, convert to follower (§5.1)
+	// this is unconditional and it does NOT suggest more than this
 	if msg.Term > raftstate.currentTerm {
-		log.Infof("Becoming A Follower Because RequestVoteMsg msgTerm is newer than my own!", msg.Repr())
-
-		raftstate.myRole = Follower
-		raftstate.votedFor = msg.SenderId
-		raftstate.votes[raftserver.myID] = false // once you vote for other, you cannot vote for yourself
-		voteGranted = true
+		log.Infof("Becoming A Follower Because RequestVoteMsg msgTerm is newer than my own: %s", msg.Repr())
 		raftstate.currentTerm = msg.Term
-
-		raftserver.electionTimer = 0
-
+		raftstate.myRole = Follower
 	}
 
+	// 2. If votedFor is null or candidateId, and candidate’s log is at least as up-to-date as receiver’s log, grant vote (§5.2, §5.4)
+	// if msg.Term > raftstate.currentTerm, it will become equal by above block
 	if msg.Term == raftstate.currentTerm && msg.LastLogTerm >= raftstate.prevTermFromLog() &&
 		msg.LastLogIdx >= len(raftstate.raftlog.items)-1 &&
 		(raftstate.votedFor == -1 || raftstate.votedFor == msg.SenderId) {
@@ -213,22 +212,27 @@ func (raftstate *RaftState) handleRequestVoteResp(msg *RequestVoteResp, raftserv
 
 	if raftstate.myRole != Candidate {
 		// this can happen in the transition
-		log.Infof("I have become a follower: %s, yet I received RequestVoteResp: %s, ignore", raftstate.Repr(), msg.Repr())
+		// will leader receive it? in transtiion, yes, slow response
+		log.Infof("I am not a candidate: %s, yet I received RequestVoteResp: %s, ignore", raftstate.Repr(), msg.Repr())
 		return
 
 	}
 
 	if msg.Term < raftstate.currentTerm {
-		log.Infof("Vote for my last term? I am %s, received %s", raftstate.Repr(), msg.Repr())
+		log.Infof("Vote for my early term? I am %s, received %s", raftstate.Repr(), msg.Repr())
 		return
 	}
 
+	// If RPC request or response contains term T > currentTerm: set currentTerm = T, convert to follower (§5.1)
+	// then per 1. Reply false if term < currentTerm (§5.1)
+	// if this happens, the reply must be false
 	if msg.Term > raftstate.currentTerm {
-		log.Infof("Becoming A Follower Because RequestVoteResp msgTerm is newer than my own: %s", msg.Repr())
+		log.Infof("Becoming A Follower Because RequestVoteResp msgTerm is newer than my own: %v", msg.Repr())
 		raftstate.myRole = Follower
+		raftstate.currentTerm = msg.Term
 	}
-	raftstate.votes[msg.SenderId] = msg.VoteGranted
 
+	raftstate.votes[msg.SenderId] = msg.VoteGranted
 	log.Infof("Votes Received %v", raftstate.votes)
 
 	howManyVoteForMe := 0
@@ -300,9 +304,9 @@ func (raftstate *RaftState) ProcessAppendEntriesResp(msg *AppendEntriesResp, raf
 			prevTerm = raftstate.raftlog.items[newIndex-1].Term
 		}
 		backoffMsg := AppendEntriesMsg{raftserver.myID, raftstate.currentTerm, raftstate.commitIdx, newIndex, prevTerm, raftstate.raftlog.items[newIndex:]}
-		// two places sending to follower
-		// would there be some refactoring
-		// conditional send to follower: condition being if index<follower.commitIdx, no need to send any more...
+		// two places sending to follower, would there be some refactoring? maybe no need
+		// conditional send to follower: condition being if index<nextIdx[follower], no need to send more than one time... but it is just an optimization
+		// do that later
 		raftserver.raftnet.Send(msg.SenderId, backoffMsg.Encoding())
 	}
 

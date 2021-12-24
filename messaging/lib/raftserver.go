@@ -167,7 +167,7 @@ func (raftserver *RaftServer) heartbeatGenerator() {
 			hb := CreateAppendEntriesMsg(raftserver.myID, raftserver.currentLeaderTerm(), raftserver.raftstate.commitIdx,
 				len(raftserver.raftstate.raftlog.items), raftserver.raftstate.prevTermFromLog(), []RaftLogEntry{})
 			for _, f := range raftserver.followerIDs {
-				log.Infof("Sending heartbeat to %v", f)
+				log.Debugf("Sending heartbeat to %v", f)
 				raftserver.raftnet.Send(f, hb.Encoding())
 			}
 
