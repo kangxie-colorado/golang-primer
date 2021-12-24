@@ -189,11 +189,9 @@ func (raftstate *RaftState) handleRequestVoteMsg(msg *RequestVoteMsg, raftserver
 		(raftstate.votedFor == -1 || raftstate.votedFor == msg.SenderId) {
 		raftstate.votedFor = msg.SenderId
 		raftstate.votes[raftserver.myID] = false
-
 		voteGranted = true
 
 		raftserver.electionTimer = 0
-
 	}
 
 	// if not granted, should reset the votedFor
@@ -299,7 +297,7 @@ func (raftstate *RaftState) ProcessAppendEntriesResp(msg *AppendEntriesResp, raf
 	} else {
 		log.Errorf("Follower %v not able to append to its own %v, back tracking\n", msg.SenderId, msg.Repr())
 		prevTerm := 0
-		newIndex := msg.Index - 1
+		newIndex := Max(msg.Index-1, raftstate.replicatedIdx[msg.SenderId])
 		if newIndex > 0 {
 			prevTerm = raftstate.raftlog.items[newIndex-1].Term
 		}

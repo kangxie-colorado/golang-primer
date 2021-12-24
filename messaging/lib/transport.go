@@ -16,6 +16,14 @@ func Min(a, b int) int {
 	return b
 }
 
+func Max(a, b int) int {
+	if a < b {
+		return b
+	}
+
+	return a
+}
+
 func SizeTo12Bytes(sz int) []byte {
 	strSz := fmt.Sprintf("%012d", sz)
 	byteSz := []byte(strSz)
