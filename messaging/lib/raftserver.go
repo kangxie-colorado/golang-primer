@@ -128,10 +128,7 @@ func (raftserver *RaftServer) LeaderNoop() {
 	// first thing in my term, write a "noop" to celebrate the election
 	// this should be in the winning election moment, between the state transition
 	// but at this moment, I just want to make sure I write a noop
-	// shall I also wait for this to be commited...
-	// to simplify things, I could
-	// then question is Should This Block the main thread or run it in a separete goroutine
-	// somewhere I can, now I cannot
+	// and not to block the main event loop, this will be done in go-routine
 	if raftserver.raftstate.myRole == Leader {
 
 		commitWait := make(chan bool)

@@ -319,29 +319,12 @@ func (raftstate *RaftState) handleElectionTimout(raftserver *RaftServer) {
 
 	if raftstate.myRole == Follower {
 		log.Infoln("Becoming A Candidate!")
+		// become a candidate then the candidate block will be executed on originally follower as well
 		raftstate.myRole = Candidate
-
-		raftstate.currentTerm += 1
-		for i := range raftstate.votes {
-			// start new election, all previous votes should reset
-			// but who I voted for last time can stay,
-			// of coz here I vote for myself again
-			raftstate.votes[i] = false
-		}
-		raftstate.votedFor = raftstate.myId
-		raftstate.votes[raftstate.myId] = true
-		raftserver.electionTimer = 0
-		raftserver.electionTimeOut = rand.Intn(20) + 100
-
-		for _, f := range raftserver.followerIDs {
-			rfv := RequestVoteMsg{raftstate.myId, raftstate.currentTerm, len(raftstate.raftlog.items) - 1, raftstate.prevTermFromLog()}
-			log.Debugf("Sending RequestVote %s to server %v", rfv.Repr(), f)
-			raftserver.raftnet.Send(f, rfv.Encoding())
-		}
 	}
 
 	if raftstate.myRole == Candidate {
-		log.Infoln("Still Remaining A Candidate!")
+		log.Infoln("Now I am A Candidate!")
 
 		raftstate.currentTerm += 1
 		for i := range raftstate.votes {
