@@ -11,6 +11,14 @@ import (
 	log "github.com/sirupsen/logrus"
 )
 
+var KVNetConfig = map[int]lib.SocketDescriptor{
+	0: lib.SocketDescriptor{"tcp", "localhost", "25000"},
+	1: lib.SocketDescriptor{"tcp", "localhost", "25001"},
+	2: lib.SocketDescriptor{"tcp", "localhost", "25002"},
+	3: lib.SocketDescriptor{"tcp", "localhost", "25003"},
+	4: lib.SocketDescriptor{"tcp", "localhost", "25004"},
+}
+
 var mu = sync.Mutex{}
 var kvstore = make(map[string]string)
 
@@ -27,14 +35,18 @@ func Set(msg string, cl net.Conn) {
 	log.Infof("Send SET %v:%v to raft\n", key, value)
 	commited := make(chan bool)
 	go appendEntry(raftserver, msg, commited)
-	<-commited
-	log.Infoln("Raft has committed")
+	raftDone := <-commited
 
-	// this will need some lock to protect against race conditions
-	mu.Lock()
-	defer mu.Unlock()
-	kvstore[key] = value
-	lib.SendMessageStr(cl, "OK")
+	if raftDone {
+		log.Infoln("Raft has committed")
+
+		// this will need some lock to protect against race conditions
+		mu.Lock()
+		defer mu.Unlock()
+		kvstore[key] = value
+		lib.SendMessageStr(cl, "OK")
+	}
+
 }
 
 func Get(msg string, cl net.Conn) {
@@ -57,19 +69,37 @@ func Del(msg string, cl net.Conn) {
 	log.Infof("Send DEL %v to raft\n", key)
 	commited := make(chan bool)
 	go appendEntry(raftserver, msg, commited)
-	<-commited
+	raftDone := <-commited
 
-	mu.Lock()
-	defer mu.Unlock()
-	if _, ok := kvstore[key]; ok {
-		delete(kvstore, key)
-		lib.SendMessageStr(cl, "Deleted")
-	} else {
-		lib.SendMessageStr(cl, "Key not exsitent")
+	if raftDone {
+		mu.Lock()
+		defer mu.Unlock()
+		if _, ok := kvstore[key]; ok {
+			delete(kvstore, key)
+			lib.SendMessageStr(cl, "Deleted")
+		} else {
+			lib.SendMessageStr(cl, "Key not exsitent")
+		}
 	}
+
+}
+
+func redirectToLeader(cl net.Conn) {
+	if raftserver.IsLeader() {
+		return
+	}
+
+	for raftserver.LeaderId() == -1 && !raftserver.IsLeader() {
+		log.Infoln("I don't know a leader yet, wait 100ms for leader election to finish")
+		time.Sleep(100 * time.Millisecond)
+	}
+
+	leaderAddr := "REDIRECTED" + fmt.Sprintf("%s:%s", KVNetConfig[raftserver.LeaderId()].ConnHost, KVNetConfig[raftserver.LeaderId()].ConnPort)
+	lib.SendMessageStr(cl, leaderAddr)
 }
 
 func HandleKVClient(cl net.Conn) {
+	redirectToLeader(cl)
 	for {
 		msgBytes, err := lib.RecvMessage(cl)
 		if err != nil {

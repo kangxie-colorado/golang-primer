@@ -186,7 +186,7 @@ func testGOb() {
 
 func testMultilServerMultiClient() {
 
-	prog := "server"
+	prog := "client"
 
 	// default values to open up a routine to debug
 	// I don't know how to play with the configuration json yet
@@ -212,12 +212,12 @@ func testMultilServerMultiClient() {
 		lib_test.KVServer(lib.SocketDescriptor{"tcp", "localhost", strconv.Itoa(port)}, raftID)
 
 	} else if prog == "client" {
-		clientID := 1
+		clientID := 2
 		if len(os.Args) > 2 {
 			clientID, _ = strconv.Atoi(os.Args[2])
 		}
 
-		initLog("client"+strconv.Itoa(clientID)+".log", log.InfoLevel)
+		initLog("client"+strconv.Itoa(clientID)+".log", log.DebugLevel)
 		log.Infoln("********************************************************************************************")
 
 		if clientID == 1 {

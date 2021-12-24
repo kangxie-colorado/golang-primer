@@ -56,7 +56,7 @@ func CreateARaftServer(id int, callback func([]RaftLogEntry)) *RaftServer {
 
 	// election timer, random value between 80-100 time units
 	// should be much bigger than heartbeat, which currently used as 20 time units to not go so fraze
-	raftserver.electionTimeOut = rand.Intn(20) + 80
+	raftserver.electionTimeOut = rand.Intn(20) + 100
 	raftserver.electionTimer = 0
 
 	var raftstate = RaftState{}
@@ -84,12 +84,11 @@ func (raftserver *RaftServer) watiForCommit(writtenIdx int, commited chan bool) 
 	log.Debugf("lock: %v is locked, waiting on cond var: %v", raftserver.lock, raftserver.cond)
 
 	//log.Debugf("commitIdx now %v, and wirttenIdx: %v", raftserver.commitIdx, writtenIdx)
-
+	log.Infoln("Waiting Raft to commit")
 	for raftserver.raftstate.commitIdx < writtenIdx {
 		raftserver.cond.Wait()
 	}
-
-	log.Debugf("commitIdx now %v, and wirttenIdx: %v", raftserver.raftstate.commitIdx, writtenIdx)
+	log.Infof("Raft Committed: commitIdx now %v, and wirttenIdx: %v", raftserver.raftstate.commitIdx, writtenIdx)
 	commited <- true
 
 	raftserver.lock.Unlock()
@@ -98,6 +97,18 @@ func (raftserver *RaftServer) watiForCommit(writtenIdx int, commited chan bool) 
 }
 
 func (raftserver *RaftServer) AppendNewEntry(msg string, commited chan bool) {
+	for raftserver.raftstate.myRole == Candidate {
+		// waiting until it becomes a leader of follower
+		// sleep 20 timeUnits is sensible enough, which is the heartbeat frequency as well
+		log.Infoln("I'm a candidate! I don't know who is leader yet!")
+		time.Sleep(120 * raftTimeUnit)
+	}
+
+	if raftserver.raftstate.myRole == Follower {
+		log.Errorln("I am a follower, and received a client write request, ignore")
+		commited <- false
+	}
+
 	// append to leader
 	// from the respective of leader, the prevTermFromLog before appending, is the prevTerm parameter to the function
 	// currentLeaderTerm() >= prevTermFromLog()
@@ -107,8 +118,8 @@ func (raftserver *RaftServer) AppendNewEntry(msg string, commited chan bool) {
 	if success {
 		// for now, not blocked waiting for commited
 		// need to think how to wait for commit ... better in a go routine actuall
-		log.Infoln("Waiting Raft to commit")
 		go raftserver.watiForCommit(writeIdx, commited)
+
 		// commited <- true
 	}
 }
@@ -148,7 +159,7 @@ func (raftserver *RaftServer) electionTimerRun() {
 
 func (raftserver *RaftServer) heartbeatGenerator() {
 	for {
-		time.Sleep(20 * raftTimeUnit) // 200ms
+		time.Sleep(10 * raftTimeUnit) // num * 10ms
 		if raftserver.raftstate.myRole == Leader {
 			// when heart beat is going on, no more election timeout for myself
 			raftserver.electionTimer = 0
@@ -156,6 +167,7 @@ func (raftserver *RaftServer) heartbeatGenerator() {
 			hb := CreateAppendEntriesMsg(raftserver.myID, raftserver.currentLeaderTerm(), raftserver.raftstate.commitIdx,
 				len(raftserver.raftstate.raftlog.items), raftserver.raftstate.prevTermFromLog(), []RaftLogEntry{})
 			for _, f := range raftserver.followerIDs {
+				log.Infof("Sending heartbeat to %v", f)
 				raftserver.raftnet.Send(f, hb.Encoding())
 			}
 
@@ -174,36 +186,36 @@ func (raftserver *RaftServer) stateMachineRun() {
 		case APPENDENTRYMSG:
 			msg := AppendEntriesMsg{}
 			msg.Decoding(msgB64Encoding[MSGTYPEFIELDLEN:])
-			log.Infof("AppendEntriesMsg received: %v\n", msg.Repr())
+			log.Debugf("AppendEntriesMsg received: %v\n", msg.Repr())
 
 			raftserver.raftstate.handleAppendEntriesMsg(&msg, raftserver)
 		case APPENDENTRYRSP:
 			msg := AppendEntriesResp{}
 			msg.Decoding(msgB64Encoding[MSGTYPEFIELDLEN:])
-			log.Infof("AppendEntriesResp received: %v\n", msg.Repr())
+			log.Debugf("AppendEntriesResp received: %v\n", msg.Repr())
 
 			raftserver.raftstate.handleAppendEntriesResp(&msg, raftserver)
 
 		case REQUESTVOTEMSG:
 			msg := RequestVoteMsg{}
 			msg.Decoding(msgB64Encoding[MSGTYPEFIELDLEN:])
-			log.Infof("RequestVoteMsg received: %v\n", msg.Repr())
+			log.Debugf("RequestVoteMsg received: %v\n", msg.Repr())
 
 			raftserver.raftstate.handleRequestVoteMsg(&msg, raftserver)
 
 		case REQUESTVOTERESP:
 			msg := RequestVoteResp{}
 			msg.Decoding(msgB64Encoding[MSGTYPEFIELDLEN:])
-			log.Infof("RequestVoteResp received: %v\n", msg.Repr())
+			log.Debugf("RequestVoteResp received: %v\n", msg.Repr())
 
 			raftserver.raftstate.handleRequestVoteResp(&msg, raftserver)
 
 		case ELECTIMEOUT:
-			log.Infoln("Election Time Out Hppened for me, I am server", raftserver.myID)
+			log.Debugf("Election Time Out Hppened for me, I am server", raftserver.myID)
 			raftserver.raftstate.handleElectionTimout(raftserver)
 
 		default:
-			log.Errorln("Unknown Message Type!")
+			log.Errorln("Unknown Message Type! %s", msgB64Encoding)
 		}
 
 	}
@@ -236,4 +248,12 @@ func (raftserver *RaftServer) ProcessCommitUpdate(msgCommitIdx int) {
 
 func (raftserver *RaftServer) SendRequestVoteResp(sendto int, msg *RequestVoteResp) {
 	raftserver.raftnet.Send(sendto, msg.Encoding())
+}
+
+func (raftserver *RaftServer) LeaderId() int {
+	return raftserver.raftstate.whoIsLeader
+}
+
+func (raftserver *RaftServer) IsLeader() bool {
+	return raftserver.raftstate.myRole == Leader
 }

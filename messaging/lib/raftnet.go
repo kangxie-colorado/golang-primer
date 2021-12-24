@@ -180,7 +180,7 @@ func (raftnet *RaftNet) Start() {
 	for {
 		cl, err := ln.Accept()
 		if err != nil {
-			log.Errorln("Error connecting:", err.Error())
+			log.Errorln("Error accepting:", err.Error())
 			return
 		}
 		log.Debugln("Client Connected: ", cl.RemoteAddr().String())
