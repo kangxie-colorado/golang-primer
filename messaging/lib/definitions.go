@@ -25,9 +25,9 @@ const NetWorkSize int = 5
 type RaftNet struct {
 	Id          int
 	inbox       *goconcurrentqueue.FIFO
-	outboxs     [NetWorkSize]*goconcurrentqueue.FIFO // sent to myself? just discard in the sender
+	outboxs     [NetWorkSize]*goconcurrentqueue.FIFO
 	outlinks    [NetWorkSize]net.Conn
-	enabled     [NetWorkSize]bool
-	linkEnabled [NetWorkSize]chan bool
+	enabled     [NetWorkSize]bool      // some kind of control knob
+	linkEnabled [NetWorkSize]chan bool // some kind of control knob
 	activated   [NetWorkSize]chan bool
 }
