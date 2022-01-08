@@ -591,6 +591,11 @@ func riskFromPointPriorityQueue(row, col int, cave [][]int) {
 			nextRow := node.value.row + deltas[d][0]
 			nextCol := node.value.col + deltas[d][1]
 
+			// watch out for one node being  added multiple times by its neighbors
+			// and it can create a loop...
+			// control at this end verse control at the top
+			// or both
+			// thinking DFS/BFS/Shortest-Path... subtly different
 			if nextRow >= 0 && nextRow < len(cave) && nextCol >= 0 && nextCol < len(cave[0]) && visited[nextRow][nextCol] == 0 {
 				nextNode := Item{
 					value:    Loc{nextRow, nextCol},
