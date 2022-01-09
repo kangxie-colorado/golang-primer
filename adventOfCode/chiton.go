@@ -157,8 +157,9 @@ func lowestRisk(cave *[][]int, visited [][]int) {
 		go riskFromPointParallel(0, 0, len(*cave)-1, len((*cave)[0])-1, cave, visited, 0, 0, done, &lowRisk)
 		<-done
 	*/
+
+	// parallel + dfs + using middle point
 	/*
-		// parallel + dfs + using middle point
 		lowestRiskSofar := math.MaxInt32
 
 		lowestByPoint := [][]int{}
@@ -596,7 +597,7 @@ func riskFromPointPriorityQueue(row, col int, cave [][]int) {
 			// control at this end verse control at the top
 			// or both
 			// thinking DFS/BFS/Shortest-Path... subtly different
-			if nextRow >= 0 && nextRow < len(cave) && nextCol >= 0 && nextCol < len(cave[0]) && visited[nextRow][nextCol] == 0 {
+			if nextRow >= 0 && nextRow < len(cave) && nextCol >= 0 && nextCol < len(cave[0]) {
 				nextNode := Item{
 					value:    Loc{nextRow, nextCol},
 					priority: node.priority + cave[nextRow][nextCol],
