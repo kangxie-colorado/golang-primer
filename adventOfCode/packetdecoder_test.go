@@ -29,9 +29,9 @@ func Test_getBinaryString(t *testing.T) {
 	}
 }
 
-func Test_binStrToInt(t *testing.T) {
+func Test_getAllVersions(t *testing.T) {
 	type args struct {
-		bins string
+		input string
 	}
 	tests := []struct {
 		name string
@@ -39,67 +39,43 @@ func Test_binStrToInt(t *testing.T) {
 		want int
 	}{
 		// TODO: Add test cases.
-		{"", args{"00000000011"}, 3},
-		{"", args{"000000000011011"}, 27},
+		{"", args{"8A004A801A8002F478"}, 16},
+		{"", args{"620080001611562C8802118E34"}, 12},
+		{"", args{"C0015000016115A2E0802F182340"}, 23},
+		{"", args{"A0016C880162017C3686B18A3D4780"}, 31},
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			if got := binStrToInt(tt.args.bins); got != tt.want {
-				t.Errorf("binStrToInt() = %v, want %v", got, tt.want)
+			if got := getAllVersions(tt.args.input); got != tt.want {
+				t.Errorf("getAllVersions() = %v, want %v", got, tt.want)
 			}
 		})
 	}
 }
 
-func Test_processLiteralPayload(t *testing.T) {
+func Test_calculatePacket(t *testing.T) {
 	type args struct {
-		payload string
+		packet string
 	}
 	tests := []struct {
-		name  string
-		args  args
-		want  int
-		want1 int
+		name string
+		args args
+		want []int64
 	}{
 		// TODO: Add test cases.
-		{"", args{"101111111000101000"}, 2021, 15},
-		{"", args{"01010"}, 10, 5},
+		{"", args{"C200B40A82"}, []int64{3}},
+		{"", args{"04005AC33890"}, []int64{54}},
+		{"", args{"880086C3E88112"}, []int64{7}},
+		{"", args{"CE00C43D881120"}, []int64{9}},
+		{"", args{"D8005AC2A8F0"}, []int64{1}},
+		{"", args{"F600BC2D8F"}, []int64{0}},
+		{"", args{"9C005AC2F8F0"}, []int64{0}},
+		{"", args{"9C0141080250320F1802104A08"}, []int64{1}},
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			got, got1 := processLiteralPayload(tt.args.payload)
-			if got != tt.want {
-				t.Errorf("processLiteralPayload() got = %v, want %v", got, tt.want)
-			}
-			if got1 != tt.want1 {
-				t.Errorf("processLiteralPayload() got1 = %v, want %v", got1, tt.want1)
-			}
-		})
-	}
-}
-
-func Test_processOperatorPayload(t *testing.T) {
-	type args struct {
-		payload string
-	}
-	tests := []struct {
-		name  string
-		args  args
-		want  []int
-		want1 int
-	}{
-		// TODO: Add test cases.
-		{"", args{"00000000000110111101000101001010010001001000000000"}, []int{6, 2}, 43},
-		{"", args{"10000000001101010000001100100000100011000001100000"}, []int{2, 4, 1}, 45},
-	}
-	for _, tt := range tests {
-		t.Run(tt.name, func(t *testing.T) {
-			got, got1 := processOperatorPayload(tt.args.payload)
-			if !reflect.DeepEqual(got, tt.want) {
-				t.Errorf("processOperatorPayload() got = %v, want %v", got, tt.want)
-			}
-			if got1 != tt.want1 {
-				t.Errorf("processOperatorPayload() got1 = %v, want %v", got1, tt.want1)
+			if got := calculatePacket(tt.args.packet); !reflect.DeepEqual(got, tt.want) {
+				t.Errorf("calculatePacket() = %v, want %v", got, tt.want)
 			}
 		})
 	}
