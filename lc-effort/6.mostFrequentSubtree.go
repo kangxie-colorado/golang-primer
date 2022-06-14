@@ -32,12 +32,6 @@ package main
 
 import "fmt"
 
-type TreeNode struct {
-	Val   int
-	Left  *TreeNode
-	Right *TreeNode
-}
-
 // the times a subtree sum appears
 var subtreeSums map[int]int
 

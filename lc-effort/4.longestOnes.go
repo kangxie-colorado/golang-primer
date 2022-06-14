@@ -73,7 +73,7 @@ func flip0(nums []int) int {
 	return l
 }
 
-func longestOnes(nums []int, k int) int {
+func _1_longestOnes(nums []int, k int) int {
 	if k == 0 {
 		return flip0(nums)
 	}
@@ -210,8 +210,144 @@ Memory Usage: 7.4 MB, less than 60.63% of Go online submissions for Max Consecut
 Next challenges:
 
 */
+// sliding window
+func _2_longestOnes(nums []int, k int) int {
+
+	maxLen := 0
+	sum := 0
+	i, j := 0, 0
+	for i <= j && j < len(nums) {
+		sum += nums[j]
+		for sum+k < j-i+1 && i <= j {
+			sum -= nums[i]
+			i++
+		}
+		maxLen = max(maxLen, j-i+1)
+		j++
+	}
+
+	return maxLen
+
+}
+
+// sliding window 2
+func _3_longestOnes(nums []int, k int) int {
+
+	maxLen := 0
+	sum := nums[0]
+	i, j := 0, 0
+	for j < len(nums) {
+
+		// this is tricky; you need to let i to go beyond j to break the tie sometime
+		// that depends on what kind of state (and some time the end result) you are tracking
+		// here. I am tracking the sum (num of 1s) then sum+k vs windLen
+		// but you can track number of 0s, vs k..
+
+		windLen := j - i + 1
+		if sum+k >= windLen {
+			maxLen = max(maxLen, windLen)
+			if j < len(nums)-1 {
+				sum += nums[j+1]
+			}
+			j++
+		} else {
+			sum -= nums[i]
+			i++
+		}
+	}
+
+	return maxLen
+
+}
+
+// this guy's template is actually very cool
+// https://leetcode.com/problems/max-consecutive-ones-iii/discuss/1504260/C%2B%2B-Sliding-Window-(%2B-Cheat-Sheet)
+
+// sliding window 3: tracking 0s count
+func _4_longestOnes(nums []int, k int) int {
+	maxLen := 0
+	count := 0
+	for i, j := 0, 0; j < len(nums); {
+		if nums[j] == 0 {
+			count++
+
+		}
+
+		for count > k {
+			if nums[i] == 0 {
+				count--
+
+			}
+			i++
+		}
+
+		j++
+		// because j++ happens before, so j-i
+		maxLen = max(maxLen, j-i)
+
+		// or written this way, the same
+		// maxLen = max(maxLen, j-i+1)
+		// j++
+	}
+
+	return maxLen
+}
+
+// there is yet another non-shrinkable solution
+// which is even more slippy
+// it use the k as a quota or something like
+// when it establish a window and when the condition is violated it will stop growing (i++, and j++ and the same time)
+// i++, j++ the window keeps the same size
+// if at later time, it can grow again... j++ without i++...
+// just alient-like smart
+
+/*
+think the scenarios when count>k
+	nums[j] is 1, and nums[i] is 1 -> window won't grow or shrink and count stable
+	nums[j] is 0, count++, nums[i] is 1 -> window won't grow or shrink and count + 1 -- more debt
+	nums[j] is 1, nums[i] is 0, window won't grow and count - 1, -- less debt
+
+	nums[j] is 1, when count <=k, window just grow, count stable -- no debt yet...
+
+	so when it found a window, it can shrink or grow, but the max so far is j-i..
+	and from there on, j and i increase in parallel... so window size won't change
+	but the count could change...
+
+	depending on how it changes. it could grow more... window bigger
+	if it go over k, then window won't grow anymore..
+
+	the debt has to be paid off first
+
+	damn... no matter how I try to explain.. this feels very alien..
+
+*/
+
+func longestOnes(nums []int, k int) int {
+	i, j := 0, 0
+	count := 0
+	for j < len(nums) {
+		if nums[j] == 0 {
+			count++
+		}
+
+		if count > k {
+			if nums[i] == 0 {
+				count--
+
+			}
+			i++
+		}
+
+		j++
+
+	}
+
+	return j - i
+}
 
 func testLongestOnes() {
+	fmt.Println(longestOnes([]int{0, 0, 1, 1, 1, 0, 0}, 0))
+
 	fmt.Println(longestOnes([]int{1, 0, 1, 1, 0, 1, 0, 0, 1, 1, 0, 1, 1, 1, 1, 1, 0, 0, 1, 0, 1, 1, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 1, 0, 0, 1, 0, 0, 1, 0, 1, 1, 0, 0, 0, 1, 1, 1, 1, 0, 0, 0, 1, 1, 0, 1, 0, 0, 0, 0, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 0, 1, 1, 0, 0, 0, 0, 0, 1, 1, 1, 1, 0, 0, 0, 1, 1, 1, 1, 1, 0, 1, 1, 1, 0, 1, 1, 0, 0, 0, 0, 0, 0, 1, 0, 0, 1, 0, 1, 1, 1, 1, 1, 1, 0, 1, 0, 0, 0, 1, 1, 0, 1, 1, 1, 0, 1, 1, 0, 1, 1, 1, 0, 1, 0, 1, 0, 1, 1, 0, 0, 0, 0, 1, 0, 0, 0, 1, 1, 1, 1, 0, 1, 0, 0, 0, 1, 0, 1, 0, 1, 1, 1, 1, 1, 0, 1, 0, 1, 1, 1, 1, 0, 1, 1, 0, 0, 0, 1, 0, 0, 1, 1, 1, 1, 0, 1, 0, 0, 1, 1, 0, 1, 1, 0, 0, 1, 1, 1, 0, 1, 1, 0, 1, 1, 1, 0, 0, 1, 0, 0, 0, 1, 0, 0, 1, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 1, 1, 1, 1, 0, 1, 1, 0, 0, 0, 0, 1, 0, 1, 0, 0, 1, 1, 0, 0, 1, 0, 1, 0, 0, 1, 1, 0, 0, 0, 1, 1, 1, 1, 1, 0, 0, 1, 1, 0, 0, 0, 0, 1, 1, 1, 0, 0, 1, 1, 1, 0, 0, 1, 1, 1, 1, 0, 0, 0, 0, 1, 0, 1, 0, 1, 1, 0, 1, 0, 0, 1, 0, 1, 1, 0, 1, 0, 1, 1, 0, 1, 0, 1, 1, 0, 0, 1, 0, 0, 0, 1, 1, 0, 1, 1, 0, 0, 1, 0, 1, 1, 0, 1, 0, 1, 0, 1, 0, 1, 1, 1, 0, 0, 1, 1, 0, 1, 1, 0, 1, 1, 0, 0, 1, 1, 1, 1, 1, 1, 1, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 1, 0, 1, 0, 1, 0, 1, 1, 0, 0, 1, 1, 0, 0, 1, 0, 1, 1, 1, 0, 0, 0, 0, 0, 0, 1, 0, 1, 1, 0, 1, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 0, 0, 1, 0, 1, 1, 0, 1, 1, 0, 1, 0, 1, 1, 0, 1, 1, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 0, 0, 0, 1, 0, 1, 1, 0, 1, 1, 0, 0, 1, 1, 0, 1, 0, 0, 1, 1, 1, 1, 1, 0, 1, 0, 0, 0, 0, 1, 0, 1, 0, 0, 1, 0, 1, 1, 0, 1, 0, 1, 1, 1, 1, 1, 0, 1, 0, 1, 1, 1, 0, 0, 1, 1, 0, 1, 1, 0, 1, 0, 0, 1, 0, 0, 1, 1, 0, 1, 0, 1, 1, 0, 1, 1, 1, 0, 1, 1, 1, 0, 0, 1, 1, 0, 0, 0, 0, 1, 0, 0, 1, 0, 1, 0, 1, 0, 0, 0, 1, 0, 1, 1, 1, 0, 0, 1, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 0, 1, 1, 0, 1, 1, 1, 1, 0, 1, 1, 1, 0, 1, 1, 1, 0, 1, 0, 0, 0, 0, 0, 0, 1, 0, 0, 1, 1, 1, 0, 1, 1, 0, 0, 0, 1, 0, 1, 0, 1, 0, 1, 1, 1, 0, 1, 0, 0, 1, 1, 1, 1, 0, 1, 1, 0, 1, 0, 1, 1, 0, 1, 1, 0, 1, 0, 0, 0, 1, 1, 1, 0, 0, 1, 1, 0, 1, 0, 1, 0, 0, 1, 1, 1, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 0, 0, 0, 1, 1, 0, 1, 0, 0, 1, 1, 1, 1, 0, 0, 0, 0, 1, 0, 0, 1, 1, 1, 0, 0, 0, 1, 0, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 1, 0, 1, 0, 0, 0, 0, 0, 1, 0, 0, 1, 1, 0, 1, 1, 0, 0, 0, 0, 1, 1, 1, 1, 1, 0, 0, 0, 1, 0, 0, 0, 0, 1, 1, 0, 1, 1, 1, 1, 0, 0, 1, 1, 1, 0, 0, 1, 0, 1, 1, 0, 0, 0, 0, 0, 1, 1, 1, 0, 0, 0, 1, 1, 1, 1, 1, 0, 1, 0, 0, 1, 1, 0, 1, 1, 1, 0, 1, 0, 0, 1, 0, 0, 1, 1, 0, 1, 0, 1, 0, 0, 1, 1, 0, 0, 0, 0, 1, 1, 1, 0, 0, 0, 1, 1, 1, 1, 0, 1, 0, 1, 0, 0, 0, 1, 0, 1, 1, 0, 0, 0, 1, 0, 1, 0, 0, 1, 1, 0, 0, 1, 1, 1, 0, 1, 1, 0, 1, 0, 1, 1, 1, 0, 1, 0, 0, 1, 1, 1, 0, 1, 1, 1, 0, 1, 1, 0, 0, 0, 1, 0, 1, 0, 1, 1, 0, 1, 1, 1, 1, 1, 1, 0, 1, 0, 1, 0, 0, 0, 0, 1, 1, 0, 1, 0, 0, 0, 1, 0, 1, 1, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 1, 0, 1, 0, 0, 0, 1, 1, 0, 0, 1, 1, 0, 1, 1, 0, 1, 1, 0, 1, 0, 1, 0, 1, 0, 0, 1, 1, 1, 0, 1, 1, 1, 1, 1, 0, 1, 0, 0, 0, 0, 0, 1, 0, 1, 0, 1, 0, 1, 1, 1, 1, 0, 0, 1, 0, 0, 1, 1, 0, 1, 0, 1, 0, 1, 1, 0, 1, 1, 0, 1, 1, 0, 0, 1, 0, 1, 0, 1, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 0, 1, 1, 1, 0, 1, 0, 0, 1, 1, 0, 1, 1, 0, 1, 1, 0, 1, 0, 1, 0, 1, 1, 0, 0, 1, 1, 0, 1, 1, 0, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 0, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 0, 0, 0, 1, 0, 1, 1, 0, 0, 1, 1, 1, 0, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 1, 0, 0, 1, 1, 0, 0, 1, 1, 1, 1, 0, 1, 1, 0, 1, 1, 0, 1, 0, 0, 1, 1, 0, 1, 1}, 225))
 
 	fmt.Println(longestOnes([]int{1, 0, 0, 0, 1, 1, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 0, 1, 0, 1, 1, 1, 1, 1, 1, 0, 1, 0, 1, 0, 0, 1, 1, 0, 1, 1}, 8))

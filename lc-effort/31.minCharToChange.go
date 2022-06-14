@@ -369,9 +369,3 @@ func testMinCharacters() {
 	fmt.Println(minCharacters("bd", "ae"))
 	fmt.Println(minCharacters("dbc", "daecc"))
 }
-
-func main() {
-	//fmt.Println(boundaries("ace"))
-	//fmt.Println(boundaries("abe"))
-	testMinCharacters()
-}

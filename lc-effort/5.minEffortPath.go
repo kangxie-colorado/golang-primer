@@ -230,26 +230,6 @@ func calMaxDiffOnPath(path []pointLink, heights [][]int) int {
 	return maxDiff
 }
 
-func getNeighbors(node point, matrix [][]int) []point {
-	dirs := [][]int{{-1, 0}, {0, 1}, {1, 0}, {0, -1}}
-
-	mHeight := len(matrix)
-	mWidth := len(matrix[0])
-
-	ret := []point{}
-
-	for _, dir := range dirs {
-		newX := dir[0] + node.x
-		newY := dir[1] + node.y
-
-		if newX > -1 && newX < mHeight && newY > -1 && newY < mWidth {
-			ret = append(ret, point{newX, newY})
-		}
-	}
-
-	return ret
-}
-
 func constructPath(path []pointLink, currenNode pointLink) []pointLink {
 	// search the path from start to the parent of currentNode
 	// then truncate the rest.. it will be the path leading to currentNode

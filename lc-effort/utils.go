@@ -2,6 +2,12 @@ package main
 
 import "reflect"
 
+type TreeNode struct {
+	Val   int
+	Left  *TreeNode
+	Right *TreeNode
+}
+
 type ListNode struct {
 	Val  int
 	Next *ListNode
@@ -72,4 +78,24 @@ func find(x int, parents []int) int {
 	}
 
 	return parents[x]
+}
+
+func getNeighbors(node point, matrix [][]int) []point {
+	dirs := [][]int{{-1, 0}, {0, 1}, {1, 0}, {0, -1}}
+
+	mHeight := len(matrix)
+	mWidth := len(matrix[0])
+
+	ret := []point{}
+
+	for _, dir := range dirs {
+		newX := dir[0] + node.x
+		newY := dir[1] + node.y
+
+		if newX > -1 && newX < mHeight && newY > -1 && newY < mWidth {
+			ret = append(ret, point{newX, newY})
+		}
+	}
+
+	return ret
 }

@@ -97,6 +97,30 @@ most people just do what I did...
 but there is something ... let me debug it
 */
 
+func idx(ch byte) int {
+	return int(ch) - int('a')
+}
+
+var list []M
+
+func initTest(s string) {
+	list = make([]M, 26)
+	for i := range list {
+		list[i].min = math.MaxInt
+		list[i].max = math.MinInt
+	}
+	for i, r := range s {
+		ch := idx(byte(r))
+		list[ch].min = Min(list[ch].min, i)
+		list[ch].max = Max(list[ch].max, i)
+	}
+}
+
+// so it create an array, get the first occurence and last occurence of any char
+// then it goes thru the array, pair by pair and count whats in between
+// still same to my solution
+// why my time is so bad?
+
 func countPalindromicSubsequence(s string) int {
 	initTest(s)
 
@@ -115,25 +139,6 @@ func countPalindromicSubsequence(s string) int {
 		}
 	}
 	return result
-}
-
-func idx(ch byte) int {
-	return int(ch) - int('a')
-}
-
-var list []M
-
-func initTest(s string) {
-	list = make([]M, 26)
-	for i := range list {
-		list[i].min = math.MaxInt
-		list[i].max = math.MinInt
-	}
-	for i, r := range s {
-		ch := idx(byte(r))
-		list[ch].min = Min(list[ch].min, i)
-		list[ch].max = Max(list[ch].max, i)
-	}
 }
 
 type M struct {
