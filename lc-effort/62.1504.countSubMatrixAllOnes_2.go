@@ -840,7 +840,3 @@ func testNumSubMat() {
 	fmt.Println(numSubmat2([][]int{{0, 1, 1, 1}, {1, 1, 0, 1}, {1, 1, 0, 0}, {1, 1, 1, 1}, {0, 1, 0, 0}}))
 
 }
-
-func main() {
-	testNumSubMat()
-}
