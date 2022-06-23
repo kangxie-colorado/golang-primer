@@ -120,7 +120,7 @@ let me do that
 
 */
 
-func threeSum(nums []int) [][]int {
+func _2_threeSum(nums []int) [][]int {
 	numMap := make(map[int]int)
 	for _, num := range nums {
 		numMap[num]++
@@ -205,6 +205,144 @@ Memory Usage: 8.2 MB, less than 27.37% of Go online submissions for 3Sum.
 
 */
 
+/*
+do one more time as blind75
+*/
+func threeSum(nums []int) [][]int {
+	res := [][]int{}
+	sort.Ints(nums)
+	for i := 0; i < len(nums); {
+		target := 0 - nums[i]
+		twoSumPairs := twoSum(nums[i+1:], target)
+
+		for _, tp := range twoSumPairs {
+			res = append(res, append(tp, nums[i]))
+		}
+
+		i++
+		for i > 0 && i < len(nums)-1 && nums[i] == nums[i-1] {
+			i++
+		}
+	}
+
+	return res
+}
+
+func twoSum(nums []int, target int) [][]int {
+	res := [][]int{}
+
+	for i, j := 0, len(nums)-1; i < j; {
+		sum := nums[i] + nums[j]
+
+		if sum < target {
+			i++
+
+		} else if sum > target {
+			j--
+
+		} else {
+			res = append(res, []int{nums[i], nums[j]})
+			i++
+			for i > 0 && i < j && nums[i] == nums[i-1] {
+				i++
+			}
+			/*
+				j--
+				for j < len(nums)-1 && j > i && nums[j] == nums[j+1] {
+					j--
+				}
+			*/
+		}
+
+	}
+
+	return res
+}
+
+/*
+what I feel difficult about this is
+two many guradings I need to put in
+and yet
+Wrong Answer
+Details
+Input
+[-2,0,0,2,2]
+Output
+[[0,2,-2],[0,2,-2]]
+Expected
+[[-2,0,2]]
+
+still a duplicate..
+
+Runtime: 66 ms, faster than 38.64% of Go online submissions for 3Sum.
+Memory Usage: 8.1 MB, less than 32.98% of Go online submissions for 3Sum.
+
+much better than previous solutions
+but so messy
+
+		if sum < target {
+			i++
+
+		} else if sum > target {
+			j--
+
+		} else {
+			res = append(res, []int{nums[i], nums[j]})
+			i++
+			for i > 0 && i < j && nums[i] == nums[i-1] {
+				i++
+			}
+			j--
+			for j < len(nums)-1 && j > i && nums[j] == nums[j+1] {
+				j--
+			}
+		}
+
+I think actually I can fast forward to the last element if there are duplciates
+but I cannot
+think
+1 1 1 1 1 and target is 2..
+so only fast forward when found a case
+when < or >, the duplicates won't change results.. let them cruise
+
+yep.. still works
+Runtime: 72 ms, faster than 36.25% of Go online submissions for 3Sum.
+Memory Usage: 8.4 MB, less than 26.05% of Go online submissions for 3Sum.
+
+Runtime: 39 ms, faster than 72.44% of Go online submissions for 3Sum.
+Memory Usage: 8.5 MB, less than 23.66% of Go online submissions for 3Sum.
+
+okay, inspried by the neetcode guy
+when == case shows, I only need to actually move up the l pointer..
+the right will be taken care by sum>target
+
+		if sum < target {
+			i++
+
+		} else if sum > target {
+			j--
+
+		} else {
+			res = append(res, []int{nums[i], nums[j]})
+			i++
+			for i > 0 && i < j && nums[i] == nums[i-1] {
+				i++
+			}
+			// so comment them out
+			//	j--
+			//	for j < len(nums)-1 && j > i && nums[j] == nums[j+1] {
+			//		j--
+			//	}
+
+		}
+
+
+
+Runtime: 29 ms, faster than 94.29% of Go online submissions for 3Sum.
+Memory Usage: 8.1 MB, less than 32.98% of Go online submissions for 3Sum.
+*/
+
 func test3Sum() {
+	fmt.Println(threeSum([]int{-2, 0, 0, 2, 2}))
 	fmt.Println(threeSum([]int{34, 55, 79, 28, 46, 33, 2, 48, 31, -3, 84, 71, 52, -3, 93, 15, 21, -43, 57, -6, 86, 56, 94, 74, 83, -14, 28, -66, 46, -49, 62, -11, 43, 65, 77, 12, 47, 61, 26, 1, 13, 29, 55, -82, 76, 26, 15, -29, 36, -29, 10, -70, 69, 17, 49}))
 }

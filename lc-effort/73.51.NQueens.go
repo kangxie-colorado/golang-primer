@@ -70,7 +70,3 @@ func testNQueens1() {
 	fmt.Println(solveNQueens(4))
 
 }
-
-func main() {
-	testNQueens1()
-}
