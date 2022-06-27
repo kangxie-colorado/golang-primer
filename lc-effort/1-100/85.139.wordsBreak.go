@@ -406,6 +406,3 @@ func testWordBreak() {
 	fmt.Println(wordBreak("leetcode", []string{"leet", "code"}))
 
 }
-func main() {
-	testWordBreak()
-}
