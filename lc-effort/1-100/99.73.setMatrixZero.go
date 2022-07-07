@@ -72,4 +72,9 @@ the mark can just use first row/col
 save some space...
 
 but much more trickier to get it right
+first pass, top-down
+2nd pass, bottom-up
+
+use first row and first col
+but easy to mess up.. laster zero or previously set zeros..
 */
