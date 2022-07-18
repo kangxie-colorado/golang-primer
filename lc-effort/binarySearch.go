@@ -3,6 +3,13 @@
 package main
 
 /*
+another good read
+https://leetcode.com/problems/search-insert-position/discuss/249092/Come-on-forget-the-binary-search-patterntemplate!-Try-understand-it!
+
+well... not really inspiring...
+*/
+
+/*
 A good read
 	- When to exit the loop? Should we use left < right or left <= right as the while loop condition?
 	- How to initialize the boundary variable left and right?
