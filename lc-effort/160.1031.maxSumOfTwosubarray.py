@@ -155,6 +155,44 @@ I wonder if the senior/staff can solve this easily
 leave this to tomorrow.. I must be missing some foundation
 """
 
+"""
+okay.. oncall week and I took a break from leetcode
+now lets resume it..
+
+
+"""
+
+
+class Solution:
+    def maxSumTwoNoOverlap(self, nums, firstLen: int, secondLen: int) -> int:
+        L, M = firstLen, secondLen
+
+        presum = 0
+        for i in range(len(nums)):
+            nums[i] += presum
+            presum = nums[i]
+
+        maxL, maxM, res = nums[L-1], nums[M-1], nums[L+M-1]
+        for i in range(L+M, len(nums)):
+            maxL = max(maxL, nums[i-M]-nums[i-M-L])
+            maxM = max(maxM, nums[i-L]-nums[i-L-M])
+
+            newM = nums[i]-nums[i-M]
+            newL = nums[i]-nums[i-L]
+
+            res = max(res, newM+maxL, newL+maxM)
+
+        return res
+
+
+"""
+Runtime: 88 ms, faster than 52.43% of Python3 online submissions for Maximum Sum of Two Non-Overlapping Subarrays.
+Memory Usage: 14 MB, less than 89.33% of Python3 online submissions for Maximum Sum of Two Non-Overlapping Subarrays.
+
+cool...
+"""
+
 if __name__ == '__main__':
     s = Solution()
     print(s.maxSumTwoNoOverlap([0, 6, 5, 2, 2, 5, 1, 9, 4], 1, 2))
+    print(s.maxSumTwoNoOverlap([0, 6, 5, 2, 2, 5, 1, 9, 4], 4, 2))
