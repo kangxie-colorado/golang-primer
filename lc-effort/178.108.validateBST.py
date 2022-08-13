@@ -101,6 +101,42 @@ Runtime: 83 ms, faster than 27.44% of Python3 online submissions for Validate Bi
 Memory Usage: 17 MB, less than 25.98% of Python3 online submissions for Validate Binary Search Tree.
 """
 
+
+class Solution:
+    def isValidBST(self, root: Optional[TreeNode]) -> bool:
+        prevNum = None
+
+        curr = root
+        while curr:
+            if curr.left is None:
+                if prevNum is not None and curr.val <= prevNum:
+                    return False
+                prevNum = curr.val
+                curr = curr.right
+            else:
+                prev = curr.left
+                while prev.right and prev.right != curr:
+                    prev = prev.right
+
+                if prev.right is None:
+                    prev.right = curr
+                    curr = curr.left
+                else:
+                    prev.right = None
+                    if prevNum is not None and curr.val <= prevNum:
+                        return False
+                    prevNum = curr.val
+                    curr = curr.right
+        return True
+
+
+"""
+Runtime: 51 ms, faster than 85.88% of Python3 online submissions for Validate Binary Search Tree.
+Memory Usage: 16.2 MB, less than 99.49% of Python3 online submissions for Validate Binary Search Tree.
+
+cool cool
+"""
+
 if __name__ == '__main__':
     s = Solution()
     root = TreeNode(2,

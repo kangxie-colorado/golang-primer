@@ -20,5 +20,18 @@ def twoSum(nums, target):
     return res
 
 
-nums = [1, 1, 2, 2, 3, 4, 5, 5, 6]
-print(twoSum(nums, 700))
+# https: // leetcode.com/problems/repeated-substring-pattern/
+class Solution:
+    def repeatedSubstringPattern(self, s: str) -> bool:
+        bitmap = [0]*26
+        for c in s:
+            bitmap[ord(c) - ord('a')] ^= 1
+
+        pat = ""
+        for b in bitmap:
+            pat = chr(c+ord('a'))
+
+        return pat == s[:len(pat)]
+
+
+Solution().repeatedSubstringPattern('ababab')
