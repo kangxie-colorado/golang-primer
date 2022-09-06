@@ -11,6 +11,14 @@ class ListNode:
         self.next = next
 
 
+class ComparbleListNode(ListNode):
+    def __init__(self, val=0, next=None):
+        super().__init__(val, next)
+
+    def __lt__(self, other):
+        return self.val < other.val
+
+
 def print_tree(root, val="val", left="left", right="right"):
     def display(root, val=val, left=left, right=right):
         """Returns list of strings, width, height, and horizontal coordinate of the root."""

@@ -77,7 +77,7 @@ class Solution:
     def targetIndices(self, nums: List[int], target: int) -> List[int]:
         nums.sort()
 
-        def bisect_left(nums, target):
+        def bisect_leftx(nums, target):
             l, r = 0, len(nums)
             while l < r:
                 mid = l + (r-l)//2
@@ -88,7 +88,7 @@ class Solution:
                     r = mid
             return l
 
-        def bisect_right(nums, target):
+        def bisect_rightx(nums, target):
             l, r = 0, len(nums)
             while l < r:
                 mid = l + (r-l)//2
@@ -99,8 +99,8 @@ class Solution:
                     r = mid
             return l
 
-        left = bisect_left(nums, target)
-        right = bisect_right(nums, target)
+        left = bisect_leftx(nums, target)
+        right = bisect_rightx(nums, target)
         return range(left, right)
 
 
