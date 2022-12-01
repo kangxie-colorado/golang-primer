@@ -71,36 +71,3 @@ def print_tree(root, val="val", left="left", right="right"):
     lines, *_ = display(root, val, left, right)
     for line in lines:
         print(line)
-
-
-def gcd(a, b):
-    # Everything divides 0
-    if (a == 0):
-        return b
-    if (b == 0):
-        return a
-
-    # base case
-    if (a == b):
-        return a
-
-    # a is greater
-    if (a > b):
-        return gcd(a-b, b)
-    return gcd(a, b-a)
-
-
-def print_list(head):
-    listStr = ""
-    while head:
-        listStr = f"{listStr}{head.val}->"
-        head = head.next
-
-    print(f"{listStr}end")
-
-
-class TrieNode:
-    def __init__(self, val="", terminal=False) -> None:
-        self.val = val
-        self.terminal = terminal
-        self.children = [None]*26  # 26 chars
